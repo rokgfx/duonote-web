@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -17,5 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase (singleton pattern for Next.js hot reload)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const analytics = typeof window !== "undefined" ? getAnalytics(app) : undefined;
+const auth = typeof window !== "undefined" ? getAuth(app) : undefined;
 
-export { app, analytics };
+export { app, analytics, auth };

@@ -1,22 +1,20 @@
 "use client";
 import React, { useState } from "react";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import Link from "next/link";
-import { useRouter, useParams } from "next/navigation";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
-  const params = useParams();
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess(false);
     setLoading(true);
     try {
       if (!auth) {
@@ -24,18 +22,19 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push(`/${params.locale}/app`);
+      await createUserWithEmailAndPassword(auth, email, password);
+      setSuccess(true);
       setEmail("");
       setPassword("");
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(err.message || "Registration failed");
     }
     setLoading(false);
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleRegister = async () => {
     setError("");
+    setSuccess(false);
     setLoading(true);
     try {
       if (!auth) {
@@ -45,9 +44,9 @@ export default function LoginPage() {
       }
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push(`/${params.locale}/app`);
+      setSuccess(true);
     } catch (err: any) {
-      setError(err.message || "Google login failed");
+      setError(err.message || "Google registration failed");
     }
     setLoading(false);
   };
@@ -55,7 +54,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-sm p-6 bg-white rounded shadow">
-        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -82,18 +81,21 @@ export default function LoginPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
           </div>
           {error && (
             <div className="text-red-500 text-sm">{error}</div>
+          )}
+          {success && (
+            <div className="text-green-600 text-sm">Registration successful! You can now log in.</div>
           )}
           <button
             type="submit"
             className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <div className="my-4 flex items-center">
@@ -103,7 +105,7 @@ export default function LoginPage() {
         </div>
         <button
           type="button"
-          onClick={handleGoogleLogin}
+          onClick={handleGoogleRegister}
           className="w-full py-2 bg-red-500 text-white rounded hover:bg-red-600 transition flex items-center justify-center"
           disabled={loading}
         >
@@ -119,9 +121,9 @@ export default function LoginPage() {
           Continue with Google
         </button>
         <div className="mt-4 text-center text-sm">
-          Don't have an account?{" "}
-          <Link href="../register" className="text-blue-600 hover:underline">
-            Register
+          Already have an account?{" "}
+          <Link href="../login" className="text-blue-600 hover:underline">
+            Login
           </Link>
         </div>
       </div>
