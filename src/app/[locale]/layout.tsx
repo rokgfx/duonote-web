@@ -47,6 +47,7 @@ export default async function RootLayout({
     // The path is relative to this file, going up to src/ and then into locales/.
     // If your i18n.ts is in src/i18n.ts and messages in src/locales/
     messages = (await import(`../locales/${locale}.json`)).default;
+    console.log(`Loaded messages for locale: ${locale}`, messages); // Debug log
   } catch (error) {
     console.error(`Could not load messages for locale: ${locale}`, error);
     // If messages for a supported locale are missing, trigger a 404.

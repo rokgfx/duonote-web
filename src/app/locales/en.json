@@ -1,29 +1,5 @@
 {
-  "Navbar": {
-    "notes": "Notes",
-    "categories": "Categories",
-    "settings": "Settings",
-    "logout": "Logout"
-  },
-  "NoteEditor": {
-    "languageA": "Language A (e.g., English)",
-    "languageB": "Language B (e.g., Japanese)",
-    "category": "Category",
-    "addNoteButton": "Add Note",
-    "saveChangesButton": "Save Changes",
-    "placeholderLangA": "Enter phrase in Language A",
-    "placeholderLangB": "Enter phrase in Language B"
-  },
-  "LoginPage": {
-    "title": "Login to Duonote",
-    "emailLabel": "Email",
-    "passwordLabel": "Password",
-    "loginButton": "Login",
-    "noAccount": "Don't have an account?",
-    "signUpLink": "Sign up"
-  },
   "General": {
-    "loading": "Loading...",
-    "error": "An error occurred."
+    "text": "Text"
   }
 }
