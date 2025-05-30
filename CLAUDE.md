@@ -45,6 +45,7 @@ npm run lint
 - **`src/app/lib/firebase.ts`**: Firebase configuration (Project ID: duonote-9f2b0)
 - **`src/app/lib/i18n.ts`**: next-intl configuration
 - **`next.config.ts`**: Next.js + next-intl plugin setup
+- **`tailwind.config.js`**: Tailwind CSS with DaisyUI plugin configuration
 
 ### Directory Structure
 
@@ -57,7 +58,8 @@ npm run lint
 ### Technology Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS 4 with PostCSS
+- **Styling**: Tailwind CSS 4 with PostCSS, DaisyUI component library
+- **Icons**: Heroicons React
 - **Auth**: Firebase Auth
 - **i18n**: next-intl
 - **Search**: FlexSearch (planned)
