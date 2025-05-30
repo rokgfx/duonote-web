@@ -7,11 +7,26 @@ import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
+  const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
 
   const handleLogout = async () => {
     if (!auth) return;
     await signOut(auth);
     router.push("/");
+  };
+
+  const openAddNoteModal = () => {
+    setIsAddNoteModalOpen(true);
+  };
+
+  const closeAddNoteModal = () => {
+    setIsAddNoteModalOpen(false);
+  };
+
+  const handleSaveNote = () => {
+    // TODO: Implement save note functionality
+    console.log("Save note clicked");
+    closeAddNoteModal();
   };
 
   return (
@@ -52,7 +67,7 @@ export default function Header() {
             </button>
           </li>
           <li>
-            <button className="btn btn-ghost">
+            <button className="btn btn-ghost" onClick={openAddNoteModal}>
               <PlusIcon className="h-5 w-5" />
               Add Note
             </button>
@@ -80,6 +95,25 @@ export default function Header() {
           </ul>
         </div>
       </div>
+
+      {/* Add Note Modal */}
+      <dialog className={`modal ${isAddNoteModalOpen ? 'modal-open' : ''}`}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add New Note</h3>
+          <p className="py-4">This is where the note creation form will go. You can add your note content here.</p>
+          <div className="modal-action">
+            <button className="btn btn-primary" onClick={handleSaveNote}>
+              Save
+            </button>
+            <button className="btn" onClick={closeAddNoteModal}>
+              Cancel
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={closeAddNoteModal}>close</button>
+        </form>
+      </dialog>
     </header>
   );
 }
