@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
+import Header from "@/components/layout/Header";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <span className="text-gray-500">Checking authentication...</span>
+        <span className="loading loading-spinner loading-xl"></span>
       </div>
     );
   }
@@ -39,5 +40,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      <main className="pt-16">
+        {children}
+      </main>
+    </>
+  );
 }
