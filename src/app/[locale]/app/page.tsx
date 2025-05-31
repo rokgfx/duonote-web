@@ -11,6 +11,7 @@ import { generateDummyNotes } from "@/utils/generateDummyNotes";
 import { useSearchContext } from "@/contexts/SearchContext";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { useNotebooks } from "@/contexts/NotebookContext";
+import { useModal } from "@/contexts/ModalContext";
 
 export default function MainPage() {
   const [user] = useAuthState(auth!);
@@ -20,6 +21,7 @@ export default function MainPage() {
   const { searchQuery } = useSearchContext();
   const { currentPage, goToNotes } = useNavigation();
   const { notebooks, currentNotebook } = useNotebooks();
+  const { showConfirmation, showAlert } = useModal();
 
   const handleGenerateDummyNotes = async () => {
     if (!user) return;
@@ -38,69 +40,87 @@ export default function MainPage() {
   const handleDeleteAllNotes = async () => {
     if (!user || !db) return;
 
-    const confirmDelete = confirm(
-      "⚠️ This will permanently delete ALL your notes! This action cannot be undone. Are you sure?"
-    );
-    
-    if (!confirmDelete) return;
-
-    setDeletingNotes(true);
-    
-    try {
-      // Get all user's notes
-      const notesQuery = query(
-        collection(db, "notes"),
-        where("userId", "==", user.uid)
-      );
-      
-      const querySnapshot = await getDocs(notesQuery);
-      
-      // Delete all notes in batches
-      const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
-      await Promise.all(deletePromises);
-      
-      console.log(`Deleted ${querySnapshot.size} notes`);
-      alert(`Successfully deleted ${querySnapshot.size} notes`);
-    } catch (error) {
-      console.error("Failed to delete notes:", error);
-      alert("Failed to delete notes. Please try again.");
-    } finally {
-      setDeletingNotes(false);
-    }
+    showConfirmation({
+      title: 'Delete All Notes',
+      message: '⚠️ This will permanently delete ALL your notes! This action cannot be undone. Are you sure?',
+      confirmText: 'Delete All',
+      cancelText: 'Cancel',
+      variant: 'error',
+      onConfirm: async () => {
+        setDeletingNotes(true);
+        
+        try {
+          // Get all user's notes
+          const notesQuery = query(
+            collection(db, "notes"),
+            where("userId", "==", user.uid)
+          );
+          
+          const querySnapshot = await getDocs(notesQuery);
+          
+          // Delete all notes in batches
+          const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+          await Promise.all(deletePromises);
+          
+          console.log(`Deleted ${querySnapshot.size} notes`);
+          showAlert({
+            title: 'Success',
+            message: `Successfully deleted ${querySnapshot.size} notes.`
+          });
+        } catch (error) {
+          console.error("Failed to delete notes:", error);
+          showAlert({
+            title: 'Error',
+            message: 'Failed to delete notes. Please try again.'
+          });
+        } finally {
+          setDeletingNotes(false);
+        }
+      }
+    });
   };
 
   const handleDeleteAllNotebooks = async () => {
     if (!user || !db) return;
 
-    const confirmDelete = confirm(
-      "⚠️ This will permanently delete ALL your notebooks! This action cannot be undone. Are you sure?"
-    );
-    
-    if (!confirmDelete) return;
-
-    setDeletingNotebooks(true);
-    
-    try {
-      // Get all user's notebooks
-      const notebooksQuery = query(
-        collection(db, "notebooks"),
-        where("userId", "==", user.uid)
-      );
-      
-      const querySnapshot = await getDocs(notebooksQuery);
-      
-      // Delete all notebooks in batches
-      const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
-      await Promise.all(deletePromises);
-      
-      console.log(`Deleted ${querySnapshot.size} notebooks`);
-      alert(`Successfully deleted ${querySnapshot.size} notebooks`);
-    } catch (error) {
-      console.error("Failed to delete notebooks:", error);
-      alert("Failed to delete notebooks. Please try again.");
-    } finally {
-      setDeletingNotebooks(false);
-    }
+    showConfirmation({
+      title: 'Delete All Notebooks',
+      message: '⚠️ This will permanently delete ALL your notebooks! This action cannot be undone. Are you sure?',
+      confirmText: 'Delete All',
+      cancelText: 'Cancel',
+      variant: 'error',
+      onConfirm: async () => {
+        setDeletingNotebooks(true);
+        
+        try {
+          // Get all user's notebooks
+          const notebooksQuery = query(
+            collection(db, "notebooks"),
+            where("userId", "==", user.uid)
+          );
+          
+          const querySnapshot = await getDocs(notebooksQuery);
+          
+          // Delete all notebooks in batches
+          const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+          await Promise.all(deletePromises);
+          
+          console.log(`Deleted ${querySnapshot.size} notebooks`);
+          showAlert({
+            title: 'Success',
+            message: `Successfully deleted ${querySnapshot.size} notebooks.`
+          });
+        } catch (error) {
+          console.error("Failed to delete notebooks:", error);
+          showAlert({
+            title: 'Error',
+            message: 'Failed to delete notebooks. Please try again.'
+          });
+        } finally {
+          setDeletingNotebooks(false);
+        }
+      }
+    });
   };
 
   // Render different pages based on current navigation state

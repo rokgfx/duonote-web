@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import { NotebookProvider } from "@/contexts/NotebookContext";
+import { ModalProvider } from "@/contexts/ModalContext";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -44,15 +45,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <NavigationProvider>
-      <NotebookProvider>
-        <SearchProvider>
-          <Header />
-          <main className="pt-20 pb-4 min-h-screen flex justify-center bg-slate-100">
-            {children}
-          </main>
-        </SearchProvider>
-      </NotebookProvider>
-    </NavigationProvider>
+    <ModalProvider>
+      <NavigationProvider>
+        <NotebookProvider>
+          <SearchProvider>
+            <Header />
+            <main className="pt-20 pb-4 min-h-screen flex justify-center bg-slate-100">
+              {children}
+            </main>
+          </SearchProvider>
+        </NotebookProvider>
+      </NavigationProvider>
+    </ModalProvider>
   );
 }

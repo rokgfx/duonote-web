@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useNotebooks } from "@/contexts/NotebookContext";
+import { useModal } from "@/contexts/ModalContext";
 import { CreateNotebookData, Notebook } from "@/types/notebook";
 
 interface NotebookPageProps {
@@ -49,6 +50,7 @@ const MAX_NOTEBOOK_NAME_CHARS = 40;
 
 export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = false }: NotebookPageProps) {
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, deleteNotebook, loading, error } = useNotebooks();
+  const { showConfirmation, showAlert } = useModal();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState<CreateNotebookData>({
     name: '',
@@ -174,17 +176,31 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
 
   const handleDeleteNotebook = async (notebook: Notebook) => {
     if (notebooks.length <= 1) {
-      alert('Cannot delete the last notebook');
+      showAlert({
+        title: 'Cannot Delete Notebook',
+        message: 'Cannot delete the last notebook. You must have at least one notebook.'
+      });
       return;
     }
 
-    if (confirm(`Are you sure you want to delete "${notebook.name}"? This action cannot be undone.`)) {
-      try {
-        await deleteNotebook(notebook.id);
-      } catch (err) {
-        console.error('Failed to delete notebook:', err);
+    showConfirmation({
+      title: 'Delete Notebook',
+      message: `Are you sure you want to delete "${notebook.name}"? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      variant: 'error',
+      onConfirm: async () => {
+        try {
+          await deleteNotebook(notebook.id);
+        } catch (err) {
+          console.error('Failed to delete notebook:', err);
+          showAlert({
+            title: 'Error',
+            message: 'Failed to delete notebook. Please try again.'
+          });
+        }
       }
-    }
+    });
   };
 
   const handleSelectNotebook = (notebook: Notebook) => {
