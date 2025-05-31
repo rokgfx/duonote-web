@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { useNotebooks } from "@/contexts/NotebookContext";
 import { useModal } from "@/contexts/ModalContext";
 import { CreateNotebookData, Notebook } from "@/types/notebook";
@@ -346,17 +346,28 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                       ))}
                     </div>
 
-                    {/* Create New Notebook Button */}
-                    <div>
-                      <button
-                        className="btn btn-outline btn-block"
-                        onClick={() => setShowCreateForm(true)}
-                        disabled={notebooks.length >= MAX_NOTEBOOKS}
-                        title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
-                      >
-                        <PlusIcon className="h-4 w-4" />
-                        Create New Notebook
-                      </button>
+                    {/* Action Buttons */}
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          className="btn btn-primary flex-1"
+                          onClick={onBackToNotes}
+                          disabled={!currentNotebook}
+                          title={!currentNotebook ? "Select a notebook to see its notes" : `See notes in ${currentNotebook.name}`}
+                        >
+                          <EyeIcon className="h-4 w-4" />
+                          See Notes
+                        </button>
+                        <button
+                          className="btn btn-outline flex-1"
+                          onClick={() => setShowCreateForm(true)}
+                          disabled={notebooks.length >= MAX_NOTEBOOKS}
+                          title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
+                        >
+                          <PlusIcon className="h-4 w-4" />
+                          Create New Notebook
+                        </button>
+                      </div>
                       {notebooks.length >= MAX_NOTEBOOKS && (
                         <div className="text-xs text-warning mt-2 text-center">
                           Maximum {MAX_NOTEBOOKS} notebooks reached. Delete a notebook to create a new one.
