@@ -39,6 +39,15 @@ export default function Header() {
     router.push("/");
   };
 
+  const handleSettingsClick = () => {
+    goToSettings();
+    // Close the dropdown by removing focus
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement) {
+      activeElement.blur();
+    }
+  };
+
   return (
     <header className="navbar bg-base-100 border-b fixed top-0 z-50 w-full">
       <div className="navbar-start w-auto">
@@ -86,7 +95,7 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li><a>Profile</a></li>
-              <li><button onClick={goToSettings}>Settings</button></li>
+              <li><button onClick={handleSettingsClick}>Settings</button></li>
               <li><button onClick={handleLogout}>Logout</button></li>
             </ul>
           </div>
