@@ -262,9 +262,8 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
         
         {/* Show current notebook info when creating new notes */}
         {!isEditing && currentNotebook && (
-          <div className="mb-4">
-            <div className="text-sm text-base-content/60 mb-2">Adding to:</div>
-            <div className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+          <div className="mb-2 mt-4">
+            <div className="flex items-center gap-3 p-0">
               <div 
                 className="w-4 h-4 rounded-full" 
                 style={{ backgroundColor: currentNotebook.color || predefinedColors[0] }}
@@ -351,7 +350,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           <button 
             className="btn btn-primary px-8" 
             onClick={handleSave}
-            disabled={loading}
+            disabled={loading || !content1.trim() || !content2.trim()}
           >
             {loading ? (
               <>
