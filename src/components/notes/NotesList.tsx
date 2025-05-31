@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { collection, query, where, orderBy, onSnapshot, limit, startAfter, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import AddNoteModal from "@/components/modals/AddNoteModal";
 
 interface Note {
@@ -183,7 +183,7 @@ export default function NotesList() {
               className="btn btn-ghost btn-sm btn-circle absolute top-2 right-2 opacity-60 hover:opacity-100"
               title="Edit note"
             >
-              <PencilIcon className="h-4 w-4" />
+              <PencilSquareIcon className="h-4 w-4" />
             </button>
             
             <div className="card-body p-4">
