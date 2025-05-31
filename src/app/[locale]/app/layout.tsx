@@ -43,7 +43,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-4rem)]">
+      <main className="pt-20 min-h-screen flex justify-center">
         {children}
       </main>
     </>
