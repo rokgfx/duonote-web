@@ -244,20 +244,27 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <button 
-              onClick={onBackToNotes}
+              onClick={showCreateForm ? () => setShowCreateForm(false) : onBackToNotes}
               className="btn btn-ghost btn-circle"
-              title="Back to Notes"
+              title={showCreateForm ? "Back to Notebooks" : "Back to Notes"}
             >
               <ArrowLeftIcon className="h-5 w-5" />
             </button>
-            <h1 className="text-3xl font-bold text-base-content">Notebooks</h1>
+            <h1 className="text-3xl font-bold text-base-content">
+              {showCreateForm ? "Create Notebook" : "Notebooks"}
+            </h1>
           </div>
           <p className="text-base-content/60">
-            Organize your vocabulary by language pairs or topics
+            {showCreateForm 
+              ? "Create a new notebook to organize your vocabulary"
+              : "Organize your vocabulary by language pairs or topics"
+            }
           </p>
-          <div className="text-sm text-base-content/60 mt-1">
-            {notebooks.length}/{MAX_NOTEBOOKS} notebooks
-          </div>
+          {!showCreateForm && (
+            <div className="text-sm text-base-content/60 mt-1">
+              {notebooks.length}/{MAX_NOTEBOOKS} notebooks
+            </div>
+          )}
         </div>
 
         {/* Notebooks Content */}
@@ -275,88 +282,91 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
               </div>
             ) : (
               <div className="space-y-4">
-          {/* First time user message */}
-          {showFirstTimeMessage && notebooks.length === 0 && (
-            <div className="alert alert-info">
-              <div>
-                <h3 className="font-bold">Welcome to Duonote! 🎉</h3>
-                <div className="text-sm mt-1">
-                  To create your first note, you need to first create a notebook. 
-                  Notebooks help you organize your vocabulary by language pairs or topics.
-                </div>
-                <div className="text-xs mt-2 opacity-75">
-                  For example: "English ↔ Japanese" or "Business Vocabulary"
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Existing Notebooks */}
-          <div className="space-y-2">
-            {notebooks.map((notebook) => (
-              <div 
-                key={notebook.id} 
-                className={`card bg-base-100 border cursor-pointer transition-all ${
-                  currentNotebook?.id === notebook.id ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-base-400'
-                }`}
-                onClick={() => handleSelectNotebook(notebook)}
-              >
-                <div className="card-body p-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className="w-4 h-4 rounded-full" 
-                        style={{ backgroundColor: notebook.color || predefinedColors[0] }}
-                      ></div>
-                      <div className="flex-1">
-                        <div className="font-medium">{notebook.name}</div>
-                        {notebook.languagePair && (
-                          <div className="text-sm text-base-content/60">{notebook.languagePair}</div>
-                        )}
+                {!showCreateForm ? (
+                  <>
+                    {/* First time user message */}
+                    {showFirstTimeMessage && notebooks.length === 0 && (
+                      <div className="alert alert-info">
+                        <div>
+                          <h3 className="font-bold">Welcome to Duonote! 🎉</h3>
+                          <div className="text-sm mt-1">
+                            To create your first note, you need to first create a notebook. 
+                            Notebooks help you organize your vocabulary by language pairs or topics.
+                          </div>
+                          <div className="text-xs mt-2 opacity-75">
+                            For example: "English ↔ Japanese" or "Business Vocabulary"
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {currentNotebook?.id === notebook.id && (
-                        <CheckIcon className="h-4 w-4 text-primary" />
-                      )}
-                      <button
-                        className="btn btn-ghost btn-sm btn-circle text-error"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteNotebook(notebook);
-                        }}
-                        disabled={notebooks.length <= 1}
-                        title={notebooks.length <= 1 ? "Cannot delete the last notebook" : "Delete notebook"}
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                    )}
 
-          {/* Create New Notebook */}
-          {!showCreateForm ? (
-            <div>
-              <button
-                className="btn btn-outline btn-block"
-                onClick={() => setShowCreateForm(true)}
-                disabled={notebooks.length >= MAX_NOTEBOOKS}
-                title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
-              >
-                <PlusIcon className="h-4 w-4" />
-                Create New Notebook
-              </button>
-              {notebooks.length >= MAX_NOTEBOOKS && (
-                <div className="text-xs text-warning mt-2 text-center">
-                  Maximum {MAX_NOTEBOOKS} notebooks reached. Delete a notebook to create a new one.
-                </div>
-              )}
-            </div>
-          ) : (
-            <form onSubmit={handleCreateNotebook} className="card bg-base-200 border-base-400">
+                    {/* Existing Notebooks */}
+                    <div className="space-y-2">
+                      {notebooks.map((notebook) => (
+                        <div 
+                          key={notebook.id} 
+                          className={`card bg-base-100 border cursor-pointer transition-all ${
+                            currentNotebook?.id === notebook.id ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-base-400'
+                          }`}
+                          onClick={() => handleSelectNotebook(notebook)}
+                        >
+                          <div className="card-body p-3">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <div 
+                                  className="w-4 h-4 rounded-full" 
+                                  style={{ backgroundColor: notebook.color || predefinedColors[0] }}
+                                ></div>
+                                <div className="flex-1">
+                                  <div className="font-medium">{notebook.name}</div>
+                                  {notebook.languagePair && (
+                                    <div className="text-sm text-base-content/60">{notebook.languagePair}</div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {currentNotebook?.id === notebook.id && (
+                                  <CheckIcon className="h-4 w-4 text-primary" />
+                                )}
+                                <button
+                                  className="btn btn-ghost btn-sm btn-circle text-error"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteNotebook(notebook);
+                                  }}
+                                  disabled={notebooks.length <= 1}
+                                  title={notebooks.length <= 1 ? "Cannot delete the last notebook" : "Delete notebook"}
+                                >
+                                  <TrashIcon className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Create New Notebook Button */}
+                    <div>
+                      <button
+                        className="btn btn-outline btn-block"
+                        onClick={() => setShowCreateForm(true)}
+                        disabled={notebooks.length >= MAX_NOTEBOOKS}
+                        title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
+                      >
+                        <PlusIcon className="h-4 w-4" />
+                        Create New Notebook
+                      </button>
+                      {notebooks.length >= MAX_NOTEBOOKS && (
+                        <div className="text-xs text-warning mt-2 text-center">
+                          Maximum {MAX_NOTEBOOKS} notebooks reached. Delete a notebook to create a new one.
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  /* Create Notebook Form */
+                  <form onSubmit={handleCreateNotebook} className="card bg-base-200 border-base-400">
               <div className="card-body p-4 space-y-3">
                 <div className="form-control">
                   <label className="label">
@@ -469,8 +479,8 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                   </button>
                 </div>
               </div>
-            </form>
-              )}
+                  </form>
+                )}
               </div>
             )}
           </div>
