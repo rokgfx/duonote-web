@@ -71,7 +71,7 @@ export default function Modal({
     }
   };
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLElement>) => {
     if (e.target === e.currentTarget && closeOnBackdropClick) {
       onClose();
     }
@@ -80,7 +80,7 @@ export default function Modal({
   return (
     <dialog className="modal modal-open">
       <div 
-        className={`modal-box ${getSizeClasses()} ${className}`}
+        className={`modal-box rounded-xl ${getSizeClasses()} ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -111,7 +111,7 @@ export default function Modal({
               {buttons.map((button, index) => (
                 <button
                   key={index}
-                  className={`btn ${getButtonVariantClass(button.variant)}`}
+                  className={`btn px-8 rounded-full ${getButtonVariantClass(button.variant)}`}
                   onClick={button.onClick}
                   disabled={button.disabled || button.loading}
                 >
