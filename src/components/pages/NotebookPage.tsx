@@ -507,25 +507,27 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         </div>
                       </div>
 
-                      <div className="space-y-3 pt-2">
-                        {/* Delete button - only show in edit mode */}
-                        {isEditing && editingNotebook && (
+                      <div className="flex justify-between items-center pt-2">
+                        {/* Delete button on the left - only show in edit mode */}
+                        {isEditing && editingNotebook ? (
                           <button
                             type="button"
-                            className="btn btn-error btn-block"
+                            className="btn btn-error"
                             onClick={() => handleDeleteNotebook(editingNotebook)}
                             disabled={isSubmitting}
                           >
                             <TrashIcon className="h-4 w-4" />
-                            Delete Notebook
+                            Delete
                           </button>
+                        ) : (
+                          <div></div>
                         )}
                         
-                        {/* Cancel and Save/Create buttons */}
+                        {/* Cancel and Save/Create buttons on the right */}
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            className="btn btn-ghost flex-1"
+                            className="btn btn-ghost"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
                             disabled={isSubmitting}
                           >
@@ -533,7 +535,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           </button>
                           <button
                             type="submit"
-                            className="btn btn-primary flex-1"
+                            className="btn btn-primary"
                             disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                           >
                             {isSubmitting ? (
