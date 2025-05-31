@@ -512,7 +512,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         {isEditing && editingNotebook ? (
                           <button
                             type="button"
-                            className="btn btn-error"
+                            className="btn btn-error px-8"
                             onClick={() => handleDeleteNotebook(editingNotebook)}
                             disabled={isSubmitting}
                           >
@@ -527,7 +527,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            className="btn btn-ghost"
+                            className="btn btn-ghost px-8"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
                             disabled={isSubmitting}
                           >
@@ -535,7 +535,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           </button>
                           <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-primary px-12"
                             disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                           >
                             {isSubmitting ? (
