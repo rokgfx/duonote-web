@@ -25,7 +25,55 @@ export function useSearch(notes: Note[]) {
       // Enable fuzzy search with typo tolerance
       preset: 'match',
       tokenize: 'reverse',
-      resolution: 9
+      resolution: 9,
+      // Better Unicode support for multiple languages
+      encode: (str: string) => {
+        // Normalize Unicode for better matching across different input methods
+        str = str.normalize('NFKC').toLowerCase();
+        
+        // Split by Unicode word boundaries and character types
+        // This handles CJK (no spaces), Arabic, Hebrew, etc.
+        const tokens: string[] = [];
+        
+        // Check if Intl.Segmenter is available (newer browsers)
+        if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+          try {
+            const segmenter = new (Intl as any).Segmenter(undefined, { granularity: 'word' });
+            const segments = segmenter.segment(str);
+            
+            for (const segment of segments) {
+              if (segment.isWordLike) {
+                tokens.push(segment.segment);
+                
+                // For CJK characters, also add individual characters as tokens
+                const segmentText = segment.segment as string;
+                if (/[\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/.test(segmentText)) {
+                  tokens.push(...Array.from(segmentText));
+                }
+              }
+            }
+          } catch (e) {
+            // Fallback to simple tokenization
+            return str.split(/\s+/).filter(token => token.length > 0);
+          }
+        } else {
+          // Fallback for older browsers - enhanced tokenization
+          // Split on spaces and common punctuation
+          const basicTokens = str.split(/[\s\u3000,，.。!！?？;；:：、·]+/).filter(t => t.length > 0);
+          
+          for (const token of basicTokens) {
+            tokens.push(token);
+            
+            // For strings containing CJK characters, also split into individual characters
+            if (/[\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/.test(token)) {
+              // Add individual CJK characters as separate tokens
+              tokens.push(...Array.from(token));
+            }
+          }
+        }
+        
+        return tokens;
+      }
     });
 
     return index;
