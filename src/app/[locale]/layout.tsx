@@ -13,6 +13,7 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "Duonote",
   description: "Your personal bilingual dictionary. Perfect for language learners.",
+  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
 };
 
 // This function helps Next.js know which locales are supported
