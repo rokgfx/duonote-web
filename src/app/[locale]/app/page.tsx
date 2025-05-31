@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/lib/firebase";
 import NotesList from "@/components/notes/NotesList";
 import SettingsPage from "@/components/pages/SettingsPage";
+import ProfilePage from "@/components/pages/ProfilePage";
 import { generateDummyNotes } from "@/utils/generateDummyNotes";
 import { useSearchContext } from "@/contexts/SearchContext";
 import { useNavigation } from "@/contexts/NavigationContext";
@@ -31,6 +32,10 @@ export default function MainPage() {
   // Render different pages based on current navigation state
   if (currentPage === 'settings') {
     return <SettingsPage onBackToNotes={goToNotes} />;
+  }
+
+  if (currentPage === 'profile') {
+    return <ProfilePage onBackToNotes={goToNotes} />;
   }
 
   return (

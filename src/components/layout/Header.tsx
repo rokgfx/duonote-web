@@ -13,7 +13,7 @@ export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
   const isOnline = useNetworkStatus();
-  const { goToSettings } = useNavigation();
+  const { goToSettings, goToProfile } = useNavigation();
 
   const handleLogout = async () => {
     if (!auth) return;
@@ -41,6 +41,15 @@ export default function Header() {
 
   const handleSettingsClick = () => {
     goToSettings();
+    // Close the dropdown by removing focus
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement) {
+      activeElement.blur();
+    }
+  };
+
+  const handleProfileClick = () => {
+    goToProfile();
     // Close the dropdown by removing focus
     const activeElement = document.activeElement as HTMLElement;
     if (activeElement) {
@@ -94,7 +103,7 @@ export default function Header() {
             <ul
               tabIndex={0}
               className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-              <li><a>Profile</a></li>
+              <li><button onClick={handleProfileClick}>Profile</button></li>
               <li><button onClick={handleSettingsClick}>Settings</button></li>
               <li><button onClick={handleLogout}>Logout</button></li>
             </ul>
