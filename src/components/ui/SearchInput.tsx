@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSearchContext } from "@/contexts/SearchContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 interface SearchInputProps {
   placeholder?: string;
@@ -13,10 +14,18 @@ export default function SearchInput({
   className = "" 
 }: SearchInputProps) {
   const { searchQuery, setSearchQuery } = useSearchContext();
+  const { currentPage, goToNotes } = useNavigation();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const newValue = e.target.value;
+    
+    // If user starts typing and we're not on the notes page, switch to notes page
+    if (newValue.length > 0 && currentPage !== 'notes') {
+      goToNotes();
+    }
+    
+    setSearchQuery(newValue);
   };
 
   // Auto-focus on desktop only
