@@ -7,6 +7,7 @@ import { CreateNotebookData, Notebook } from "@/types/notebook";
 interface NotebookModalProps {
   isOpen: boolean;
   onClose: () => void;
+  showFirstTimeMessage?: boolean;
 }
 
 const predefinedColors = [
@@ -33,7 +34,7 @@ const languagePairs = [
   'Other'
 ];
 
-export default function NotebookModal({ isOpen, onClose }: NotebookModalProps) {
+export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = false }: NotebookModalProps) {
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, deleteNotebook, loading, error } = useNotebooks();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState<CreateNotebookData>({
@@ -118,6 +119,22 @@ export default function NotebookModal({ isOpen, onClose }: NotebookModalProps) {
           </div>
         ) : (
           <div className="space-y-4">
+            {/* First time user message */}
+            {showFirstTimeMessage && notebooks.length === 0 && (
+              <div className="alert alert-info">
+                <div>
+                  <h3 className="font-bold">Welcome to Duonote! 🎉</h3>
+                  <div className="text-sm mt-1">
+                    To create your first note, you need to first create a notebook. 
+                    Notebooks help you organize your vocabulary by language pairs or topics.
+                  </div>
+                  <div className="text-xs mt-2 opacity-75">
+                    For example: "English ↔ Japanese" or "Business Vocabulary"
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Existing Notebooks */}
             <div className="space-y-2">
               {notebooks.map((notebook) => (

@@ -29,7 +29,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
   const [error, setError] = useState("");
   const [user] = useAuthState(auth!);
   const isOnline = useNetworkStatus();
-  const { currentNotebook } = useNotebooks();
+  const { currentNotebook, notebooks } = useNotebooks();
 
   const MAX_CHARS = 150;
   const isEditing = !!editNote;
@@ -99,6 +99,11 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
 
     if (!user || !db) {
       setError("User not authenticated or database not available.");
+      return;
+    }
+
+    if (!isEditing && !currentNotebook) {
+      setError("Please create a notebook first before adding notes.");
       return;
     }
 
@@ -222,6 +227,19 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
     <dialog className={`modal ${isOpen ? 'modal-open' : ''}`}>
       <div className="modal-box">
         <h3 className="font-bold text-lg">{isEditing ? 'Edit Note' : 'Add New Note'}</h3>
+        
+        {/* Show current notebook info when creating new notes */}
+        {!isEditing && currentNotebook && (
+          <div className="alert alert-info">
+            <div className="text-sm">
+              <strong>Adding to:</strong> {currentNotebook.name}
+              {currentNotebook.languagePair && (
+                <span className="text-base-content/60"> ({currentNotebook.languagePair})</span>
+              )}
+            </div>
+          </div>
+        )}
+        
         <div className="py-4 space-y-4">
           {error && (
             <div className="alert alert-error">

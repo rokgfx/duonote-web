@@ -9,13 +9,16 @@ import AddNoteModal from "@/components/modals/AddNoteModal";
 import NotebookModal from "@/components/modals/NotebookModal";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useNavigation } from "@/contexts/NavigationContext";
+import { useNotebooks } from "@/contexts/NotebookContext";
 
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
   const [isNotebookModalOpen, setIsNotebookModalOpen] = React.useState(false);
+  const [showFirstTimeMessage, setShowFirstTimeMessage] = React.useState(false);
   const isOnline = useNetworkStatus();
   const { goToSettings, goToProfile } = useNavigation();
+  const { notebooks } = useNotebooks();
 
   const handleLogout = async () => {
     if (!auth) return;
@@ -24,7 +27,13 @@ export default function Header() {
   };
 
   const openAddNoteModal = () => {
-    setIsAddNoteModalOpen(true);
+    // If no notebooks exist, show notebook modal with first-time message
+    if (notebooks.length === 0) {
+      setShowFirstTimeMessage(true);
+      setIsNotebookModalOpen(true);
+    } else {
+      setIsAddNoteModalOpen(true);
+    }
   };
 
   const closeAddNoteModal = () => {
@@ -32,11 +41,14 @@ export default function Header() {
   };
 
   const openNotebookModal = () => {
+    // Show first-time message only if no notebooks exist
+    setShowFirstTimeMessage(notebooks.length === 0);
     setIsNotebookModalOpen(true);
   };
 
   const closeNotebookModal = () => {
     setIsNotebookModalOpen(false);
+    setShowFirstTimeMessage(false);
   };
 
   const handleSaveNote = () => {
@@ -139,6 +151,7 @@ export default function Header() {
       <NotebookModal 
         isOpen={isNotebookModalOpen}
         onClose={closeNotebookModal}
+        showFirstTimeMessage={showFirstTimeMessage}
       />
 
       {/* Floating add button for mobile only */}
