@@ -39,9 +39,9 @@ export default function HighlightedText({ text, searchQuery }: HighlightedTextPr
           
           if (isMatch) {
             return (
-              <mark key={index} className="bg-yellow-300 text-black font-bold rounded px-0.5">
+              <strong key={index} className="font-bold">
                 {part}
-              </mark>
+              </strong>
             );
           }
           
