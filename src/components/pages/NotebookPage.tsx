@@ -384,10 +384,10 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="space-y-2">
-                      <div className="flex gap-2">
+                    <div className="mt-8">
+                      <div className="flex flex-col md:flex-row gap-2">
                         <button
-                          className="btn flex-1 "
+                          className="btn btn-primary flex md:flex-1"
                           onClick={onBackToNotes}
                           disabled={!currentNotebook}
                           title={!currentNotebook ? "Select a notebook to view its notes" : `View notes in ${currentNotebook.name}`}
@@ -396,7 +396,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           View Notes
                         </button>
                         <button
-                          className="btn flex-1 "
+                          className="btn btn-neutral flex md:flex-1"
                           onClick={() => setShowCreateForm(true)}
                           disabled={notebooks.length >= MAX_NOTEBOOKS}
                           title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
@@ -415,7 +415,6 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                 ) : (
                   /* Create/Edit Notebook Form */
                   <div className="space-y-4">
-                    <h2 className="card-title mb-4">{isEditing ? "Edit Notebook" : "Create New Notebook"}</h2>
                     <form onSubmit={handleSaveNotebook} className="space-y-4">
                       <div className="form-control">
                         <label className="label label-text">

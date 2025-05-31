@@ -51,7 +51,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <SearchProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex-1 bg-base-200 flex justify-center">
+              <main className="flex-1 bg-base-200 flex justify-center text-base-content">
                 <div className="w-full py-4">
                   {children}
                 </div>
