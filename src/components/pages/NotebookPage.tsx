@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon, EyeIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useNotebooks } from "@/contexts/NotebookContext";
 import { useModal } from "@/contexts/ModalContext";
 import { CreateNotebookData, Notebook } from "@/types/notebook";
@@ -50,9 +50,10 @@ const MAX_NOTEBOOKS = 10;
 const MAX_NOTEBOOK_NAME_CHARS = 40;
 
 export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = false }: NotebookPageProps) {
-  const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, deleteNotebook, loading, error } = useNotebooks();
+  const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, updateNotebook, deleteNotebook, loading, error } = useNotebooks();
   const { showConfirmation, showAlert } = useModal();
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editingNotebook, setEditingNotebook] = useState<Notebook | null>(null);
   const [formData, setFormData] = useState<CreateNotebookData>({
     name: '',
     description: '',
@@ -67,9 +68,13 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
   const [showCustom2, setShowCustom2] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Reset form when showCreateForm changes
+  // Helper variables
+  const isEditing = !!editingNotebook;
+  const isFormOpen = showCreateForm || isEditing;
+
+  // Reset form when showCreateForm changes or editing ends
   useEffect(() => {
-    if (!showCreateForm) {
+    if (!isFormOpen) {
       setFormData({
         name: '',
         description: '',
@@ -82,8 +87,39 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
       setCustomLanguage2('');
       setShowCustom1(false);
       setShowCustom2(false);
+      setEditingNotebook(null);
     }
-  }, [showCreateForm]);
+  }, [isFormOpen]);
+
+  // Populate form when editing a notebook
+  useEffect(() => {
+    if (editingNotebook) {
+      setFormData({
+        name: editingNotebook.name,
+        description: editingNotebook.description || '',
+        color: editingNotebook.color || predefinedColors[0],
+        languagePair: editingNotebook.languagePair || ''
+      });
+
+      // Parse language pair back to individual languages
+      if (editingNotebook.languagePair) {
+        const [lang1, lang2] = editingNotebook.languagePair.split(' ↔ ');
+        
+        // Check if languages are in the common list or custom
+        const isLang1Common = commonLanguages.includes(lang1);
+        const isLang2Common = commonLanguages.includes(lang2);
+        
+        setLanguage1(isLang1Common ? lang1 : 'Other');
+        setLanguage2(isLang2Common ? lang2 : 'Other');
+        
+        setCustomLanguage1(isLang1Common ? '' : lang1);
+        setCustomLanguage2(isLang2Common ? '' : lang2);
+        
+        setShowCustom1(!isLang1Common);
+        setShowCustom2(!isLang2Common);
+      }
+    }
+  }, [editingNotebook]);
 
   // Update language pair when individual languages change
   useEffect(() => {
@@ -130,15 +166,20 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
     return Array.from(formData.name).length;
   };
 
-  const handleCreateNotebook = async (e: React.FormEvent) => {
+  const handleEditNotebook = (notebook: Notebook) => {
+    setEditingNotebook(notebook);
+    setShowCreateForm(false);
+  };
+
+  const handleSaveNotebook = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name.trim()) {
       return;
     }
 
-    // Check notebook limit
-    if (notebooks.length >= MAX_NOTEBOOKS) {
+    // Check notebook limit only for new notebooks
+    if (!isEditing && notebooks.length >= MAX_NOTEBOOKS) {
       showAlert({
         title: 'Notebook Limit Reached',
         message: `You can only create up to ${MAX_NOTEBOOKS} notebooks. Please delete an existing notebook first.`
@@ -183,22 +224,19 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
     setIsSubmitting(true);
     
     try {
-      await createNotebook(formData);
-      setShowCreateForm(false);
-      setFormData({
-        name: '',
-        description: '',
-        color: predefinedColors[0],
-        languagePair: ''
-      });
-      setLanguage1(commonLanguages[0]); // "Select"
-      setLanguage2(commonLanguages[0]); // "Select"
-      setCustomLanguage1('');
-      setCustomLanguage2('');
-      setShowCustom1(false);
-      setShowCustom2(false);
+      if (isEditing && editingNotebook) {
+        await updateNotebook(editingNotebook.id, formData);
+        setEditingNotebook(null);
+      } else {
+        await createNotebook(formData);
+        setShowCreateForm(false);
+      }
     } catch (err) {
-      console.error('Failed to create notebook:', err);
+      console.error(`Failed to ${isEditing ? 'update' : 'create'} notebook:`, err);
+      showAlert({
+        title: 'Error',
+        message: `Failed to ${isEditing ? 'update' : 'create'} notebook. Please try again.`
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -244,23 +282,23 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         <div className="text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
             <button 
-              onClick={showCreateForm ? () => setShowCreateForm(false) : onBackToNotes}
+              onClick={isFormOpen ? () => { setShowCreateForm(false); setEditingNotebook(null); } : onBackToNotes}
               className="btn btn-ghost btn-circle"
-              title={showCreateForm ? "Back to Notebooks" : "Back to Notes"}
+              title={isFormOpen ? "Back to Notebooks" : "Back to Notes"}
             >
               <ArrowLeftIcon className="h-5 w-5" />
             </button>
             <h1 className="text-3xl font-bold text-base-content">
-              {showCreateForm ? "Create Notebook" : "Notebooks"}
+              {isEditing ? "Edit Notebook" : (showCreateForm ? "Create Notebook" : "Notebooks")}
             </h1>
           </div>
           <p className="text-base-content/60">
-            {showCreateForm 
-              ? "Create a new notebook to organize your vocabulary"
+            {isFormOpen 
+              ? (isEditing ? "Edit your notebook details" : "Create a new notebook to organize your vocabulary")
               : "Organize your vocabulary by language pairs or topics"
             }
           </p>
-          {!showCreateForm && (
+          {!isFormOpen && (
             <div className="text-sm text-base-content/60 mt-1">
               {notebooks.length}/{MAX_NOTEBOOKS} notebooks
             </div>
@@ -282,7 +320,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
               </div>
             ) : (
               <div className="space-y-4">
-                {!showCreateForm ? (
+                {!isFormOpen ? (
                   <>
                     {/* First time user message */}
                     {showFirstTimeMessage && notebooks.length === 0 && (
@@ -329,15 +367,14 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                                   <CheckIcon className="h-4 w-4 text-primary" />
                                 )}
                                 <button
-                                  className="btn btn-ghost btn-sm btn-circle text-error"
+                                  className="btn btn-ghost btn-sm btn-circle"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    handleDeleteNotebook(notebook);
+                                    handleEditNotebook(notebook);
                                   }}
-                                  disabled={notebooks.length <= 1}
-                                  title={notebooks.length <= 1 ? "Cannot delete the last notebook" : "Delete notebook"}
+                                  title="Edit notebook"
                                 >
-                                  <TrashIcon className="h-4 w-4" />
+                                  <PencilIcon className="h-4 w-4" />
                                 </button>
                               </div>
                             </div>
@@ -376,10 +413,10 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                     </div>
                   </>
                 ) : (
-                  /* Create Notebook Form */
+                  /* Create/Edit Notebook Form */
                   <div className="space-y-4">
-                    <h2 className="card-title mb-4">Create New Notebook</h2>
-                    <form onSubmit={handleCreateNotebook} className="space-y-4">
+                    <h2 className="card-title mb-4">{isEditing ? "Edit Notebook" : "Create New Notebook"}</h2>
+                    <form onSubmit={handleSaveNotebook} className="space-y-4">
                       <div className="form-control">
                         <label className="label">
                           <span className="label-text">Notebook name</span>
@@ -470,25 +507,42 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         </div>
                       </div>
 
-                      <div className="flex gap-2 pt-2">
-                        <button
-                          type="button"
-                          className="btn btn-ghost flex-1"
-                          onClick={() => setShowCreateForm(false)}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary flex-1"
-                          disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
-                        >
-                          {isSubmitting ? (
-                            <span className="loading loading-spinner loading-sm"></span>
-                          ) : (
-                            'Create'
-                          )}
-                        </button>
+                      <div className="space-y-3 pt-2">
+                        {/* Delete button - only show in edit mode */}
+                        {isEditing && editingNotebook && (
+                          <button
+                            type="button"
+                            className="btn btn-error btn-block"
+                            onClick={() => handleDeleteNotebook(editingNotebook)}
+                            disabled={isSubmitting}
+                          >
+                            <TrashIcon className="h-4 w-4" />
+                            Delete Notebook
+                          </button>
+                        )}
+                        
+                        {/* Cancel and Save/Create buttons */}
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            className="btn btn-ghost flex-1"
+                            onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
+                            disabled={isSubmitting}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn btn-primary flex-1"
+                            disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
+                          >
+                            {isSubmitting ? (
+                              <span className="loading loading-spinner loading-sm"></span>
+                            ) : (
+                              isEditing ? 'Save' : 'Create'
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </form>
                   </div>
