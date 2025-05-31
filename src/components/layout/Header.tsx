@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
+import AddNoteModal from "@/components/modals/AddNoteModal";
 
 export default function Header() {
   const router = useRouter();
@@ -31,10 +32,10 @@ export default function Header() {
   };
 
   return (
-    <header className="navbar bg-base-100 shadow-lg border-b fixed top-0 z-50 w-full">
+    <header className="navbar bg-base-100 border-b fixed top-0 z-50 w-full">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -87,24 +88,11 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Add Note Modal */}
-      <dialog className={`modal ${isAddNoteModalOpen ? 'modal-open' : ''}`}>
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Add New Note</h3>
-          <p className="py-4">This is where the note creation form will go. You can add your note content here.</p>
-          <div className="modal-action">
-            <button className="btn btn-primary" onClick={handleSaveNote}>
-              Save
-            </button>
-            <button className="btn" onClick={closeAddNoteModal}>
-              Cancel
-            </button>
-          </div>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button onClick={closeAddNoteModal}>close</button>
-        </form>
-      </dialog>
+      <AddNoteModal 
+        isOpen={isAddNoteModalOpen}
+        onClose={closeAddNoteModal}
+        onSave={handleSaveNote}
+      />
     </header>
   );
 }
