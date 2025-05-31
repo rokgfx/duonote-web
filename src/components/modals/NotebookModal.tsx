@@ -11,16 +11,16 @@ interface NotebookModalProps {
 }
 
 const predefinedColors = [
-  '#ef4444', // red
-  '#f97316', // orange  
-  '#eab308', // yellow
-  '#22c55e', // green
-  '#06b6d4', // cyan
-  '#3b82f6', // blue
-  '#8b5cf6', // violet
-  '#ec4899', // pink
-  '#6366f1', // indigo
-  '#10b981', // emerald
+  '#E74C3C', // red
+  '#F39C12', // orange  
+  '#F7DC6F', // yellow
+  '#58D68D', // green
+  '#AFEEEE', // cyan
+  '#1E90FF', // blue
+  '#9370DB', // violet
+  '#FFC0CB', // pink
+  '#F8F8FF', // white
+  '#4d5052', // black
 ];
 
 const commonLanguages = [
@@ -46,6 +46,7 @@ const commonLanguages = [
 ];
 
 const MAX_NOTEBOOKS = 10;
+const MAX_NOTEBOOK_NAME_CHARS = 40;
 
 export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = false }: NotebookModalProps) {
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, deleteNotebook, loading, error } = useNotebooks();
@@ -107,6 +108,22 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
     if (value !== 'Other') {
       setCustomLanguage2('');
     }
+  };
+
+  // Handle notebook name change with character limit
+  const handleNotebookNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    // Count multibyte characters properly
+    const charCount = Array.from(text).length;
+    
+    if (charCount <= MAX_NOTEBOOK_NAME_CHARS) {
+      setFormData(prev => ({ ...prev, name: text }));
+    }
+  };
+
+  // Get character count for display
+  const getNameCharacterCount = () => {
+    return Array.from(formData.name).length;
   };
 
   const handleCreateNotebook = async (e: React.FormEvent) => {
@@ -282,12 +299,18 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
               <form onSubmit={handleCreateNotebook} className="card bg-base-200 border-base-400">
                 <div className="card-body p-0 space-y-3">
                   <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Notebook name</span>
+                      <span className="label-text-alt text-sm">
+                        {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
+                      </span>
+                    </label>
                     <input
                       type="text"
                       placeholder="Notebook name"
-                      className="input input-bordered input-sm w-full"
+                      className="input input-bordered w-full"
                       value={formData.name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                      onChange={handleNotebookNameChange}
                       autoFocus
                       required
                     />
@@ -295,12 +318,12 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                   
                   {/* Language pair selection */}
                   <div className="form-control">
-                    <label className="label label-text text-xs">Language Pair</label>
+                    <label className="label label-text">Language Pair</label>
                     <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
                       {/* Language 1 */}
                       <div className="space-y-1">
                         <select
-                          className="select select-bordered select-sm w-full"
+                          className="select select-bordered w-full"
                           value={language1}
                           onChange={(e) => handleLanguage1Change(e.target.value)}
                         >
@@ -312,7 +335,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                           <input
                             type="text"
                             placeholder="Enter language"
-                            className="input input-bordered input-sm w-full"
+                            className="input input-bordered w-full"
                             value={customLanguage1}
                             onChange={(e) => setCustomLanguage1(e.target.value)}
                           />
@@ -327,7 +350,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                       {/* Language 2 */}
                       <div className="space-y-1">
                         <select
-                          className="select select-bordered select-sm w-full"
+                          className="select select-bordered w-full"
                           value={language2}
                           onChange={(e) => handleLanguage2Change(e.target.value)}
                         >
@@ -339,7 +362,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                           <input
                             type="text"
                             placeholder="Enter language"
-                            className="input input-bordered input-sm w-full"
+                            className="input input-bordered w-full"
                             value={customLanguage2}
                             onChange={(e) => setCustomLanguage2(e.target.value)}
                           />
@@ -349,13 +372,13 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                   </div>
 
                   <div className="form-control">
-                    <label className="label label-text text-xs">Color</label>
-                    <div className="flex gap-2">
+                    <label className="label label-text">Color</label>
+                    <div className="flex justify-between w-full">
                       {predefinedColors.map(color => (
                         <button
                           key={color}
                           type="button"
-                          className={`w-6 h-6 rounded-full border-2 ${
+                          className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer rounded-full border-2 ${
                             formData.color === color ? 'border-base-content' : 'border-base-300'
                           }`}
                           style={{ backgroundColor: color }}
@@ -368,21 +391,21 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                   <div className="flex gap-2 pt-2">
                     <button
                       type="button"
-                      className="btn btn-outline btn-sm flex-1"
+                      className="btn btn-outline flex-1"
                       onClick={onClose}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
-                      className="btn btn-ghost btn-sm flex-1"
+                      className="btn btn-ghost flex-1"
                       onClick={() => setShowCreateForm(false)}
                     >
                       Back
                     </button>
                     <button
                       type="submit"
-                      className="btn btn-primary btn-sm flex-1"
+                      className="btn btn-primary flex-1"
                       disabled={!formData.name.trim() || isSubmitting}
                     >
                       {isSubmitting ? (
