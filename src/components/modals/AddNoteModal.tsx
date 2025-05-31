@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { collection, addDoc, serverTimestamp, Timestamp, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
@@ -281,7 +282,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           {/* Delete button - only show when editing */}
           {isEditing && (
             <button 
-              className="btn btn-error mr-auto" 
+              className="btn btn-error mr-auto px-8" 
               onClick={handleDelete}
               disabled={loading}
             >
@@ -292,15 +293,25 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
                 </>
               ) : (
                 <>
+                  <TrashIcon className="h-4 w-4" />
                   Delete{!isOnline && " (offline)"}
                 </>
               )}
             </button>
           )}
           
+          {/* Cancel button */}
+          <button 
+            className="btn px-8" 
+            onClick={onClose}
+            disabled={loading}
+          >
+            Cancel
+          </button>
+
           {/* Update/Save button */}
           <button 
-            className="btn btn-primary" 
+            className="btn btn-primary px-8" 
             onClick={handleSave}
             disabled={loading}
           >
@@ -317,15 +328,6 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
                 {isEditing ? "Update" : "Save"}{!isOnline && " (offline)"}
               </>
             )}
-          </button>
-          
-          {/* Cancel button */}
-          <button 
-            className="btn" 
-            onClick={onClose}
-            disabled={loading}
-          >
-            Cancel
           </button>
         </div>
       </div>
