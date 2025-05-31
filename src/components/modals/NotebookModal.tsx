@@ -285,7 +285,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                     <input
                       type="text"
                       placeholder="Notebook name"
-                      className="input input-bordered input-sm"
+                      className="input input-bordered input-sm w-full"
                       value={formData.name}
                       onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                       autoFocus
@@ -296,7 +296,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                   {/* Language pair selection */}
                   <div className="form-control">
                     <label className="label label-text text-xs">Language Pair</label>
-                    <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
                       {/* Language 1 */}
                       <div className="space-y-1">
                         <select
@@ -320,7 +320,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                       </div>
                       
                       {/* Arrow */}
-                      <div className="text-center bg-red-200">
+                      <div className="flex justify-center items-center px-2">
                         <span className="text-base-content/60">↔</span>
                       </div>
                       
@@ -367,6 +367,20 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
 
                   <div className="flex gap-2 pt-2">
                     <button
+                      type="button"
+                      className="btn btn-outline btn-sm flex-1"
+                      onClick={onClose}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-sm flex-1"
+                      onClick={() => setShowCreateForm(false)}
+                    >
+                      Back
+                    </button>
+                    <button
                       type="submit"
                       className="btn btn-primary btn-sm flex-1"
                       disabled={!formData.name.trim() || isSubmitting}
@@ -377,13 +391,6 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                         'Create'
                       )}
                     </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      onClick={() => setShowCreateForm(false)}
-                    >
-                      Cancel
-                    </button>
                   </div>
                 </div>
               </form>
@@ -391,11 +398,14 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
           </div>
         )}
 
-        <div className="modal-action">
-          <button className="btn" onClick={onClose}>
-            Close
-          </button>
-        </div>
+        {/* Close button for when not in create form mode */}
+        {!showCreateForm && (
+          <div className="modal-action">
+            <button className="btn btn-outline btn-block" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        )}
       </div>
       <form method="dialog" className="modal-backdrop">
         <button onClick={onClose}>close</button>
