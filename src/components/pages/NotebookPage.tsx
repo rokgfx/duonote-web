@@ -366,120 +366,121 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                   </>
                 ) : (
                   /* Create Notebook Form */
-                  <form onSubmit={handleCreateNotebook} className="card bg-base-200 border-base-400">
-              <div className="card-body p-4 space-y-3">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Notebook name</span>
-                    <span className="label-text-alt text-sm">
-                      {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Notebook name"
-                    className="input input-bordered w-full"
-                    value={formData.name}
-                    onChange={handleNotebookNameChange}
-                    autoFocus
-                    required
-                  />
-                </div>
-                
-                {/* Language pair selection */}
-                <div className="form-control">
-                  <label className="label label-text">Language Pair</label>
-                  <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
-                    {/* Language 1 */}
-                    <div className="space-y-1">
-                      <select
-                        className="select select-bordered w-full"
-                        value={language1}
-                        onChange={(e) => handleLanguage1Change(e.target.value)}
-                      >
-                        {commonLanguages.map(lang => (
-                          <option key={lang} value={lang}>{lang}</option>
-                        ))}
-                      </select>
-                      {showCustom1 && (
+                  <div className="space-y-4">
+                    <h2 className="card-title mb-4">Create New Notebook</h2>
+                    <form onSubmit={handleCreateNotebook} className="space-y-4">
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text">Notebook name</span>
+                          <span className="label-text-alt text-sm">
+                            {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
+                          </span>
+                        </label>
                         <input
                           type="text"
-                          placeholder="Enter language"
+                          placeholder="Notebook name"
                           className="input input-bordered w-full"
-                          value={customLanguage1}
-                          onChange={(e) => setCustomLanguage1(e.target.value)}
+                          value={formData.name}
+                          onChange={handleNotebookNameChange}
+                          autoFocus
+                          required
                         />
-                      )}
-                    </div>
-                    
-                    {/* Arrow */}
-                    <div className="flex justify-center items-center px-2">
-                      <span className="text-base-content/60">↔</span>
-                    </div>
-                    
-                    {/* Language 2 */}
-                    <div className="space-y-1">
-                      <select
-                        className="select select-bordered w-full"
-                        value={language2}
-                        onChange={(e) => handleLanguage2Change(e.target.value)}
-                      >
-                        {commonLanguages.map(lang => (
-                          <option key={lang} value={lang}>{lang}</option>
-                        ))}
-                      </select>
-                      {showCustom2 && (
-                        <input
-                          type="text"
-                          placeholder="Enter language"
-                          className="input input-bordered w-full"
-                          value={customLanguage2}
-                          onChange={(e) => setCustomLanguage2(e.target.value)}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
+                      </div>
+                      
+                      {/* Language pair selection */}
+                      <div className="form-control">
+                        <label className="label label-text">Language Pair</label>
+                        <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
+                          {/* Language 1 */}
+                          <div className="space-y-1">
+                            <select
+                              className="select select-bordered w-full"
+                              value={language1}
+                              onChange={(e) => handleLanguage1Change(e.target.value)}
+                            >
+                              {commonLanguages.map(lang => (
+                                <option key={lang} value={lang}>{lang}</option>
+                              ))}
+                            </select>
+                            {showCustom1 && (
+                              <input
+                                type="text"
+                                placeholder="Enter language"
+                                className="input input-bordered w-full"
+                                value={customLanguage1}
+                                onChange={(e) => setCustomLanguage1(e.target.value)}
+                              />
+                            )}
+                          </div>
+                          
+                          {/* Arrow */}
+                          <div className="flex justify-center items-center px-2">
+                            <span className="text-base-content/60">↔</span>
+                          </div>
+                          
+                          {/* Language 2 */}
+                          <div className="space-y-1">
+                            <select
+                              className="select select-bordered w-full"
+                              value={language2}
+                              onChange={(e) => handleLanguage2Change(e.target.value)}
+                            >
+                              {commonLanguages.map(lang => (
+                                <option key={lang} value={lang}>{lang}</option>
+                              ))}
+                            </select>
+                            {showCustom2 && (
+                              <input
+                                type="text"
+                                placeholder="Enter language"
+                                className="input input-bordered w-full"
+                                value={customLanguage2}
+                                onChange={(e) => setCustomLanguage2(e.target.value)}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
 
-                <div className="form-control">
-                  <label className="label label-text">Color</label>
-                  <div className="flex justify-between w-full">
-                    {predefinedColors.map(color => (
-                      <button
-                        key={color}
-                        type="button"
-                        className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer rounded-full border-2 ${
-                          formData.color === color ? 'border-base-content' : 'border-base-300'
-                        }`}
-                        style={{ backgroundColor: color }}
-                        onClick={() => setFormData(prev => ({ ...prev, color }))}
-                      />
-                    ))}
-                  </div>
-                </div>
+                      <div className="form-control">
+                        <label className="label label-text">Color</label>
+                        <div className="flex justify-between w-full">
+                          {predefinedColors.map(color => (
+                            <button
+                              key={color}
+                              type="button"
+                              className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer rounded-full border-2 ${
+                                formData.color === color ? 'border-base-content' : 'border-base-300'
+                              }`}
+                              style={{ backgroundColor: color }}
+                              onClick={() => setFormData(prev => ({ ...prev, color }))}
+                            />
+                          ))}
+                        </div>
+                      </div>
 
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    className="btn btn-ghost flex-1"
-                    onClick={() => setShowCreateForm(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-primary flex-1"
-                    disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
-                  >
-                    {isSubmitting ? (
-                      <span className="loading loading-spinner loading-sm"></span>
-                    ) : (
-                      'Create'
-                    )}
-                  </button>
-                </div>
-              </div>
-                  </form>
+                      <div className="flex gap-2 pt-2">
+                        <button
+                          type="button"
+                          className="btn btn-ghost flex-1"
+                          onClick={() => setShowCreateForm(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary flex-1"
+                          disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
+                        >
+                          {isSubmitting ? (
+                            <span className="loading loading-spinner loading-sm"></span>
+                          ) : (
+                            'Create'
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 )}
               </div>
             )}
