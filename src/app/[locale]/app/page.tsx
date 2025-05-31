@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
+import NotesList from "@/components/notes/NotesList";
 
 export default function MainPage() {
-
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-white">
-      <h1>Main Page</h1>
-      <p className="text-gray-600 text-center">
-        You have successfully logged in.
-      </p>
+    <div className="container mx-auto px-4 py-6 max-w-2xl">
+      <NotesList />
     </div>
   );
 }
