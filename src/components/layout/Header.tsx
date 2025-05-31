@@ -70,7 +70,7 @@ export default function Header() {
   };
 
   return (
-    <header className="navbar bg-base-100 border-b fixed top-0 z-50 w-full">
+    <header className="navbar sticky top-0 bg-base-100 border-b z-50 flex-shrink-0">
       <div className="navbar-start w-auto">
         {/* Logo icon - visible on all screen sizes */}
         <button 

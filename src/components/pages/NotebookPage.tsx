@@ -306,7 +306,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         </div>
 
         {/* Notebooks Content */}
-        <div className="card bg-base-100 rounded-xl h-svh">
+        <div className="card bg-base-100 rounded-xl">
           <div className="card-body">
             {error && (
               <div className="alert mb-4">

@@ -49,10 +49,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <NavigationProvider>
         <NotebookProvider>
           <SearchProvider>
-            <Header />
-            <main className="pt-20 pb-4 min-h-screen flex justify-center bg-base-200">
-              {children}
-            </main>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1 bg-base-200 flex justify-center">
+                <div className="w-full py-4">
+                  {children}
+                </div>
+              </main>
+            </div>
           </SearchProvider>
         </NotebookProvider>
       </NavigationProvider>
