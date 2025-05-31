@@ -39,7 +39,7 @@ export default function Header() {
 
   return (
     <header className="navbar bg-base-100 border-b fixed top-0 z-50 w-full">
-      <div className="navbar-start">
+      <div className="navbar-start w-auto">
         {/* Logo icon - visible on all screen sizes */}
         <button 
           className="btn btn-ghost btn-circle"
@@ -50,23 +50,26 @@ export default function Header() {
         </button>
       </div>
       
-      <div className="navbar-center flex-1 px-4">
-        <div className="flex items-center gap-2 w-full max-w-md">
-          {/* Search input - full width on small screens, limited on larger */}
-          <SearchInput className="flex-1 sm:w-full md:w-80" />
-          
-          {/* Add note button - just plus icon */}
-          <button 
-            className="btn btn-ghost btn-circle" 
-            onClick={openAddNoteModal}
-            title="Add Note"
-          >
-            <PlusIcon className="h-5 w-5" />
-          </button>
+      <div className="navbar-center flex-1">
+        {/* Desktop: Match notes list width (max-w-2xl), Mobile: Full width between icons */}
+        <div className="container mx-auto px-2 max-w-2xl">
+          <div className="flex items-center w-full">
+            {/* Search input */}
+            <SearchInput className="flex-1" />
+            
+            {/* Add note button - hidden on mobile, shown on desktop */}
+            <button 
+              className="btn btn-ghost btn-circle hidden md:flex ml-4" 
+              onClick={openAddNoteModal}
+              title="Add Note"
+            >
+              <PlusIcon className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
       
-      <div className="navbar-end">
+      <div className="navbar-end w-auto">
         <div className="flex items-center gap-2">
           {!isOnline && (
             <div className="tooltip tooltip-bottom" data-tip="Offline">
@@ -93,6 +96,15 @@ export default function Header() {
         onClose={closeAddNoteModal}
         onSave={handleSaveNote}
       />
+
+      {/* Floating add button for mobile only */}
+      <button
+        className="fixed bottom-6 right-6 btn btn-primary btn-circle shadow-lg z-50 md:hidden"
+        onClick={openAddNoteModal}
+        title="Add Note"
+      >
+        <PlusIcon className="h-6 w-6" />
+      </button>
     </header>
   );
 }

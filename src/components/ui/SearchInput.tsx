@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSearchContext } from "@/contexts/SearchContext";
 
@@ -13,14 +13,24 @@ export default function SearchInput({
   className = "" 
 }: SearchInputProps) {
   const { searchQuery, setSearchQuery } = useSearchContext();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
+  // Auto-focus on desktop only
+  useEffect(() => {
+    const isDesktop = window.innerWidth >= 768; // md breakpoint
+    if (isDesktop && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className={`relative ${className}`}>
       <input
+        ref={inputRef}
         type="text"
         placeholder={placeholder}
         value={searchQuery}
