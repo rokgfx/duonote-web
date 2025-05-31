@@ -1,15 +1,17 @@
 "use client";
 import React from "react";
-import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon } from "@heroicons/react/24/outline";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
 import AddNoteModal from "@/components/modals/AddNoteModal";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
+  const isOnline = useNetworkStatus();
 
   const handleLogout = async () => {
     if (!auth) return;
@@ -74,17 +76,24 @@ export default function Header() {
       </div>
       
       <div className="navbar-end">
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-            <UserIcon className="h-6 w-6" />
+        <div className="flex items-center gap-2">
+          {!isOnline && (
+            <div className="tooltip tooltip-bottom" data-tip="Offline">
+              <BoltIcon className="h-5 w-5 text-warning" />
+            </div>
+          )}
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <UserIcon className="h-6 w-6" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              <li><a>Profile</a></li>
+              <li><a>Settings</a></li>
+              <li><button onClick={handleLogout}>Logout</button></li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li><a>Profile</a></li>
-            <li><a>Settings</a></li>
-            <li><button onClick={handleLogout}>Logout</button></li>
-          </ul>
         </div>
       </div>
 
