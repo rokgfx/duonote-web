@@ -20,3 +20,23 @@ body {
   overflow-x: hidden;
 }
 
+/* Override DaisyUI input focus border styles */
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none !important;
+  border-color: #000000 !important;
+  border-width: 1px !important;
+  box-shadow: none !important;
+}
+
+/* Also override any focus-within styles for input containers */
+.input:focus-within,
+.textarea:focus-within,
+.select:focus-within {
+  outline: none !important;
+  border-color: #000000 !important;
+  border-width: 1px !important;
+  box-shadow: none !important;
+}
+
