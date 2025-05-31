@@ -26,6 +26,7 @@ export default function NotesList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [flashingNotes, setFlashingNotes] = useState<Set<string>>(new Set());
   const [user] = useAuthState(auth!);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -47,36 +48,55 @@ export default function NotesList() {
   };
 
   // Handle copy content to clipboard
-  const handleCopyContent = async (content: string, contentType: "content1" | "content2") => {
+  const handleCopyContent = async (content: string, contentType: "content1" | "content2", noteId: string) => {
     try {
+      // Add flash effect
+      const flashKey = `${noteId}-${contentType}`;
+      setFlashingNotes(prev => new Set(prev).add(flashKey));
+      
       // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(content);
         console.log(`${contentType} copied to clipboard: ${content}`);
-        return;
-      }
-      
-      // Fallback for mobile/older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = content;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      if (successful) {
-        console.log(`${contentType} copied to clipboard: ${content}`);
       } else {
-        throw new Error('Copy command was unsuccessful');
+        // Fallback for mobile/older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = content;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+          console.log(`${contentType} copied to clipboard: ${content}`);
+        } else {
+          throw new Error('Copy command was unsuccessful');
+        }
       }
+      
+      // Remove flash effect after animation
+      setTimeout(() => {
+        setFlashingNotes(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(flashKey);
+          return newSet;
+        });
+      }, 200); // Match the animation duration
+      
     } catch (err) {
       console.error('Failed to copy to clipboard:', err);
-      // Could show a toast notification here instead
+      // Remove flash effect on error too
+      const flashKey = `${noteId}-${contentType}`;
+      setFlashingNotes(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(flashKey);
+        return newSet;
+      });
     }
   };
 
@@ -223,8 +243,10 @@ export default function NotesList() {
             <div className="card-body p-4">
               {/* Content 1 - Top half */}
               <div 
-                className="mb-3 pb-3 border-b border-base-300 cursor-pointer hover:bg-base-200 rounded-md p-2 transition-colors"
-                onClick={() => handleCopyContent(note.content1, "content1")}
+                className={`mb-3 pb-3 border-b border-base-300 cursor-pointer rounded-md p-2 transition-all duration-100 ${
+                  flashingNotes.has(`${note.id}-content1`) ? 'bg-amber-100 animate-pulse' : ''
+                }`}
+                onClick={() => handleCopyContent(note.content1, "content1", note.id)}
                 title="Click to copy content 1"
               >
                 <div className="text-base leading-relaxed pr-8">{note.content1}</div>
@@ -232,8 +254,10 @@ export default function NotesList() {
               
               {/* Content 2 - Bottom half */}
               <div 
-                className="cursor-pointer hover:bg-base-200 rounded-md p-2 transition-colors"
-                onClick={() => handleCopyContent(note.content2, "content2")}
+                className={`cursor-pointer rounded-md p-2 transition-all duration-100 ${
+                  flashingNotes.has(`${note.id}-content2`) ? 'bg-amber-100 animate-pulse' : ''
+                }`}
+                onClick={() => handleCopyContent(note.content2, "content2", note.id)}
                 title="Click to copy content 2"
               >
                 <div className="text-base leading-relaxed pr-8">{note.content2}</div>
