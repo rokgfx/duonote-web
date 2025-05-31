@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { collection, query, where, orderBy, onSnapshot, limit, startAfter, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 
@@ -12,11 +12,70 @@ interface Note {
   userId: string;
 }
 
+const NOTES_PER_PAGE = 25;
+
 export default function NotesList() {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+  const [displayedNotes, setDisplayedNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
   const [user] = useAuthState(auth!);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  // Load more notes from the cached data
+  const loadMoreNotes = useCallback(() => {
+    if (!hasMore || loadingMore) return;
+
+    setLoadingMore(true);
+    
+    const nextPage = currentPage + 1;
+    const startIndex = nextPage * NOTES_PER_PAGE;
+    const endIndex = startIndex + NOTES_PER_PAGE;
+    
+    const newNotes = allNotes.slice(startIndex, endIndex);
+    
+    if (newNotes.length === 0) {
+      setHasMore(false);
+    } else {
+      setDisplayedNotes(prev => [...prev, ...newNotes]);
+      setCurrentPage(nextPage);
+      
+      // Check if there are more notes to load
+      if (endIndex >= allNotes.length) {
+        setHasMore(false);
+      }
+    }
+    
+    setLoadingMore(false);
+  }, [allNotes, currentPage, hasMore, loadingMore]);
+
+  // Set up intersection observer for infinite scroll
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore) {
+          loadMoreNotes();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loadMoreRef.current) {
+      observerRef.current.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [hasMore, loadingMore, loadMoreNotes]);
 
   useEffect(() => {
     if (!user || !db) {
@@ -32,7 +91,7 @@ export default function NotesList() {
         orderBy("createdAt", "desc")
       );
 
-      // Listen for real-time updates
+      // Listen for real-time updates - this gets ALL notes
       const unsubscribe = onSnapshot(
         notesQuery,
         (snapshot) => {
@@ -41,7 +100,14 @@ export default function NotesList() {
             ...doc.data()
           })) as Note[];
           
-          setNotes(notesData);
+          // Store all notes
+          setAllNotes(notesData);
+          
+          // Reset pagination and show first page
+          const firstPageNotes = notesData.slice(0, NOTES_PER_PAGE);
+          setDisplayedNotes(firstPageNotes);
+          setCurrentPage(0);
+          setHasMore(notesData.length > NOTES_PER_PAGE);
           setLoading(false);
         },
         (err) => {
@@ -75,7 +141,7 @@ export default function NotesList() {
     );
   }
 
-  if (notes.length === 0) {
+  if (allNotes.length === 0 && !loading) {
     return (
       <div className="text-center py-12">
         <p className="text-base-content/60 text-lg">No notes yet</p>
@@ -88,7 +154,7 @@ export default function NotesList() {
 
   return (
     <div className="space-y-4 pb-4">
-      {notes.map((note) => (
+      {displayedNotes.map((note) => (
         <div key={note.id} className="card bg-base-100 shadow-md">
           <div className="card-body p-4">
             {/* Content 1 - Top half */}
@@ -103,6 +169,28 @@ export default function NotesList() {
           </div>
         </div>
       ))}
+      
+      {/* Infinite scroll trigger */}
+      {hasMore && (
+        <div ref={loadMoreRef} className="flex justify-center py-8">
+          {loadingMore ? (
+            <span className="loading loading-spinner loading-lg"></span>
+          ) : (
+            <div className="text-base-content/40 text-sm">
+              Scroll down to load more notes...
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* End of list indicator */}
+      {!hasMore && displayedNotes.length > 0 && (
+        <div className="text-center py-8">
+          <p className="text-base-content/40 text-sm">
+            You've reached the end of your notes
+          </p>
+        </div>
+      )}
     </div>
   );
 }
