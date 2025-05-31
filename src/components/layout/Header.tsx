@@ -4,6 +4,7 @@ import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon } from "@heroicons/re
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
+import SearchInput from "@/components/ui/SearchInput";
 
 export default function Header() {
   const router = useRouter();
@@ -58,20 +59,17 @@ export default function Header() {
       </div>
       
       <div className="navbar-center hidden md:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <button className="btn btn-ghost" onClick={openAddNoteModal}>
-              <PlusIcon className="h-5 w-5" />
-              Add Note
-            </button>
-          </li>
-          <li>
-            <button className="btn btn-ghost">
-              <MagnifyingGlassIcon className="h-5 w-5" />
-              Search
-            </button>
-          </li>
-        </ul>
+        <div className="flex items-center gap-4">
+          <SearchInput className="w-80" />
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <button className="btn btn-ghost" onClick={openAddNoteModal}>
+                <PlusIcon className="h-5 w-5" />
+                Add Note
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       
       <div className="navbar-end">
