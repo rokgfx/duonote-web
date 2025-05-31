@@ -76,7 +76,7 @@ export default function ProfilePage({ onBackToNotes }: ProfilePageProps) {
                 <input 
                   type="text" 
                   placeholder="Enter your display name" 
-                  className="input input-bordered w-full"
+                  className="input w-full bg-zinc-100 border-solid border-zinc-300"
                   defaultValue={user?.displayName || ""}
                 />
               </div>
@@ -88,7 +88,7 @@ export default function ProfilePage({ onBackToNotes }: ProfilePageProps) {
                 </label>
                 <input 
                   type="email" 
-                  className="input input-bordered w-full bg-base-200" 
+                  className="input w-full bg-zinc-100 border-solid border-zinc-300" 
                   value={user?.email || ""}
                   disabled
                 />

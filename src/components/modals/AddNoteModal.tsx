@@ -289,7 +289,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               <span className="label-text">{language1}</span>
             </label>
             <textarea
-              className="textarea border-none rounded-lg bg-zinc-100 w-full h-24 resize-none"
+              className="textarea bg-zinc-100 border-solid border-zinc-300 rounded-lg w-full h-24 resize-none"
               rows={3}
               value={content1}
               onChange={handleContent1Change}
@@ -304,7 +304,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               <span className="label-text">{language2}</span>
             </label>
             <textarea
-              className="textarea border-none rounded-lg bg-zinc-100 w-full h-24 resize-none"
+              className="textarea bg-zinc-100 border-solid border-zinc-300 rounded-lg w-full h-24 resize-none"
               rows={3}
               value={content2}
               onChange={handleContent2Change}

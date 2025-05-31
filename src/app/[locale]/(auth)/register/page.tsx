@@ -63,7 +63,7 @@ export default function RegisterPage() {
             <input
               id="email"
               type="email"
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 bg-zinc-100 border-solid border-zinc-300 rounded"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -77,7 +77,7 @@ export default function RegisterPage() {
             <input
               id="password"
               type="password"
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 bg-zinc-100 border-solid border-zinc-300 rounded"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required

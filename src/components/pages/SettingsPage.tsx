@@ -76,7 +76,7 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
                   <span className="label-text">Default notebook</span>
                 </label>
                 <select 
-                  className="select select-bordered w-full max-w-xs"
+                  className="select w-full max-w-xs bg-zinc-100 border-solid border-zinc-300"
                   value={currentNotebook?.id || ''}
                   onChange={(e) => handleDefaultNotebookChange(e.target.value)}
                 >

@@ -424,7 +424,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <input
                           type="text"
                           placeholder="What do you want to call this notebook?"
-                          className="input input-bordered w-full"
+                          className="input w-full bg-zinc-100 border-solid border-zinc-300"
                           value={formData.name}
                           onChange={handleNotebookNameChange}
                           autoFocus
@@ -442,7 +442,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           {/* Language 1 */}
                           <div className="space-y-1">
                             <select
-                              className="select select-bordered w-full"
+                              className="select w-full bg-zinc-100 border-solid border-zinc-300"
                               value={language1}
                               onChange={(e) => handleLanguage1Change(e.target.value)}
                             >
@@ -454,7 +454,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                               <input
                                 type="text"
                                 placeholder="Enter language"
-                                className="input input-bordered w-full"
+                                className="input w-full bg-zinc-100 border-solid border-zinc-300"
                                 value={customLanguage1}
                                 onChange={(e) => setCustomLanguage1(e.target.value)}
                               />
@@ -469,7 +469,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           {/* Language 2 */}
                           <div className="space-y-1">
                             <select
-                              className="select select-bordered w-full"
+                              className="select w-full bg-zinc-100 border-solid border-zinc-300"
                               value={language2}
                               onChange={(e) => handleLanguage2Change(e.target.value)}
                             >
@@ -481,7 +481,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                               <input
                                 type="text"
                                 placeholder="Enter language"
-                                className="input input-bordered w-full"
+                                className="input w-full bg-zinc-100 border-solid border-zinc-300"
                                 value={customLanguage2}
                                 onChange={(e) => setCustomLanguage2(e.target.value)}
                               />
