@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, serverTimestamp, Timestamp, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, Timestamp, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
@@ -175,6 +175,45 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
     }
   };
 
+  const handleDelete = async () => {
+    if (!editNote || !db) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const noteRef = doc(db, "notes", editNote.id);
+
+      if (!isOnline) {
+        // In offline mode, delete with timeout to avoid hanging
+        const deletePromise = deleteDoc(noteRef);
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("Offline delete timeout")), 2000);
+        });
+        
+        try {
+          await Promise.race([deletePromise, timeoutPromise]);
+        } catch (timeoutError) {
+          console.log("Delete operation timed out (expected in offline mode) - data cached locally");
+        }
+      } else {
+        await deleteDoc(noteRef);
+      }
+
+      console.log(isOnline ? "Note deleted" : "Note deleted locally - will sync when online");
+      
+      // Close modal after successful delete
+      onSave(); // Trigger any refresh logic
+      onClose();
+      
+    } catch (err) {
+      console.error("Error deleting note:", err);
+      setError(`Failed to delete note${!isOnline ? ' (offline)' : ''}. Please try again.`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <dialog className={`modal ${isOpen ? 'modal-open' : ''}`}>
       <div className="modal-box">
@@ -217,6 +256,27 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           </div>
         </div>
         <div className="modal-action">
+          {/* Delete button - only show when editing */}
+          {isEditing && (
+            <button 
+              className="btn btn-error mr-auto" 
+              onClick={handleDelete}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  {isOnline ? "Deleting..." : "Deleting offline..."}
+                </>
+              ) : (
+                <>
+                  Delete{!isOnline && " (offline)"}
+                </>
+              )}
+            </button>
+          )}
+          
+          {/* Update/Save button */}
           <button 
             className="btn btn-primary" 
             onClick={handleSave}
@@ -236,6 +296,8 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               </>
             )}
           </button>
+          
+          {/* Cancel button */}
           <button 
             className="btn" 
             onClick={onClose}
