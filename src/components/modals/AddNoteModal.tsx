@@ -32,7 +32,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
   const isOnline = useNetworkStatus();
   const { currentNotebook, notebooks } = useNotebooks();
 
-  const MAX_CHARS = 150;
+  const MAX_CHARS = 200;
   const isEditing = !!editNote;
 
   // Predefined colors array (same as NotebookPage)

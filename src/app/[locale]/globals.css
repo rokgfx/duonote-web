@@ -40,3 +40,15 @@ body {
   box-shadow: none !important;
 }
 
+/* Global form label styling */
+.label .label-text {
+  font-size: 1rem !important; /* Base font size (16px) */
+  margin-bottom: 0.25rem !important; /* Slight margin bottom (4px) */
+}
+
+/* Also apply to standalone labels in forms */
+form label {
+  font-size: 1rem !important;
+  margin-bottom: 0.25rem !important;
+}
+

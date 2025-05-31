@@ -420,9 +420,6 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                       <div className="form-control">
                         <label className="label">
                           <span className="label-text">Notebook name</span>
-                          <span className="label-text-alt text-sm">
-                            {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
-                          </span>
                         </label>
                         <input
                           type="text"
@@ -433,6 +430,9 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           autoFocus
                           required
                         />
+                        <div className="text-xs text-base-content/60 text-right mt-1">
+                          {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
+                        </div>
                       </div>
                       
                       {/* Language pair selection */}
