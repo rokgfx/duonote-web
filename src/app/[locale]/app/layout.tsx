@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -43,9 +44,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen flex justify-center">
+      <main className="pt-20 pb-16 sm:pb-16 md:pb-0 min-h-screen flex justify-center bg-red-200">
         {children}
       </main>
+      <Footer />
     </>
   );
 }

@@ -57,7 +57,7 @@ export default function Header() {
         <a className="btn btn-ghost text-xl">Duonote</a>
       </div>
       
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden md:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
             <button className="btn btn-ghost" onClick={openAddNoteModal}>
