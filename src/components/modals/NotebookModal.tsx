@@ -19,20 +19,33 @@ const predefinedColors = [
   '#3b82f6', // blue
   '#8b5cf6', // violet
   '#ec4899', // pink
+  '#6366f1', // indigo
+  '#10b981', // emerald
 ];
 
-const languagePairs = [
-  'English ↔ Japanese',
-  'English ↔ Spanish', 
-  'English ↔ French',
-  'English ↔ German',
-  'English ↔ Italian',
-  'English ↔ Portuguese',
-  'English ↔ Chinese',
-  'English ↔ Korean',
-  'Japanese ↔ Korean',
+const commonLanguages = [
+  'English',
+  'Spanish', 
+  'French',
+  'German',
+  'Italian',
+  'Portuguese',
+  'Chinese (Mandarin)',
+  'Japanese',
+  'Korean',
+  'Arabic',
+  'Russian',
+  'Hindi',
+  'Dutch',
+  'Swedish',
+  'Norwegian',
+  'Polish',
+  'Thai',
+  'Vietnamese',
   'Other'
 ];
+
+const MAX_NOTEBOOKS = 10;
 
 export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = false }: NotebookModalProps) {
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, deleteNotebook, loading, error } = useNotebooks();
@@ -41,8 +54,14 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
     name: '',
     description: '',
     color: predefinedColors[0],
-    languagePair: languagePairs[0]
+    languagePair: ''
   });
+  const [language1, setLanguage1] = useState(commonLanguages[0]);
+  const [language2, setLanguage2] = useState(commonLanguages[1]);
+  const [customLanguage1, setCustomLanguage1] = useState('');
+  const [customLanguage2, setCustomLanguage2] = useState('');
+  const [showCustom1, setShowCustom1] = useState(false);
+  const [showCustom2, setShowCustom2] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Reset form when modal opens/closes
@@ -53,15 +72,64 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
         name: '',
         description: '',
         color: predefinedColors[0],
-        languagePair: languagePairs[0]
+        languagePair: ''
       });
+      setLanguage1(commonLanguages[0]);
+      setLanguage2(commonLanguages[1]);
+      setCustomLanguage1('');
+      setCustomLanguage2('');
+      setShowCustom1(false);
+      setShowCustom2(false);
     }
   }, [isOpen]);
+
+  // Update language pair when individual languages change
+  useEffect(() => {
+    const lang1 = language1 === 'Other' ? customLanguage1 : language1;
+    const lang2 = language2 === 'Other' ? customLanguage2 : language2;
+    
+    if (lang1 && lang2) {
+      setFormData(prev => ({ ...prev, languagePair: `${lang1} ↔ ${lang2}` }));
+    }
+  }, [language1, language2, customLanguage1, customLanguage2]);
+
+  const handleLanguage1Change = (value: string) => {
+    setLanguage1(value);
+    setShowCustom1(value === 'Other');
+    if (value !== 'Other') {
+      setCustomLanguage1('');
+    }
+  };
+
+  const handleLanguage2Change = (value: string) => {
+    setLanguage2(value);
+    setShowCustom2(value === 'Other');
+    if (value !== 'Other') {
+      setCustomLanguage2('');
+    }
+  };
 
   const handleCreateNotebook = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name.trim()) {
+      return;
+    }
+
+    // Check notebook limit
+    if (notebooks.length >= MAX_NOTEBOOKS) {
+      alert(`You can only create up to ${MAX_NOTEBOOKS} notebooks. Please delete an existing notebook first.`);
+      return;
+    }
+
+    // Validate custom language inputs if "Other" is selected
+    if (language1 === 'Other' && !customLanguage1.trim()) {
+      alert('Please enter the first language name');
+      return;
+    }
+    
+    if (language2 === 'Other' && !customLanguage2.trim()) {
+      alert('Please enter the second language name');
       return;
     }
 
@@ -74,8 +142,14 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
         name: '',
         description: '',
         color: predefinedColors[0],
-        languagePair: languagePairs[0]
+        languagePair: ''
       });
+      setLanguage1(commonLanguages[0]);
+      setLanguage2(commonLanguages[1]);
+      setCustomLanguage1('');
+      setCustomLanguage2('');
+      setShowCustom1(false);
+      setShowCustom2(false);
     } catch (err) {
       console.error('Failed to create notebook:', err);
     } finally {
@@ -105,7 +179,12 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
   return (
     <dialog className={`modal ${isOpen ? 'modal-open' : ''}`}>
       <div className="modal-box max-w-md">
-        <h3 className="font-bold text-lg mb-4">Notebooks</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold text-lg">Notebooks</h3>
+          <div className="text-sm text-base-content/60">
+            {notebooks.length}/{MAX_NOTEBOOKS}
+          </div>
+        </div>
         
         {error && (
           <div className="alert alert-error mb-4">
@@ -183,13 +262,22 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
 
             {/* Create New Notebook */}
             {!showCreateForm ? (
-              <button
-                className="btn btn-outline btn-block"
-                onClick={() => setShowCreateForm(true)}
-              >
-                <PlusIcon className="h-4 w-4" />
-                Create New Notebook
-              </button>
+              <div>
+                <button
+                  className="btn btn-outline btn-block"
+                  onClick={() => setShowCreateForm(true)}
+                  disabled={notebooks.length >= MAX_NOTEBOOKS}
+                  title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
+                >
+                  <PlusIcon className="h-4 w-4" />
+                  Create New Notebook
+                </button>
+                {notebooks.length >= MAX_NOTEBOOKS && (
+                  <div className="text-xs text-warning mt-2 text-center">
+                    Maximum {MAX_NOTEBOOKS} notebooks reached. Delete a notebook to create a new one.
+                  </div>
+                )}
+              </div>
             ) : (
               <form onSubmit={handleCreateNotebook} className="card bg-base-200 border border-dashed border-base-400">
                 <div className="card-body p-4 space-y-3">
@@ -205,16 +293,59 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                     />
                   </div>
                   
+                  {/* Language pair selection */}
                   <div className="form-control">
-                    <select
-                      className="select select-bordered select-sm"
-                      value={formData.languagePair}
-                      onChange={(e) => setFormData(prev => ({ ...prev, languagePair: e.target.value }))}
-                    >
-                      {languagePairs.map(pair => (
-                        <option key={pair} value={pair}>{pair}</option>
-                      ))}
-                    </select>
+                    <label className="label label-text text-xs">Language Pair</label>
+                    <div className="grid grid-cols-3 gap-2 items-center">
+                      {/* Language 1 */}
+                      <div className="space-y-1">
+                        <select
+                          className="select select-bordered select-sm w-full"
+                          value={language1}
+                          onChange={(e) => handleLanguage1Change(e.target.value)}
+                        >
+                          {commonLanguages.map(lang => (
+                            <option key={lang} value={lang}>{lang}</option>
+                          ))}
+                        </select>
+                        {showCustom1 && (
+                          <input
+                            type="text"
+                            placeholder="Enter language"
+                            className="input input-bordered input-sm w-full"
+                            value={customLanguage1}
+                            onChange={(e) => setCustomLanguage1(e.target.value)}
+                          />
+                        )}
+                      </div>
+                      
+                      {/* Arrow */}
+                      <div className="text-center">
+                        <span className="text-base-content/60">↔</span>
+                      </div>
+                      
+                      {/* Language 2 */}
+                      <div className="space-y-1">
+                        <select
+                          className="select select-bordered select-sm w-full"
+                          value={language2}
+                          onChange={(e) => handleLanguage2Change(e.target.value)}
+                        >
+                          {commonLanguages.map(lang => (
+                            <option key={lang} value={lang}>{lang}</option>
+                          ))}
+                        </select>
+                        {showCustom2 && (
+                          <input
+                            type="text"
+                            placeholder="Enter language"
+                            className="input input-bordered input-sm w-full"
+                            value={customLanguage2}
+                            onChange={(e) => setCustomLanguage2(e.target.value)}
+                          />
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   <div className="form-control">
