@@ -1,17 +1,26 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, serverTimestamp, Timestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, Timestamp, doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+
+interface Note {
+  id: string;
+  content1: string;
+  content2: string;
+  createdAt: any;
+  userId: string;
+}
 
 interface AddNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: () => void;
+  editNote?: Note | null; // Optional note to edit
 }
 
-export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalProps) {
+export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddNoteModalProps) {
   const [content1, setContent1] = useState("");
   const [content2, setContent2] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,16 +29,29 @@ export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalPr
   const isOnline = useNetworkStatus();
 
   const MAX_CHARS = 150;
+  const isEditing = !!editNote;
 
-  // Reset form when modal is closed
+  // Reset form when modal is closed or populate when editing
   useEffect(() => {
     if (!isOpen) {
       setContent1("");
       setContent2("");
       setError("");
       setLoading(false);
+    } else if (editNote) {
+      // Populate form with existing note data when editing
+      setContent1(editNote.content1);
+      setContent2(editNote.content2);
+      setError("");
+      setLoading(false);
+    } else {
+      // Clear form for new note
+      setContent1("");
+      setContent2("");
+      setError("");
+      setLoading(false);
     }
-  }, [isOpen]);
+  }, [isOpen, editNote]);
 
   // Count characters properly handling multibyte characters
   const getCharacterCount = (text: string) => {
@@ -80,38 +102,62 @@ export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalPr
     setLoading(true);
 
     try {
-      // Use different timestamps based on online/offline status
       const timestamp = isOnline ? serverTimestamp() : Timestamp.now();
-      
-      // Create the note document
-      const noteData = {
-        userId: user.uid,
-        content1: content1.trim(),
-        content2: content2.trim(),
-        createdAt: timestamp,
-        updatedAt: timestamp,
-        createdOffline: !isOnline,
-      };
 
-      if (!isOnline) {
-        // In offline mode, add with timeout to avoid hanging
-        const addDocPromise = addDoc(collection(db, "notes"), noteData);
-        
-        // Create a timeout promise
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error("Offline save timeout")), 2000);
-        });
-        
-        // Race between the addDoc and timeout
-        try {
-          await Promise.race([addDocPromise, timeoutPromise]);
-        } catch (timeoutError) {
-          // If it times out, that's OK in offline mode - it's likely saved locally
-          console.log("Save operation timed out (expected in offline mode) - data cached locally");
+      if (isEditing && editNote) {
+        // Update existing note
+        const noteRef = doc(db, "notes", editNote.id);
+        const updateData = {
+          content1: content1.trim(),
+          content2: content2.trim(),
+          updatedAt: timestamp,
+        };
+
+        if (!isOnline) {
+          // In offline mode, update with timeout to avoid hanging
+          const updatePromise = updateDoc(noteRef, updateData);
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("Offline update timeout")), 2000);
+          });
+          
+          try {
+            await Promise.race([updatePromise, timeoutPromise]);
+          } catch (timeoutError) {
+            console.log("Update operation timed out (expected in offline mode) - data cached locally");
+          }
+        } else {
+          await updateDoc(noteRef, updateData);
         }
+
+        console.log(isOnline ? "Note updated" : "Note updated locally - will sync when online");
       } else {
-        // Online mode - normal operation
-        await addDoc(collection(db, "notes"), noteData);
+        // Create new note
+        const noteData = {
+          userId: user.uid,
+          content1: content1.trim(),
+          content2: content2.trim(),
+          createdAt: timestamp,
+          updatedAt: timestamp,
+          createdOffline: !isOnline,
+        };
+
+        if (!isOnline) {
+          // In offline mode, add with timeout to avoid hanging
+          const addDocPromise = addDoc(collection(db, "notes"), noteData);
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("Offline save timeout")), 2000);
+          });
+          
+          try {
+            await Promise.race([addDocPromise, timeoutPromise]);
+          } catch (timeoutError) {
+            console.log("Save operation timed out (expected in offline mode) - data cached locally");
+          }
+        } else {
+          await addDoc(collection(db, "notes"), noteData);
+        }
+
+        console.log(isOnline ? "Note created" : "Note created locally - will sync when online");
       }
 
       // Reset form and close modal
@@ -121,14 +167,9 @@ export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalPr
       onSave();
       onClose();
       
-      if (isOnline) {
-        console.log("Note saved to Firestore");
-      } else {
-        console.log("Note saved locally - will sync when online");
-      }
     } catch (err) {
-      console.error("Error saving note:", err);
-      setError(`Failed to save note${!isOnline ? ' (offline)' : ''}. Please try again.`);
+      console.error(`Error ${isEditing ? 'updating' : 'saving'} note:`, err);
+      setError(`Failed to ${isEditing ? 'update' : 'save'} note${!isOnline ? ' (offline)' : ''}. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -137,7 +178,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalPr
   return (
     <dialog className={`modal ${isOpen ? 'modal-open' : ''}`}>
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Add New Note</h3>
+        <h3 className="font-bold text-lg">{isEditing ? 'Edit Note' : 'Add New Note'}</h3>
         <div className="py-4 space-y-4">
           {error && (
             <div className="alert alert-error">
@@ -184,11 +225,14 @@ export default function AddNoteModal({ isOpen, onClose, onSave }: AddNoteModalPr
             {loading ? (
               <>
                 <span className="loading loading-spinner loading-sm"></span>
-                {isOnline ? "Saving..." : "Saving offline..."}
+                {isEditing 
+                  ? (isOnline ? "Updating..." : "Updating offline...") 
+                  : (isOnline ? "Saving..." : "Saving offline...")
+                }
               </>
             ) : (
               <>
-                Save{!isOnline && " (offline)"}
+                {isEditing ? "Update" : "Save"}{!isOnline && " (offline)"}
               </>
             )}
           </button>

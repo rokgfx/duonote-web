@@ -3,6 +3,8 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { collection, query, where, orderBy, onSnapshot, limit, startAfter, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
+import { PencilIcon } from "@heroicons/react/24/outline";
+import AddNoteModal from "@/components/modals/AddNoteModal";
 
 interface Note {
   id: string;
@@ -22,9 +24,27 @@ export default function NotesList() {
   const [error, setError] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [user] = useAuthState(auth!);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  // Handle edit note
+  const handleEditNote = (note: Note) => {
+    setEditingNote(note);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingNote(null);
+  };
+
+  const handleSaveEdit = () => {
+    // Modal will handle the actual save operation
+    // This callback is for any additional actions after save
+  };
 
   // Load more notes from the cached data
   const loadMoreNotes = useCallback(() => {
@@ -153,22 +173,32 @@ export default function NotesList() {
   }
 
   return (
-    <div className="space-y-4 pb-4">
-      {displayedNotes.map((note) => (
-        <div key={note.id} className="card bg-base-100 shadow-md">
-          <div className="card-body p-4">
-            {/* Content 1 - Top half */}
-            <div className="mb-3 pb-3 border-b border-base-300">
-              <div className="text-base leading-relaxed">{note.content1}</div>
-            </div>
+    <>
+      <div className="space-y-4 pb-4">
+        {displayedNotes.map((note) => (
+          <div key={note.id} className="card bg-base-100 shadow-md relative">
+            {/* Edit button */}
+            <button
+              onClick={() => handleEditNote(note)}
+              className="btn btn-ghost btn-sm btn-circle absolute top-2 right-2 opacity-60 hover:opacity-100"
+              title="Edit note"
+            >
+              <PencilIcon className="h-4 w-4" />
+            </button>
             
-            {/* Content 2 - Bottom half */}
-            <div>
-              <div className="text-base leading-relaxed">{note.content2}</div>
+            <div className="card-body p-4">
+              {/* Content 1 - Top half */}
+              <div className="mb-3 pb-3 border-b border-base-300">
+                <div className="text-base leading-relaxed pr-8">{note.content1}</div>
+              </div>
+              
+              {/* Content 2 - Bottom half */}
+              <div>
+                <div className="text-base leading-relaxed pr-8">{note.content2}</div>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
       
       {/* Infinite scroll trigger */}
       {hasMore && (
@@ -191,6 +221,15 @@ export default function NotesList() {
           </p>
         </div>
       )}
-    </div>
+      </div>
+
+      {/* Edit Note Modal */}
+      <AddNoteModal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveEdit}
+        editNote={editingNote}
+      />
+    </>
   );
 }
