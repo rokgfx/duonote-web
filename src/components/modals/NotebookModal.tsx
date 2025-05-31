@@ -245,7 +245,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div 
-                          className="w-4 h-4 rounded-full" 
+                          className="w-6 h-6 rounded-full" 
                           style={{ backgroundColor: notebook.color || predefinedColors[0] }}
                         ></div>
                         <div className="flex-1">
@@ -378,7 +378,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                         <button
                           key={color}
                           type="button"
-                          className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer rounded-full border-2 ${
+                          className={`h-6 w-6 cursor-pointer rounded-full border-2 ${
                             formData.color === color ? 'border-base-content' : 'border-base-300'
                           }`}
                           style={{ backgroundColor: color }}
