@@ -3,13 +3,16 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/lib/firebase";
 import NotesList from "@/components/notes/NotesList";
+import SettingsPage from "@/components/pages/SettingsPage";
 import { generateDummyNotes } from "@/utils/generateDummyNotes";
 import { useSearchContext } from "@/contexts/SearchContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 export default function MainPage() {
   const [user] = useAuthState(auth!);
   const [generating, setGenerating] = useState(false);
   const { searchQuery } = useSearchContext();
+  const { currentPage, goToNotes } = useNavigation();
 
   const handleGenerateDummyNotes = async () => {
     if (!user) return;
@@ -24,6 +27,11 @@ export default function MainPage() {
       setGenerating(false);
     }
   };
+
+  // Render different pages based on current navigation state
+  if (currentPage === 'settings') {
+    return <SettingsPage onBackToNotes={goToNotes} />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-2xl">

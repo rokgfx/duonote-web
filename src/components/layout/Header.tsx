@@ -7,11 +7,13 @@ import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
 import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
   const isOnline = useNetworkStatus();
+  const { goToSettings } = useNavigation();
 
   const handleLogout = async () => {
     if (!auth) return;
@@ -84,7 +86,7 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li><a>Profile</a></li>
-              <li><a>Settings</a></li>
+              <li><button onClick={goToSettings}>Settings</button></li>
               <li><button onClick={handleLogout}>Logout</button></li>
             </ul>
           </div>
