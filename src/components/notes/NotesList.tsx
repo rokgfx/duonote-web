@@ -6,6 +6,7 @@ import { auth, db } from "@/app/lib/firebase";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useSearch } from "@/hooks/useSearch";
+import HighlightedText from "@/components/ui/HighlightedText";
 
 interface Note {
   id: string;
@@ -287,7 +288,13 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
                 onClick={() => handleCopyContent(note.content1, "content1", note.id)}
                 title="Click to copy content 1"
               >
-                <div className="text-base leading-relaxed pr-8">{note.content1}</div>
+                <div className="text-base leading-relaxed pr-8">
+                  {isSearching ? (
+                    <HighlightedText text={note.content1} searchQuery={searchQuery} />
+                  ) : (
+                    note.content1
+                  )}
+                </div>
               </div>
               
               {/* Content 2 - Bottom half */}
@@ -298,7 +305,13 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
                 onClick={() => handleCopyContent(note.content2, "content2", note.id)}
                 title="Click to copy content 2"
               >
-                <div className="text-base leading-relaxed pr-8">{note.content2}</div>
+                <div className="text-base leading-relaxed pr-8">
+                  {isSearching ? (
+                    <HighlightedText text={note.content2} searchQuery={searchQuery} />
+                  ) : (
+                    note.content2
+                  )}
+                </div>
               </div>
             </div>
           </div>
