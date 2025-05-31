@@ -35,6 +35,20 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
   const MAX_CHARS = 150;
   const isEditing = !!editNote;
 
+  // Predefined colors array (same as NotebookPage)
+  const predefinedColors = [
+    '#E74C3C', // red
+    '#F39C12', // orange  
+    '#F7DC6F', // yellow
+    '#58D68D', // green
+    '#AFEEEE', // cyan
+    '#1E90FF', // blue
+    '#9370DB', // violet
+    '#FFC0CB', // pink
+    '#F8F8FF', // white
+    '#4d5052', // black
+  ];
+
   // Reset form when modal is closed or populate when editing
   useEffect(() => {
     if (!isOpen) {
@@ -78,6 +92,23 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
 
   const content1Count = getCharacterCount(content1);
   const content2Count = getCharacterCount(content2);
+
+  // Parse language pair to get individual languages
+  const getLanguageLabels = () => {
+    if (currentNotebook?.languagePair) {
+      const languages = currentNotebook.languagePair.split(' ↔ ');
+      return {
+        language1: languages[0] || 'Content 1',
+        language2: languages[1] || 'Content 2'
+      };
+    }
+    return {
+      language1: 'Content 1',
+      language2: 'Content 2'
+    };
+  };
+
+  const { language1, language2 } = getLanguageLabels();
 
   const handleSave = async () => {
     setError("");
@@ -231,12 +262,19 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
         
         {/* Show current notebook info when creating new notes */}
         {!isEditing && currentNotebook && (
-          <div className="alert alert-info">
-            <div className="text-sm">
-              <strong>Adding to:</strong> {currentNotebook.name}
-              {currentNotebook.languagePair && (
-                <span className="text-base-content/60"> ({currentNotebook.languagePair})</span>
-              )}
+          <div className="mb-4">
+            <div className="text-sm text-base-content/60 mb-2">Adding to:</div>
+            <div className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+              <div 
+                className="w-4 h-4 rounded-full" 
+                style={{ backgroundColor: currentNotebook.color || predefinedColors[0] }}
+              ></div>
+              <div className="flex-1">
+                <div className="font-medium">{currentNotebook.name}</div>
+                {currentNotebook.languagePair && (
+                  <div className="text-sm text-base-content/60">{currentNotebook.languagePair}</div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -249,10 +287,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           )}
           <div>
             <label className="label">
-              <span className="label-text">Content 1</span>
-              <span className="label-text-alt text-sm">
-                {content1Count}/{MAX_CHARS}
-              </span>
+              <span className="label-text">{language1}</span>
             </label>
             <textarea
               className="textarea textarea-bordered w-full h-24 resize-none"
@@ -261,13 +296,13 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               onChange={handleContent1Change}
               disabled={loading}
             ></textarea>
+            <div className="text-xs text-base-content/60 text-right mt-1">
+              {content1Count}/{MAX_CHARS}
+            </div>
           </div>
           <div>
             <label className="label">
-              <span className="label-text">Content 2</span>
-              <span className="label-text-alt text-sm">
-                {content2Count}/{MAX_CHARS}
-              </span>
+              <span className="label-text">{language2}</span>
             </label>
             <textarea
               className="textarea textarea-bordered w-full h-24 resize-none"
@@ -276,6 +311,9 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               onChange={handleContent2Change}
               disabled={loading}
             ></textarea>
+            <div className="text-xs text-base-content/60 text-right mt-1">
+              {content2Count}/{MAX_CHARS}
+            </div>
           </div>
         </div>
         <div className="modal-action">
