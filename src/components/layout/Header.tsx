@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
@@ -33,45 +33,36 @@ export default function Header() {
     closeAddNoteModal();
   };
 
+  const handleLogoClick = () => {
+    router.push("/");
+  };
+
   return (
     <header className="navbar bg-base-100 border-b fixed top-0 z-50 w-full">
       <div className="navbar-start">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li><a>Categories</a></li>
-            <li><a>Search</a></li>
-          </ul>
-        </div>
-        <a className="btn btn-ghost text-xl">Duonote</a>
+        {/* Logo icon - visible on all screen sizes */}
+        <button 
+          className="btn btn-ghost btn-circle"
+          onClick={handleLogoClick}
+          title="Go to Home"
+        >
+          <BookOpenIcon className="h-6 w-6" />
+        </button>
       </div>
       
-      <div className="navbar-center hidden md:flex">
-        <div className="flex items-center gap-4">
-          <SearchInput className="w-80" />
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <button className="btn btn-ghost" onClick={openAddNoteModal}>
-                <PlusIcon className="h-5 w-5" />
-                Add Note
-              </button>
-            </li>
-          </ul>
+      <div className="navbar-center flex-1 px-4">
+        <div className="flex items-center gap-2 w-full max-w-md">
+          {/* Search input - full width on small screens, limited on larger */}
+          <SearchInput className="flex-1 sm:w-full md:w-80" />
+          
+          {/* Add note button - just plus icon */}
+          <button 
+            className="btn btn-ghost btn-circle" 
+            onClick={openAddNoteModal}
+            title="Add Note"
+          >
+            <PlusIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
       
