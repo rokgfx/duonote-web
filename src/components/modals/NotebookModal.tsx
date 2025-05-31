@@ -279,8 +279,8 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                 )}
               </div>
             ) : (
-              <form onSubmit={handleCreateNotebook} className="card bg-base-200 border border-dashed border-base-400">
-                <div className="card-body p-4 space-y-3">
+              <form onSubmit={handleCreateNotebook} className="card bg-base-200 border-base-400">
+                <div className="card-body p-0 space-y-3">
                   <div className="form-control">
                     <input
                       type="text"
@@ -320,7 +320,7 @@ export default function NotebookModal({ isOpen, onClose, showFirstTimeMessage = 
                       </div>
                       
                       {/* Arrow */}
-                      <div className="text-center">
+                      <div className="text-center bg-red-200">
                         <span className="text-base-content/60">↔</span>
                       </div>
                       
