@@ -50,7 +50,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <NotebookProvider>
           <SearchProvider>
             <Header />
-            <main className="pt-20 pb-4 min-h-screen flex justify-center">
+            <main className="pt-20 pb-4 min-h-screen flex justify-center bg-base-200">
               {children}
             </main>
           </SearchProvider>
