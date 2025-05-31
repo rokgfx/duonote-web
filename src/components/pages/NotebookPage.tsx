@@ -239,35 +239,42 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-2xl">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={onBackToNotes}
-            className="btn btn-ghost btn-circle"
-            title="Back to Notes"
-          >
-            <ArrowLeftIcon className="h-5 w-5" />
-          </button>
-          <h1 className="text-2xl font-bold">Notebooks</h1>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <button 
+              onClick={onBackToNotes}
+              className="btn btn-ghost btn-circle"
+              title="Back to Notes"
+            >
+              <ArrowLeftIcon className="h-5 w-5" />
+            </button>
+            <h1 className="text-3xl font-bold text-base-content">Notebooks</h1>
+          </div>
+          <p className="text-base-content/60">
+            Organize your vocabulary by language pairs or topics
+          </p>
+          <div className="text-sm text-base-content/60 mt-1">
+            {notebooks.length}/{MAX_NOTEBOOKS} notebooks
+          </div>
         </div>
-        <div className="text-sm text-base-content/60">
-          {notebooks.length}/{MAX_NOTEBOOKS}
-        </div>
-      </div>
-      
-      {error && (
-        <div className="alert alert-error mb-4">
-          <span>{error}</span>
-        </div>
-      )}
 
-      {loading ? (
-        <div className="flex justify-center py-8">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      ) : (
-        <div className="space-y-4">
+        {/* Notebooks Content */}
+        <div className="card bg-base-100 shadow-md">
+          <div className="card-body">
+            {error && (
+              <div className="alert alert-error mb-4">
+                <span>{error}</span>
+              </div>
+            )}
+
+            {loading ? (
+              <div className="flex justify-center py-8">
+                <span className="loading loading-spinner loading-lg"></span>
+              </div>
+            ) : (
+              <div className="space-y-4">
           {/* First time user message */}
           {showFirstTimeMessage && notebooks.length === 0 && (
             <div className="alert alert-info">
@@ -463,9 +470,12 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                 </div>
               </div>
             </form>
-          )}
+              )}
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
