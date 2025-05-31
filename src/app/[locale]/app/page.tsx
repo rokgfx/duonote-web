@@ -18,14 +18,14 @@ export default function MainPage() {
   const [deletingNotebooks, setDeletingNotebooks] = useState(false);
   const { searchQuery } = useSearchContext();
   const { currentPage, goToNotes } = useNavigation();
-  const { notebooks } = useNotebooks();
+  const { notebooks, currentNotebook } = useNotebooks();
 
   const handleGenerateDummyNotes = async () => {
     if (!user) return;
     
     setGenerating(true);
     try {
-      await generateDummyNotes(user.uid, 25); // Generate 25 dummy notes
+      await generateDummyNotes(user.uid, 25, currentNotebook?.id); // Generate 25 dummy notes
       console.log("Dummy notes generated successfully!");
     } catch (error) {
       console.error("Failed to generate dummy notes:", error);

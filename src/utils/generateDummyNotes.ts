@@ -79,7 +79,7 @@ const dummyNotePairs = [
   { english: "I'm planning to take a vacation next month and visit some famous temples and shrines in Kyoto.", japanese: "来月休暇を取って、京都の有名な寺院や神社をいくつか訪れる予定です。" }
 ];
 
-export async function generateDummyNotes(userId: string, count: number = 20) {
+export async function generateDummyNotes(userId: string, count: number = 20, notebookId?: string) {
   if (!db) {
     throw new Error("Database not available");
   }
@@ -95,6 +95,7 @@ export async function generateDummyNotes(userId: string, count: number = 20) {
       userId,
       content1: randomPair.english,
       content2: randomPair.japanese,
+      notebookId: notebookId || null,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       createdOffline: false,
