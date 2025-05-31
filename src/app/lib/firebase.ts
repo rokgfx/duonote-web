@@ -2,7 +2,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, enableNetwork, disableNetwork, connectFirestoreEmulator, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -18,8 +18,49 @@ const firebaseConfig = {
 
 // Initialize Firebase (singleton pattern for Next.js hot reload)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const analytics = typeof window !== "undefined" ? getAnalytics(app) : undefined;
-const auth = typeof window !== "undefined" ? getAuth(app) : undefined;
-const db = typeof window !== "undefined" ? getFirestore(app) : undefined;
+
+// Initialize services only on client side
+let analytics: any = undefined;
+let auth: any = undefined;
+let db: any = undefined;
+
+if (typeof window !== "undefined") {
+  analytics = getAnalytics(app);
+  auth = getAuth(app);
+  
+  // Initialize Firestore with explicit persistence settings
+  db = initializeFirestore(app, {
+    localCache: persistentLocalCache({
+      tabManager: persistentMultipleTabManager()
+    })
+  });
+  
+  if (db) {
+    console.log("Firestore initialized with explicit offline persistence enabled");
+  }
+}
+
+// Utility functions for network management
+export const goOffline = async () => {
+  if (db) {
+    try {
+      await disableNetwork(db);
+      console.log("Firestore offline mode enabled");
+    } catch (error) {
+      console.error("Error enabling offline mode:", error);
+    }
+  }
+};
+
+export const goOnline = async () => {
+  if (db) {
+    try {
+      await enableNetwork(db);
+      console.log("Firestore online mode enabled");
+    } catch (error) {
+      console.error("Error enabling online mode:", error);
+    }
+  }
+};
 
 export { app, analytics, auth, db };

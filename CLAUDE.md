@@ -70,5 +70,15 @@ npm run lint
 - Path alias `@/*` maps to `./src/*`
 - Firebase config uses environment variables (not committed)
 - Turbopack enabled for fast development
+- **Offline-first architecture** with Firestore persistence enabled
+- **Network status monitoring** with offline indicator UI
 - End-to-end encryption planned for user notes
 - Service layer architecture planned for backend abstraction
+
+### Offline Capabilities
+
+- **Firestore persistence** enabled by default in v9+
+- **Offline writes** are cached locally and synced when online
+- **Network status detection** with `useNetworkStatus` hook
+- **Offline indicator** shows when app is disconnected
+- **Manual network control** via `goOffline()` and `goOnline()` functions
