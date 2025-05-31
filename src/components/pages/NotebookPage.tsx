@@ -288,28 +288,28 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
             >
               <ArrowLeftIcon className="h-5 w-5" />
             </button>
-            <h1 className="text-3xl font-bold text-base-content">
+            <h1 className="text-3xl font-bold">
               {isEditing ? "Edit Notebook" : (showCreateForm ? "Create Notebook" : "Notebooks")}
             </h1>
           </div>
-          <p className="text-base-content/60">
+          <p className="">
             {isFormOpen 
               ? (isEditing ? "Edit your notebook details" : "Create a new notebook to organize your vocabulary")
               : "Organize your vocabulary by language pairs or topics"
             }
           </p>
           {!isFormOpen && (
-            <div className="text-sm text-base-content/60 mt-1">
+            <div className="text-sm mt-1">
               {notebooks.length}/{MAX_NOTEBOOKS} notebooks
             </div>
           )}
         </div>
 
         {/* Notebooks Content */}
-        <div className="card bg-base-100 shadow-md">
+        <div className="card shadow-md">
           <div className="card-body">
             {error && (
-              <div className="alert alert-error mb-4">
+              <div className="alert mb-4">
                 <span>{error}</span>
               </div>
             )}
@@ -324,7 +324,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                   <>
                     {/* First time user message */}
                     {showFirstTimeMessage && notebooks.length === 0 && (
-                      <div className="alert alert-info">
+                      <div className="alert">
                         <div>
                           <h3 className="font-bold">Welcome to Duonote! 🎉</h3>
                           <div className="text-sm mt-1">
@@ -343,8 +343,8 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                       {notebooks.map((notebook) => (
                         <div 
                           key={notebook.id} 
-                          className={`card bg-base-100 border cursor-pointer transition-all ${
-                            currentNotebook?.id === notebook.id ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-base-400'
+                          className={`card border cursor-pointer transition-all ${
+                            currentNotebook?.id === notebook.id ? 'border-2' : 'hover:border-2'
                           }`}
                           onClick={() => handleSelectNotebook(notebook)}
                         >
@@ -358,13 +358,13 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                                 <div className="flex-1">
                                   <div className="font-medium">{notebook.name}</div>
                                   {notebook.languagePair && (
-                                    <div className="text-sm text-base-content/60">{notebook.languagePair}</div>
+                                    <div className="text-sm">{notebook.languagePair}</div>
                                   )}
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
                                 {currentNotebook?.id === notebook.id && (
-                                  <CheckIcon className="h-4 w-4 text-primary" />
+                                  <CheckIcon className="h-4 w-4" />
                                 )}
                                 <button
                                   className="btn btn-ghost btn-sm btn-circle"
@@ -387,7 +387,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                     <div className="space-y-2">
                       <div className="flex gap-2">
                         <button
-                          className="btn btn-primary flex-1 rounded-full"
+                          className="btn flex-1 rounded-full"
                           onClick={onBackToNotes}
                           disabled={!currentNotebook}
                           title={!currentNotebook ? "Select a notebook to view its notes" : `View notes in ${currentNotebook.name}`}
@@ -396,7 +396,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           View Notes
                         </button>
                         <button
-                          className="btn btn-outline flex-1 rounded-full"
+                          className="btn flex-1 rounded-full"
                           onClick={() => setShowCreateForm(true)}
                           disabled={notebooks.length >= MAX_NOTEBOOKS}
                           title={notebooks.length >= MAX_NOTEBOOKS ? `Maximum ${MAX_NOTEBOOKS} notebooks allowed` : "Create New Notebook"}
@@ -406,7 +406,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         </button>
                       </div>
                       {notebooks.length >= MAX_NOTEBOOKS && (
-                        <div className="text-xs text-warning mt-2 text-center">
+                        <div className="text-xs mt-2 text-center">
                           Maximum {MAX_NOTEBOOKS} notebooks reached. Delete a notebook to create a new one.
                         </div>
                       )}
@@ -424,13 +424,13 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <input
                           type="text"
                           placeholder="What do you want to call this notebook?"
-                          className="input rounded-full w-full bg-zinc-100 border-solid border-zinc-300"
+                          className="input rounded-full w-full"
                           value={formData.name}
                           onChange={handleNotebookNameChange}
                           autoFocus
                           required
                         />
-                        <div className="text-xs text-base-content/60 text-right mt-1">
+                        <div className="text-xs text-right mt-1">
                           {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
                         </div>
                       </div>
@@ -442,7 +442,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           {/* Language 1 */}
                           <div className="space-y-1">
                             <select
-                              className="select w-full bg-zinc-100 border-solid border-zinc-300 rounded-full"
+                              className="select w-full rounded-full"
                               value={language1}
                               onChange={(e) => handleLanguage1Change(e.target.value)}
                             >
@@ -454,7 +454,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                               <input
                                 type="text"
                                 placeholder="Enter language"
-                                className="input w-full bg-zinc-100 border-solid border-zinc-300 rounded-full"
+                                className="input w-full rounded-full"
                                 value={customLanguage1}
                                 onChange={(e) => setCustomLanguage1(e.target.value)}
                               />
@@ -463,13 +463,13 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           
                           {/* Arrow */}
                           <div className="flex justify-center items-center px-2">
-                            <span className="text-base-content/60">↔</span>
+                            <span className="">↔</span>
                           </div>
                           
                           {/* Language 2 */}
                           <div className="space-y-1">
                             <select
-                              className="select w-full bg-zinc-100 border-solid border-zinc-300 rounded-full"
+                              className="select w-full rounded-full"
                               value={language2}
                               onChange={(e) => handleLanguage2Change(e.target.value)}
                             >
@@ -481,7 +481,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                               <input
                                 type="text"
                                 placeholder="Enter language"
-                                className="input w-full bg-zinc-100 border-solid border-zinc-300 rounded-full"
+                                className="input w-full rounded-full"
                                 value={customLanguage2}
                                 onChange={(e) => setCustomLanguage2(e.target.value)}
                               />
@@ -498,7 +498,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                               key={color}
                               type="button"
                               className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer rounded-full border-2 ${
-                                formData.color === color ? 'border-base-content' : 'border-base-300'
+                                formData.color === color ? 'border-4' : ''
                               }`}
                               style={{ backgroundColor: color }}
                               onClick={() => setFormData(prev => ({ ...prev, color }))}
@@ -512,7 +512,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         {isEditing && editingNotebook ? (
                           <button
                             type="button"
-                            className="btn btn-error px-8 rounded-full"
+                            className="btn px-8 rounded-full"
                             onClick={() => handleDeleteNotebook(editingNotebook)}
                             disabled={isSubmitting}
                           >
@@ -527,7 +527,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            className="btn btn-ghost px-8 rounded-full"
+                            className="btn px-8 rounded-full"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
                             disabled={isSubmitting}
                           >
@@ -535,7 +535,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           </button>
                           <button
                             type="submit"
-                            className="btn btn-primary px-12 rounded-full"
+                            className="btn px-12 rounded-full"
                             disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                           >
                             {isSubmitting ? (
