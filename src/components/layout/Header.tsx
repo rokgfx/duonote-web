@@ -50,7 +50,6 @@ export default function Header() {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li><a>Notes</a></li>
             <li><a>Categories</a></li>
             <li><a>Search</a></li>
           </ul>
@@ -60,12 +59,6 @@ export default function Header() {
       
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <button className="btn btn-ghost">
-              <HomeIcon className="h-5 w-5" />
-              Notes
-            </button>
-          </li>
           <li>
             <button className="btn btn-ghost" onClick={openAddNoteModal}>
               <PlusIcon className="h-5 w-5" />
