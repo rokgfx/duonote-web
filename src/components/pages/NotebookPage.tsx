@@ -24,6 +24,7 @@ const predefinedColors = [
 ];
 
 const commonLanguages = [
+  'Select',
   'English',
   'Spanish', 
   'French',
@@ -58,8 +59,8 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
     color: predefinedColors[0],
     languagePair: ''
   });
-  const [language1, setLanguage1] = useState(commonLanguages[0]);
-  const [language2, setLanguage2] = useState(commonLanguages[1]);
+  const [language1, setLanguage1] = useState(commonLanguages[0]); // "Select"
+  const [language2, setLanguage2] = useState(commonLanguages[0]); // "Select"
   const [customLanguage1, setCustomLanguage1] = useState('');
   const [customLanguage2, setCustomLanguage2] = useState('');
   const [showCustom1, setShowCustom1] = useState(false);
@@ -75,8 +76,8 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         color: predefinedColors[0],
         languagePair: ''
       });
-      setLanguage1(commonLanguages[0]);
-      setLanguage2(commonLanguages[1]);
+      setLanguage1(commonLanguages[0]); // "Select"
+      setLanguage2(commonLanguages[0]); // "Select"
       setCustomLanguage1('');
       setCustomLanguage2('');
       setShowCustom1(false);
@@ -89,8 +90,11 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
     const lang1 = language1 === 'Other' ? customLanguage1 : language1;
     const lang2 = language2 === 'Other' ? customLanguage2 : language2;
     
-    if (lang1 && lang2) {
+    // Only set language pair if both languages are selected and not "Select"
+    if (lang1 && lang2 && lang1 !== 'Select' && lang2 !== 'Select') {
       setFormData(prev => ({ ...prev, languagePair: `${lang1} ↔ ${lang2}` }));
+    } else {
+      setFormData(prev => ({ ...prev, languagePair: '' }));
     }
   }, [language1, language2, customLanguage1, customLanguage2]);
 
@@ -135,18 +139,44 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
 
     // Check notebook limit
     if (notebooks.length >= MAX_NOTEBOOKS) {
-      alert(`You can only create up to ${MAX_NOTEBOOKS} notebooks. Please delete an existing notebook first.`);
+      showAlert({
+        title: 'Notebook Limit Reached',
+        message: `You can only create up to ${MAX_NOTEBOOKS} notebooks. Please delete an existing notebook first.`
+      });
+      return;
+    }
+
+    // Validate that both languages are selected
+    if (language1 === 'Select') {
+      showAlert({
+        title: 'Language Required',
+        message: 'Please select the first language.'
+      });
+      return;
+    }
+
+    if (language2 === 'Select') {
+      showAlert({
+        title: 'Language Required', 
+        message: 'Please select the second language.'
+      });
       return;
     }
 
     // Validate custom language inputs if "Other" is selected
     if (language1 === 'Other' && !customLanguage1.trim()) {
-      alert('Please enter the first language name');
+      showAlert({
+        title: 'Language Required',
+        message: 'Please enter the first language name.'
+      });
       return;
     }
     
     if (language2 === 'Other' && !customLanguage2.trim()) {
-      alert('Please enter the second language name');
+      showAlert({
+        title: 'Language Required',
+        message: 'Please enter the second language name.'
+      });
       return;
     }
 
@@ -161,8 +191,8 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         color: predefinedColors[0],
         languagePair: ''
       });
-      setLanguage1(commonLanguages[0]);
-      setLanguage2(commonLanguages[1]);
+      setLanguage1(commonLanguages[0]); // "Select"
+      setLanguage2(commonLanguages[0]); // "Select"
       setCustomLanguage1('');
       setCustomLanguage2('');
       setShowCustom1(false);
@@ -422,7 +452,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                   <button
                     type="submit"
                     className="btn btn-primary flex-1"
-                    disabled={!formData.name.trim() || isSubmitting}
+                    disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                   >
                     {isSubmitting ? (
                       <span className="loading loading-spinner loading-sm"></span>
