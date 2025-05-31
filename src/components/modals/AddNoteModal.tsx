@@ -4,6 +4,7 @@ import { collection, addDoc, serverTimestamp, Timestamp, doc, updateDoc, deleteD
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { useNotebooks } from "@/contexts/NotebookContext";
 
 interface Note {
   id: string;
@@ -11,6 +12,7 @@ interface Note {
   content2: string;
   createdAt: any;
   userId: string;
+  notebookId?: string;
 }
 
 interface AddNoteModalProps {
@@ -27,6 +29,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
   const [error, setError] = useState("");
   const [user] = useAuthState(auth!);
   const isOnline = useNetworkStatus();
+  const { currentNotebook } = useNotebooks();
 
   const MAX_CHARS = 150;
   const isEditing = !!editNote;
@@ -136,6 +139,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           userId: user.uid,
           content1: content1.trim(),
           content2: content2.trim(),
+          notebookId: currentNotebook?.id || null,
           createdAt: timestamp,
           updatedAt: timestamp,
           createdOffline: !isOnline,

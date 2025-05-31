@@ -1,17 +1,19 @@
 "use client";
 import React from "react";
-import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon, BookOpenIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
 import AddNoteModal from "@/components/modals/AddNoteModal";
+import NotebookModal from "@/components/modals/NotebookModal";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useNavigation } from "@/contexts/NavigationContext";
 
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
+  const [isNotebookModalOpen, setIsNotebookModalOpen] = React.useState(false);
   const isOnline = useNetworkStatus();
   const { goToSettings, goToProfile } = useNavigation();
 
@@ -27,6 +29,14 @@ export default function Header() {
 
   const closeAddNoteModal = () => {
     setIsAddNoteModalOpen(false);
+  };
+
+  const openNotebookModal = () => {
+    setIsNotebookModalOpen(true);
+  };
+
+  const closeNotebookModal = () => {
+    setIsNotebookModalOpen(false);
   };
 
   const handleSaveNote = () => {
@@ -73,13 +83,22 @@ export default function Header() {
       <div className="navbar-center flex-1">
         {/* Desktop: Match notes list width (max-w-2xl), Mobile: Full width between icons */}
         <div className="container mx-auto px-2 max-w-2xl">
-          <div className="flex items-center w-full">
+          <div className="flex items-center gap-2 w-full">
             {/* Search input */}
             <SearchInput className="flex-1" />
             
+            {/* Notebook button - visible on both mobile and desktop */}
+            <button 
+              className="btn btn-ghost btn-circle" 
+              onClick={openNotebookModal}
+              title="Notebooks"
+            >
+              <RectangleStackIcon className="h-5 w-5" />
+            </button>
+            
             {/* Add note button - hidden on mobile, shown on desktop */}
             <button 
-              className="btn btn-ghost btn-circle hidden md:flex ml-4" 
+              className="btn btn-ghost btn-circle hidden md:flex" 
               onClick={openAddNoteModal}
               title="Add Note"
             >
@@ -115,6 +134,11 @@ export default function Header() {
         isOpen={isAddNoteModalOpen}
         onClose={closeAddNoteModal}
         onSave={handleSaveNote}
+      />
+
+      <NotebookModal 
+        isOpen={isNotebookModalOpen}
+        onClose={closeNotebookModal}
       />
 
       {/* Floating add button for mobile only */}

@@ -7,6 +7,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useSearch } from "@/hooks/useSearch";
 import HighlightedText from "@/components/ui/HighlightedText";
+import { useNotebooks } from "@/contexts/NotebookContext";
 
 interface Note {
   id: string;
@@ -14,6 +15,7 @@ interface Note {
   content2: string;
   createdAt: any;
   userId: string;
+  notebookId?: string;
 }
 
 const NOTES_PER_PAGE = 25;
@@ -37,6 +39,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
   const [user] = useAuthState(auth!);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const { currentNotebook } = useNotebooks();
 
   // Use search hook
   const { searchResults, isSearching, setSearchQuery } = useSearch(allNotes);
@@ -180,11 +183,20 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
     }
 
     try {
-      // Create query to get user's notes ordered by creation date (newest first)
-      const notesQuery = query(
-        collection(db, "notes"),
+      // Create query to get user's notes filtered by current notebook
+      const queryConstraints = [
         where("userId", "==", user.uid),
         orderBy("createdAt", "desc")
+      ];
+
+      // Add notebook filter if a notebook is selected
+      if (currentNotebook?.id) {
+        queryConstraints.splice(1, 0, where("notebookId", "==", currentNotebook.id));
+      }
+
+      const notesQuery = query(
+        collection(db, "notes"),
+        ...queryConstraints
       );
 
       // Listen for real-time updates - this gets ALL notes
@@ -219,7 +231,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
       setError("Failed to load notes");
       setLoading(false);
     }
-  }, [user]);
+  }, [user, currentNotebook]);
 
   if (loading) {
     return (

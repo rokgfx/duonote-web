@@ -1,16 +1,26 @@
 "use client";
 import React from "react";
+import { useNotebooks } from "@/contexts/NotebookContext";
 
 interface SettingsPageProps {
   onBackToNotes: () => void;
 }
 
 export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
+  const { notebooks, currentNotebook, setCurrentNotebook } = useNotebooks();
+
   const handleSaveSettings = () => {
     // TODO: Implement save settings functionality
     console.log("Save settings clicked");
     // For now, just go back to notes after "saving"
     onBackToNotes();
+  };
+
+  const handleDefaultNotebookChange = (notebookId: string) => {
+    const notebook = notebooks.find(nb => nb.id === notebookId);
+    if (notebook) {
+      setCurrentNotebook(notebook);
+    }
   };
 
   return (
@@ -63,14 +73,22 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Default language pair</span>
+                  <span className="label-text">Default notebook</span>
                 </label>
-                <select className="select select-bordered w-full max-w-xs">
-                  <option>English ↔ Japanese</option>
-                  <option>English ↔ Spanish</option>
-                  <option>English ↔ French</option>
-                  <option>English ↔ German</option>
+                <select 
+                  className="select select-bordered w-full max-w-xs"
+                  value={currentNotebook?.id || ''}
+                  onChange={(e) => handleDefaultNotebookChange(e.target.value)}
+                >
+                  {notebooks.map((notebook) => (
+                    <option key={notebook.id} value={notebook.id}>
+                      {notebook.name} {notebook.languagePair && `(${notebook.languagePair})`}
+                    </option>
+                  ))}
                 </select>
+                <label className="label">
+                  <span className="label-text-alt">New notes will be added to this notebook</span>
+                </label>
               </div>
             </div>
           </div>
