@@ -429,7 +429,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           autoFocus
                           required
                         />
-                        <div className="text-xs text-right mt-1">
+                        <div className="text-xs text-right mt-1 text-base-content/50">
                           {getNameCharacterCount()}/{MAX_NOTEBOOK_NAME_CHARS}
                         </div>
                       </div>
