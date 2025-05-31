@@ -2,12 +2,13 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl'; // Removed useMessages
 import { notFound } from 'next/navigation';
-import { Inter } from "next/font/google"; // Example font, you can change this
+import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css"; // Assuming globals.css is in src/app/
 import { locales } from '../lib/i18n'; // Assuming i18n.ts is in src/ and exports locales
-                                   // and your tsconfig.json paths alias @/* to src/*
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const notoSansJP = Noto_Sans_JP({ 
+  subsets: ["latin"]
+});
 
 export const metadata: Metadata = {
   title: "Duonote",
@@ -53,7 +54,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${notoSansJP.className} font-sans antialiased`}>
         {/*
           NextIntlClientProvider is essential for making translations
           available to Client Components deeper in the tree.

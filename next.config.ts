@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     "http://127.0.0.1:3000",
     "http://100.88.94.81:3000",
   ],
+  devIndicators: false
 };
 
 // Apply the withNextIntl higher-order function to the Next.js config
