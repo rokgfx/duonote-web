@@ -289,7 +289,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               <span className="label-text">{language1}</span>
             </label>
             <textarea
-              className="textarea textarea-bordered w-full h-24 resize-none"
+              className="textarea border-none rounded-lg bg-zinc-100 w-full h-24 resize-none"
               rows={3}
               value={content1}
               onChange={handleContent1Change}
@@ -304,7 +304,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
               <span className="label-text">{language2}</span>
             </label>
             <textarea
-              className="textarea textarea-bordered w-full h-24 resize-none"
+              className="textarea border-none rounded-lg bg-zinc-100 w-full h-24 resize-none"
               rows={3}
               value={content2}
               onChange={handleContent2Change}
@@ -319,7 +319,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           {/* Delete button - only show when editing */}
           {isEditing && (
             <button 
-              className="btn btn-error mr-auto px-8" 
+              className="btn btn-error mr-auto px-8 rounded-full" 
               onClick={handleDelete}
               disabled={loading}
             >
@@ -339,7 +339,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           
           {/* Cancel button */}
           <button 
-            className="btn px-8" 
+            className="btn px-8 rounded-full btn-ghost" 
             onClick={onClose}
             disabled={loading}
           >
@@ -348,7 +348,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
 
           {/* Update/Save button */}
           <button 
-            className="btn btn-primary px-8" 
+            className="btn btn-primary px-8 rounded-full" 
             onClick={handleSave}
             disabled={loading || !content1.trim() || !content2.trim()}
           >

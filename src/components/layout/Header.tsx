@@ -15,7 +15,7 @@ export default function Header() {
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
   const isOnline = useNetworkStatus();
   const { goToSettings, goToProfile, goToNotebooks } = useNavigation();
-  const { notebooks } = useNotebooks();
+  const { notebooks, currentNotebook } = useNotebooks();
 
   const handleLogout = async () => {
     if (!auth) return;
@@ -104,7 +104,15 @@ export default function Header() {
               onClick={openAddNoteModal}
               title="Add Note"
             >
-              <PlusIcon className="h-5 w-5" />
+              <div className="relative">
+                <PlusIcon className="h-5 w-5" />
+                {currentNotebook && (
+                  <div 
+                    className="absolute -top-1 -right-1 w-2 h-2 rounded-full border border-white"
+                    style={{ backgroundColor: currentNotebook.color }}
+                  />
+                )}
+              </div>
             </button>
           </div>
         </div>
@@ -145,7 +153,15 @@ export default function Header() {
         onClick={openAddNoteModal}
         title="Add Note"
       >
-        <PlusIcon className="h-6 w-6" />
+        <div className="relative">
+          <PlusIcon className="h-6 w-6" />
+          {currentNotebook && (
+            <div 
+              className="absolute -top-1 -right-1 w-2 h-2 rounded-full border border-white"
+              style={{ backgroundColor: currentNotebook.color }}
+            />
+          )}
+        </div>
       </button>
     </header>
   );
