@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState } from 'react';
 
-type PageType = 'notes' | 'settings' | 'profile';
+type PageType = 'notes' | 'settings' | 'profile' | 'notebooks';
 
 interface NavigationContextType {
   currentPage: PageType;
@@ -9,6 +9,7 @@ interface NavigationContextType {
   goToNotes: () => void;
   goToSettings: () => void;
   goToProfile: () => void;
+  goToNotebooks: () => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
@@ -19,6 +20,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
   const goToNotes = () => setCurrentPage('notes');
   const goToSettings = () => setCurrentPage('settings');
   const goToProfile = () => setCurrentPage('profile');
+  const goToNotebooks = () => setCurrentPage('notebooks');
 
   return (
     <NavigationContext.Provider value={{ 
@@ -26,7 +28,8 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
       setCurrentPage, 
       goToNotes, 
       goToSettings,
-      goToProfile 
+      goToProfile,
+      goToNotebooks 
     }}>
       {children}
     </NavigationContext.Provider>

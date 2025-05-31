@@ -6,7 +6,6 @@ import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
 import AddNoteModal from "@/components/modals/AddNoteModal";
-import NotebookModal from "@/components/modals/NotebookModal";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { useNotebooks } from "@/contexts/NotebookContext";
@@ -14,10 +13,8 @@ import { useNotebooks } from "@/contexts/NotebookContext";
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
-  const [isNotebookModalOpen, setIsNotebookModalOpen] = React.useState(false);
-  const [showFirstTimeMessage, setShowFirstTimeMessage] = React.useState(false);
   const isOnline = useNetworkStatus();
-  const { goToSettings, goToProfile } = useNavigation();
+  const { goToSettings, goToProfile, goToNotebooks } = useNavigation();
   const { notebooks } = useNotebooks();
 
   const handleLogout = async () => {
@@ -27,10 +24,9 @@ export default function Header() {
   };
 
   const openAddNoteModal = () => {
-    // If no notebooks exist, show notebook modal with first-time message
+    // If no notebooks exist, navigate to notebooks page
     if (notebooks.length === 0) {
-      setShowFirstTimeMessage(true);
-      setIsNotebookModalOpen(true);
+      goToNotebooks();
     } else {
       setIsAddNoteModalOpen(true);
     }
@@ -40,16 +36,10 @@ export default function Header() {
     setIsAddNoteModalOpen(false);
   };
 
-  const openNotebookModal = () => {
-    // Show first-time message only if no notebooks exist
-    setShowFirstTimeMessage(notebooks.length === 0);
-    setIsNotebookModalOpen(true);
+  const openNotebookPage = () => {
+    goToNotebooks();
   };
 
-  const closeNotebookModal = () => {
-    setIsNotebookModalOpen(false);
-    setShowFirstTimeMessage(false);
-  };
 
   const handleSaveNote = () => {
     // TODO: Implement save note functionality
@@ -102,7 +92,7 @@ export default function Header() {
             {/* Notebook button - visible on both mobile and desktop */}
             <button 
               className="btn btn-ghost btn-circle" 
-              onClick={openNotebookModal}
+              onClick={openNotebookPage}
               title="Notebooks"
             >
               <RectangleStackIcon className="h-5 w-5" />
@@ -148,11 +138,6 @@ export default function Header() {
         onSave={handleSaveNote}
       />
 
-      <NotebookModal 
-        isOpen={isNotebookModalOpen}
-        onClose={closeNotebookModal}
-        showFirstTimeMessage={showFirstTimeMessage}
-      />
 
       {/* Floating add button for mobile only */}
       <button

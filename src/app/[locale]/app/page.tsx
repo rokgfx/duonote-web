@@ -6,6 +6,7 @@ import { collection, query, where, getDocs, deleteDoc } from "firebase/firestore
 import NotesList from "@/components/notes/NotesList";
 import SettingsPage from "@/components/pages/SettingsPage";
 import ProfilePage from "@/components/pages/ProfilePage";
+import NotebookPage from "@/components/pages/NotebookPage";
 import { generateDummyNotes } from "@/utils/generateDummyNotes";
 import { useSearchContext } from "@/contexts/SearchContext";
 import { useNavigation } from "@/contexts/NavigationContext";
@@ -109,6 +110,10 @@ export default function MainPage() {
 
   if (currentPage === 'profile') {
     return <ProfilePage onBackToNotes={goToNotes} />;
+  }
+
+  if (currentPage === 'notebooks') {
+    return <NotebookPage onBackToNotes={goToNotes} showFirstTimeMessage={notebooks.length === 0} />;
   }
 
   return (
