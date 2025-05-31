@@ -45,7 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SearchProvider>
       <Header />
-      <main className="pt-20 pb-16 sm:pb-16 md:pb-0 min-h-screen flex justify-center bg-red-200">
+      <main className="pt-20 pb-16 sm:pb-16 md:pb-0 min-h-screen flex justify-center bg-slate-100">
         {children}
       </main>
       <Footer />
