@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.2.0",
     "daisyui": "^5.0.43",
     "firebase": "^11.7.3",
+    "flexsearch": "^0.8.204",
     "next": "15.3.2",
     "next-intl": "^4.1.0",
     "react": "^19.0.0",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/flexsearch": "^0.7.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

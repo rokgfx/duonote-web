@@ -4,10 +4,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/lib/firebase";
 import NotesList from "@/components/notes/NotesList";
 import { generateDummyNotes } from "@/utils/generateDummyNotes";
+import { useSearchContext } from "@/contexts/SearchContext";
 
 export default function MainPage() {
   const [user] = useAuthState(auth!);
   const [generating, setGenerating] = useState(false);
+  const { searchQuery } = useSearchContext();
 
   const handleGenerateDummyNotes = async () => {
     if (!user) return;
@@ -43,7 +45,7 @@ export default function MainPage() {
         </button>
       </div>
 
-      <NotesList />
+      <NotesList searchQuery={searchQuery} />
     </div>
   );
 }

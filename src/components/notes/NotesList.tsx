@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import AddNoteModal from "@/components/modals/AddNoteModal";
+import { useSearch } from "@/hooks/useSearch";
 
 interface Note {
   id: string;
@@ -16,7 +17,12 @@ interface Note {
 
 const NOTES_PER_PAGE = 25;
 
-export default function NotesList() {
+interface NotesListProps {
+  searchQuery?: string;
+  onSearchQueryChange?: (query: string) => void;
+}
+
+export default function NotesList({ searchQuery = "", onSearchQueryChange }: NotesListProps = {}) {
   const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [displayedNotes, setDisplayedNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +36,14 @@ export default function NotesList() {
   const [user] = useAuthState(auth!);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  // Use search hook
+  const { searchResults, isSearching, setSearchQuery } = useSearch(allNotes);
+
+  // Update search query when prop changes
+  useEffect(() => {
+    setSearchQuery(searchQuery);
+  }, [searchQuery, setSearchQuery]);
 
   // Handle edit note
   const handleEditNote = (note: Note) => {
@@ -100,9 +114,13 @@ export default function NotesList() {
     }
   };
 
-  // Load more notes from the cached data
+  // Get the notes to display (search results or regular notes)
+  const notesToDisplay = isSearching ? searchResults : displayedNotes;
+  const totalNotesCount = isSearching ? searchResults.length : allNotes.length;
+
+  // Load more notes from the cached data (only for non-search mode)
   const loadMoreNotes = useCallback(() => {
-    if (!hasMore || loadingMore) return;
+    if (!hasMore || loadingMore || isSearching) return;
 
     setLoadingMore(true);
     
@@ -125,11 +143,14 @@ export default function NotesList() {
     }
     
     setLoadingMore(false);
-  }, [allNotes, currentPage, hasMore, loadingMore]);
+  }, [allNotes, currentPage, hasMore, loadingMore, isSearching]);
 
-  // Set up intersection observer for infinite scroll
+  // Set up intersection observer for infinite scroll (only for non-search mode)
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
+
+    // Don't set up infinite scroll during search
+    if (isSearching) return;
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -149,7 +170,7 @@ export default function NotesList() {
         observerRef.current.disconnect();
       }
     };
-  }, [hasMore, loadingMore, loadMoreNotes]);
+  }, [hasMore, loadingMore, loadMoreNotes, isSearching]);
 
   useEffect(() => {
     if (!user || !db) {
@@ -226,10 +247,27 @@ export default function NotesList() {
     );
   }
 
+  // Show "no search results" message when searching but no results
+  if (isSearching && searchResults.length === 0 && allNotes.length > 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-base-content/60 text-lg">No notes found</p>
+        <p className="text-base-content/40 text-sm mt-2">
+          Try adjusting your search query
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="space-y-4 pb-4">
-        {displayedNotes.map((note) => (
+        {isSearching && (
+          <div className="text-sm text-base-content/60 mb-4">
+            Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
+          </div>
+        )}
+        {notesToDisplay.map((note) => (
           <div key={note.id} className="card bg-base-100 shadow-md relative">
             {/* Edit button */}
             <button
@@ -266,8 +304,8 @@ export default function NotesList() {
           </div>
         ))}
       
-      {/* Infinite scroll trigger */}
-      {hasMore && (
+      {/* Infinite scroll trigger - only show when not searching */}
+      {!isSearching && hasMore && (
         <div ref={loadMoreRef} className="flex justify-center py-8">
           {loadingMore ? (
             <span className="loading loading-spinner loading-lg"></span>
@@ -279,8 +317,8 @@ export default function NotesList() {
         </div>
       )}
       
-      {/* End of list indicator */}
-      {!hasMore && displayedNotes.length > 0 && (
+      {/* End of list indicator - only show when not searching */}
+      {!isSearching && !hasMore && displayedNotes.length > 0 && (
         <div className="text-center py-8">
           <p className="text-base-content/40 text-sm">
             You've reached the end of your notes
