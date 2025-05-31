@@ -344,7 +344,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <div 
                           key={notebook.id} 
                           className={`card rounded-xl cursor-pointer transition-all ${
-                            currentNotebook?.id === notebook.id ? 'bg-base-200' : 'hover:bg-base-200'
+                            currentNotebook?.id === notebook.id ? 'border border-base-300' : 'border-none hover:bg-base-200'
                           }`}
                           onClick={() => handleSelectNotebook(notebook)}
                         >
@@ -417,13 +417,13 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                   <div className="space-y-4">
                     <form onSubmit={handleSaveNotebook} className="space-y-4">
                       <div className="form-control">
-                        <label className="label label-text">
+                        <label className="label">
                           Notebook Title
                         </label>
                         <input
                           type="text"
                           placeholder="What do you want to call this notebook?"
-                          className="input  w-full"
+                          className="input w-full"
                           value={formData.name}
                           onChange={handleNotebookNameChange}
                           autoFocus
@@ -436,12 +436,12 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                       
                       {/* Language pair selection */}
                       <div className="form-control">
-                        <label className="label label-text">Language pair</label>
+                        <label className="label">Language pair</label>
                         <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '1fr auto 1fr' }}>
                           {/* Language 1 */}
                           <div className="space-y-1">
                             <select
-                              className="select w-full "
+                              className="select w-full"
                               value={language1}
                               onChange={(e) => handleLanguage1Change(e.target.value)}
                             >
@@ -489,15 +489,17 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         </div>
                       </div>
 
+                      <div className="divider"/>
+
                       <div className="form-control">
-                        <label className="label label-text">Color</label>
-                        <div className="flex justify-between w-full">
+                        <label className="label">Color</label>
+                        <div className="flex justify-between md:justify-start w-full md:gap-2">
                           {predefinedColors.map(color => (
                             <button
                               key={color}
                               type="button"
-                              className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer  border-2 ${
-                                formData.color === color ? 'border-4' : ''
+                              className={`h-6 w-6 md:h-8 md:w-8 cursor-pointer border-1 rounded-full border-base-300 ${
+                                formData.color === color ? 'border-2 border-base-content' : ''
                               }`}
                               style={{ backgroundColor: color }}
                               onClick={() => setFormData(prev => ({ ...prev, color }))}
@@ -526,7 +528,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            className="btn px-8 "
+                            className="btn px-8 btn-ghost"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
                             disabled={isSubmitting}
                           >
@@ -534,7 +536,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                           </button>
                           <button
                             type="submit"
-                            className="btn px-12 "
+                            className="btn px-12 btn-primary"
                             disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                           >
                             {isSubmitting ? (
