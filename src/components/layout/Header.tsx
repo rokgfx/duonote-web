@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon, BookOpenIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, PlusIcon, MagnifyingGlassIcon, UserIcon, BoltIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
@@ -36,11 +36,6 @@ export default function Header() {
     setIsAddNoteModalOpen(false);
   };
 
-  const openNotebookPage = () => {
-    goToNotebooks();
-  };
-
-
   const handleSaveNote = () => {
     // TODO: Implement save note functionality
     console.log("Save note clicked");
@@ -53,6 +48,15 @@ export default function Header() {
 
   const handleSettingsClick = () => {
     goToSettings();
+    // Close the dropdown by removing focus
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement) {
+      activeElement.blur();
+    }
+  };
+
+  const handleNotebooksClick = () => {
+    goToNotebooks();
     // Close the dropdown by removing focus
     const activeElement = document.activeElement as HTMLElement;
     if (activeElement) {
@@ -89,15 +93,6 @@ export default function Header() {
             {/* Search input */}
             <SearchInput className="flex-1" />
             
-            {/* Notebook button - visible on both mobile and desktop */}
-            <button 
-              className="btn btn-ghost btn-circle" 
-              onClick={openNotebookPage}
-              title="Notebooks"
-            >
-              <RectangleStackIcon className="h-5 w-5" />
-            </button>
-            
             {/* Add note button - hidden on mobile, shown on desktop */}
             <button 
               className="btn btn-ghost btn-circle hidden md:flex" 
@@ -132,6 +127,7 @@ export default function Header() {
             <ul
               tabIndex={0}
               className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              <li><button onClick={handleNotebooksClick}>Notebooks</button></li>
               <li><button onClick={handleProfileClick}>Profile</button></li>
               <li><button onClick={handleSettingsClick}>Settings</button></li>
               <li><button onClick={handleLogout}>Logout</button></li>
