@@ -124,7 +124,12 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
 
   // Load more notes from the cached data (only for non-search mode)
   const loadMoreNotes = useCallback(() => {
-    if (!hasMore || loadingMore || isSearching) return;
+    console.log("loadMoreNotes called");
+
+    if (!hasMore || loadingMore || isSearching) {
+      console.log("Not loading more:", { hasMore, loadingMore, isSearching });
+      return;
+    }
 
     setLoadingMore(true);
     
@@ -133,17 +138,26 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
     const endIndex = startIndex + NOTES_PER_PAGE;
     
     const newNotes = allNotes.slice(startIndex, endIndex);
+
+    console.log("Trying to load notes from", startIndex, "to", endIndex, "-> Found:", newNotes.length);
     
-    if (newNotes.length === 0) {
+     if (newNotes.length === 0) {
       setHasMore(false);
-    } else {
-      setDisplayedNotes(prev => [...prev, ...newNotes]);
-      setCurrentPage(nextPage);
-      
-      // Check if there are more notes to load
-      if (endIndex >= allNotes.length) {
-        setHasMore(false);
-      }
+      setLoadingMore(false);
+      return;
+    }
+
+    // Only add *new* notes
+    setDisplayedNotes(prev => {
+      const prevIds = new Set(prev.map(n => n.id));
+      const uniqueNewNotes = newNotes.filter(n => !prevIds.has(n.id));
+      return [...prev, ...uniqueNewNotes];
+    });
+    setCurrentPage(nextPage);
+
+    // After appending, if we've displayed all notes, stop infinite scroll
+    if (endIndex >= allNotes.length) {
+      setHasMore(false);
     }
     
     setLoadingMore(false);
@@ -171,38 +185,38 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
-    // Don't set up infinite scroll during search
     if (isSearching) return;
 
-    // Find the scrolling container (main element)
-    const scrollContainer = document.querySelector('main');
-    
+    if (!loadMoreRef.current) {
+      console.log("No loadMoreRef.current to observe");
+      return;
+    }
+
     observerRef.current = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
+        console.log("Observer callback fired", entries);
         if (entries[0].isIntersecting) {
-          // Use refs to get the latest values without recreating the observer
+          console.log("LoadMore div is visible!");
           if (hasMoreRef.current && !loadingMoreRef.current) {
             loadMoreNotesRef.current();
           }
         }
       },
-      { 
+      {
         threshold: 0.1,
-        root: null, // Use the main element as the root
-        rootMargin: '100px' // Trigger earlier for better UX
+        root: null,
+        rootMargin: '100px'
       }
     );
 
-    if (loadMoreRef.current) {
-      observerRef.current.observe(loadMoreRef.current);
-    }
+    observerRef.current.observe(loadMoreRef.current);
+    console.log("Observer now watching", loadMoreRef.current);
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      if (observerRef.current) observerRef.current.disconnect();
     };
-  }, [isSearching]); // Only recreate when search state changes
+  }, [isSearching, hasMore, displayedNotes.length]);
+
 
   useEffect(() => {
     if (!user || !db) {

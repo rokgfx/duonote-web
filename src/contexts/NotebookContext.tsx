@@ -29,58 +29,62 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
 
   // Load notebooks when user is available
   useEffect(() => {
-    if (!user || !db) {
-      setLoading(false);
-      return;
-    }
+  if (!user || !db) {
+    setLoading(false);
+    return;
+  }
 
-    try {
-      const notebooksQuery = query(
-        collection(db, 'notebooks'),
-        where('userId', '==', user.uid),
-        orderBy('createdAt', 'desc')
-      );
+  try {
+    const notebooksQuery = query(
+      collection(db, 'notebooks'),
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc')
+    );
 
-      const unsubscribe = onSnapshot(
-        notebooksQuery,
-        (snapshot) => {
-          const notebooksData = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          })) as Notebook[];
-          
-          setNotebooks(notebooksData);
-          
-          // Update currentNotebook if it was modified
-          if (currentNotebook) {
-            const updatedCurrentNotebook = notebooksData.find(nb => nb.id === currentNotebook.id);
-            if (updatedCurrentNotebook) {
-              setCurrentNotebook(updatedCurrentNotebook);
-            }
+    const unsubscribe = onSnapshot(
+      notebooksQuery,
+      (snapshot) => {
+        const notebooksData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Notebook[];
+
+        setNotebooks(notebooksData);
+
+        // Only update currentNotebook if it's missing/changed
+        setCurrentNotebook(prevNotebook => {
+          // If none selected, pick default or first
+          if (!prevNotebook && notebooksData.length > 0) {
+            return notebooksData.find(nb => nb.isDefault) || notebooksData[0];
           }
-          
-          // Set default notebook if none selected and notebooks exist
-          if (!currentNotebook && notebooksData.length > 0) {
-            const defaultNotebook = notebooksData.find(nb => nb.isDefault) || notebooksData[0];
-            setCurrentNotebook(defaultNotebook);
+          // If prevNotebook was deleted, select another
+          if (
+            prevNotebook &&
+            !notebooksData.find(nb => nb.id === prevNotebook.id)
+          ) {
+            return notebooksData.find(nb => nb.isDefault) || notebooksData[0] || null;
           }
-          
-          setLoading(false);
-        },
-        (err) => {
-          console.error('Error fetching notebooks:', err);
-          setError('Failed to load notebooks');
-          setLoading(false);
-        }
-      );
+          // Else, keep the current notebook
+          return prevNotebook || null;
+        });
 
-      return () => unsubscribe();
-    } catch (err) {
-      console.error('Error setting up notebooks listener:', err);
-      setError('Failed to load notebooks');
-      setLoading(false);
-    }
-  }, [user, currentNotebook]);
+        setLoading(false);
+      },
+      (err) => {
+        console.error('Error fetching notebooks:', err);
+        setError('Failed to load notebooks');
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  } catch (err) {
+    console.error('Error setting up notebooks listener:', err);
+    setError('Failed to load notebooks');
+    setLoading(false);
+  }
+}, [user]);
+  
 
   const createNotebook = async (data: CreateNotebookData) => {
     if (!user || !db) {
