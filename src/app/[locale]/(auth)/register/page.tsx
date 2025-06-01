@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
+import { getAuthErrorMessage } from "@/app/lib/auth-errors";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -19,7 +20,7 @@ export default function RegisterPage() {
     setLoading(true);
     
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(getAuthErrorMessage({ code: 'passwords-do-not-match' }));
       setLoading(false);
       return;
     }
@@ -36,7 +37,7 @@ export default function RegisterPage() {
       setPassword("");
       setConfirmPassword("");
     } catch (err: any) {
-      setError(err.message || "Registration failed");
+      setError(getAuthErrorMessage(err));
     }
     setLoading(false);
   };
@@ -55,7 +56,7 @@ export default function RegisterPage() {
       await signInWithPopup(auth, provider);
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || "Google registration failed");
+      setError(getAuthErrorMessage(err));
     }
     setLoading(false);
   };
@@ -108,10 +109,14 @@ export default function RegisterPage() {
             />
           </div>
           {error && (
-            <div className="text-red-500 text-sm">{error}</div>
+            <div className="alert alert-error">
+              <span>{error}</span>
+            </div>
           )}
           {success && (
-            <div className="text-green-600 text-sm">Registration successful! You can now log in.</div>
+            <div className="alert alert-success">
+              <span>Registration successful! You can now log in.</span>
+            </div>
           )}
           <button
             type="submit"

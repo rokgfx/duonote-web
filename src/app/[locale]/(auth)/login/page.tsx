@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
+import { getAuthErrorMessage } from "@/app/lib/auth-errors";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 
@@ -29,7 +30,7 @@ export default function LoginPage() {
       setEmail("");
       setPassword("");
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(getAuthErrorMessage(err));
     }
     setLoading(false);
   };
@@ -47,7 +48,7 @@ export default function LoginPage() {
       await signInWithPopup(auth, provider);
       router.push(`/${params.locale}/app`);
     } catch (err: any) {
-      setError(err.message || "Google login failed");
+      setError(getAuthErrorMessage(err));
     }
     setLoading(false);
   };
@@ -86,7 +87,9 @@ export default function LoginPage() {
             />
           </div>
           {error && (
-            <div className="text-red-500 text-sm">{error}</div>
+            <div className="alert alert-error">
+              <span>{error}</span>
+            </div>
           )}
           <button
             type="submit"
