@@ -8,6 +8,7 @@ import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useSearch } from "@/hooks/useSearch";
 import HighlightedText from "@/components/ui/HighlightedText";
 import { useNotebooks } from "@/contexts/NotebookContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import FirstTimeWelcome from "@/components/ui/FirstTimeWelcome";
 
 interface Note {
@@ -42,6 +43,7 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const { currentNotebook, notebooks } = useNotebooks();
+  const { goToNotes } = useNavigation();
 
   // Use search hook
   const { searchResults, isSearching, setSearchQuery } = useSearch(allNotes);
@@ -74,6 +76,12 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
 
   const handleCloseAddNoteModal = () => {
     setIsAddNoteModalOpen(false);
+  };
+
+  const handleSaveNote = () => {
+    setIsAddNoteModalOpen(false);
+    // Navigate back to notes after saving (useful when coming from welcome page)
+    goToNotes();
   };
 
   // Handle copy content to clipboard
@@ -285,45 +293,46 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
     }
   }, [user, currentNotebook]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-8">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+  // Render main content based on state
+  const renderMainContent = () => {
+    if (loading) {
+      return (
+        <div className="flex justify-center py-8">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      );
+    }
 
-  if (error) {
-    return (
-      <div className="alert alert-error">
-        <span>{error}</span>
-      </div>
-    );
-  }
+    if (error) {
+      return (
+        <div className="alert alert-error">
+          <span>{error}</span>
+        </div>
+      );
+    }
 
-  if (allNotes.length === 0 && !loading) {
-    return (
-      <FirstTimeWelcome 
-        hasNotebooks={notebooks.length > 0}
-        onCreateFirstNote={handleOpenAddNoteModal}
-      />
-    );
-  }
+    if (allNotes.length === 0 && !loading) {
+      return (
+        <FirstTimeWelcome 
+          hasNotebooks={notebooks.length > 0}
+          onCreateFirstNote={handleOpenAddNoteModal}
+        />
+      );
+    }
 
-  // Show "no search results" message when searching but no results
-  if (isSearching && searchResults.length === 0 && allNotes.length > 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-base-content/60 text-lg">No notes found</p>
-        <p className="text-base-content/40 text-sm mt-2">
-          Try adjusting your search query
-        </p>
-      </div>
-    );
-  }
+    // Show "no search results" message when searching but no results
+    if (isSearching && searchResults.length === 0 && allNotes.length > 0) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-base-content/60 text-lg">No notes found</p>
+          <p className="text-base-content/40 text-sm mt-2">
+            Try adjusting your search query
+          </p>
+        </div>
+      );
+    }
 
-  return (
-    <>
+    return (
       <div className="space-y-4 pb-4">
         {notesToDisplay.map((note) => (
           <div key={note.id} className="card bg-base-100 rounded-xl shadow-md relative">
@@ -396,23 +405,30 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
             You&apos;ve reached the end of your notes
           </p>
         </div>
-      )}
-      </div>
+        )}
+        </div>
+      );
+    };
+  
+    return (
+      <>
+        {/* Main content */}
+        {renderMainContent()}
 
-      {/* Edit Note Modal */}
-      <AddNoteModal
-        isOpen={isEditModalOpen}
-        onClose={handleCloseEditModal}
-        onSave={handleSaveEdit}
-        editNote={editingNote}
-      />
+        {/* Edit Note Modal */}
+        <AddNoteModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          onSave={handleSaveEdit}
+          editNote={editingNote}
+        />
 
-      {/* Add Note Modal */}
-      <AddNoteModal
-        isOpen={isAddNoteModalOpen}
-        onClose={handleCloseAddNoteModal}
-        onSave={handleCloseAddNoteModal}
-      />
-    </>
-  );
-}
+        {/* Add Note Modal */}
+        <AddNoteModal
+          isOpen={isAddNoteModalOpen}
+          onClose={handleCloseAddNoteModal}
+          onSave={handleSaveNote}
+        />
+      </>
+    );
+  }
