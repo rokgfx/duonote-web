@@ -67,6 +67,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
   const [showCustom1, setShowCustom1] = useState(false);
   const [showCustom2, setShowCustom2] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Helper variables
   const isEditing = !!editingNotebook;
@@ -226,10 +227,18 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
     try {
       if (isEditing && editingNotebook) {
         await updateNotebook(editingNotebook.id, formData);
-        setEditingNotebook(null);
+        // Add 800ms delay for better UX
+        setTimeout(() => {
+          setEditingNotebook(null);
+          setIsSubmitting(false);
+        }, 800);
       } else {
         await createNotebook(formData);
-        setShowCreateForm(false);
+        // Add 800ms delay for better UX
+        setTimeout(() => {
+          setShowCreateForm(false);
+          setIsSubmitting(false);
+        }, 800);
       }
     } catch (err) {
       console.error(`Failed to ${isEditing ? 'update' : 'create'} notebook:`, err);
@@ -237,7 +246,6 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
         title: 'Error',
         message: `Failed to ${isEditing ? 'update' : 'create'} notebook. Please try again.`
       });
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -258,10 +266,18 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
       cancelText: 'Cancel',
       variant: 'error',
       onConfirm: async () => {
+        setIsDeleting(true);
         try {
           await deleteNotebook(notebook.id);
+          // Add 800ms delay and transition to notebooks list
+          setTimeout(() => {
+            setIsDeleting(false);
+            setEditingNotebook(null);
+            setShowCreateForm(false);
+          }, 800);
         } catch (err) {
           console.error('Failed to delete notebook:', err);
+          setIsDeleting(false);
           showAlert({
             title: 'Error',
             message: 'Failed to delete notebook. Please try again.'
@@ -515,10 +531,19 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                             type="button"
                             className="btn btn-neutral"
                             onClick={() => handleDeleteNotebook(editingNotebook)}
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || isDeleting}
                           >
-                            <TrashIcon className="h-4 w-4" />
-                            Delete
+                            {isDeleting ? (
+                              <>
+                                <span className="loading loading-spinner loading-sm"></span>
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <TrashIcon className="h-4 w-4" />
+                                Delete
+                              </>
+                            )}
                           </button>
                         ) : (
                           <div></div>
@@ -530,17 +555,20 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                             type="button"
                             className="btn btn-ghost"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || isDeleting}
                           >
                             Cancel
                           </button>
                           <button
                             type="submit"
                             className="btn px-12 btn-primary"
-                            disabled={!formData.name.trim() || isSubmitting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
+                            disabled={!formData.name.trim() || isSubmitting || isDeleting || language1 === 'Select' || language2 === 'Select' || (language1 === 'Other' && !customLanguage1.trim()) || (language2 === 'Other' && !customLanguage2.trim())}
                           >
                             {isSubmitting ? (
-                              <span className="loading loading-spinner loading-sm"></span>
+                              <>
+                                <span className="loading loading-spinner loading-sm"></span>
+                                {isEditing ? 'Saving...' : 'Creating...'}
+                              </>
                             ) : (
                               isEditing ? 'Save' : 'Create'
                             )}
