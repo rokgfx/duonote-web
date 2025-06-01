@@ -44,7 +44,7 @@ export default function SearchInput({
         placeholder={placeholder}
         value={searchQuery}
         onChange={handleInputChange}
-        className="input w-full pl-10 rounded-full bg-zinc-100 border-solid border-zinc-300"
+        className="input w-full pl-10"
       />
       <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
     </div>

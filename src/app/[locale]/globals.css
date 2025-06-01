@@ -63,8 +63,8 @@
 }
 
 @utility label {
-  @apply text-sm;
-  @apply mb-1;
+  @apply text-base;
+  @apply mb-2;
   @apply text-base-content;
 }
 
