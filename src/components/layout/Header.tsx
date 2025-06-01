@@ -9,6 +9,7 @@ import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { useNotebooks } from "@/contexts/NotebookContext";
+import { useModal } from "@/contexts/ModalContext";
 
 export default function Header() {
   const router = useRouter();
@@ -16,11 +17,21 @@ export default function Header() {
   const isOnline = useNetworkStatus();
   const { goToSettings, goToProfile, goToNotebooks } = useNavigation();
   const { notebooks, currentNotebook } = useNotebooks();
+  const { showConfirmation } = useModal();
 
-  const handleLogout = async () => {
-    if (!auth) return;
-    await signOut(auth);
-    router.push("/");
+  const handleLogout = () => {
+    showConfirmation({
+      title: 'Logout',
+      message: 'Are you sure you want to logout?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      
+      onConfirm: async () => {
+        if (!auth) return;
+        await signOut(auth);
+        router.push("/");
+      }
+    });
   };
 
   const openAddNoteModal = () => {

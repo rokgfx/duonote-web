@@ -111,7 +111,7 @@ export default function Modal({
               {buttons.map((button, index) => (
                 <button
                   key={index}
-                  className={`btn px-8 rounded-full ${getButtonVariantClass(button.variant)}`}
+                  className={`btn ${getButtonVariantClass(button.variant)}`}
                   onClick={button.onClick}
                   disabled={button.disabled || button.loading}
                 >
