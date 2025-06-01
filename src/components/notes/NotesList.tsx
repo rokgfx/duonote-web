@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { collection, query, where, orderBy, onSnapshot, limit, startAfter, getDocs } from "firebase/firestore";
+import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { PencilIcon } from "@heroicons/react/24/outline";
@@ -8,6 +8,7 @@ import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useSearch } from "@/hooks/useSearch";
 import HighlightedText from "@/components/ui/HighlightedText";
 import { useNotebooks } from "@/contexts/NotebookContext";
+import FirstTimeWelcome from "@/components/ui/FirstTimeWelcome";
 
 interface Note {
   id: string;
@@ -25,7 +26,7 @@ interface NotesListProps {
   onSearchQueryChange?: (query: string) => void;
 }
 
-export default function NotesList({ searchQuery = "", onSearchQueryChange }: NotesListProps = {}) {
+export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
   const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [displayedNotes, setDisplayedNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,10 +37,11 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [flashingNotes, setFlashingNotes] = useState<Set<string>>(new Set());
+  const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
   const [user] = useAuthState(auth!);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const { currentNotebook } = useNotebooks();
+  const { currentNotebook, notebooks } = useNotebooks();
 
   // Use search hook
   const { searchResults, isSearching, setSearchQuery } = useSearch(allNotes);
@@ -63,6 +65,15 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
   const handleSaveEdit = () => {
     // Modal will handle the actual save operation
     // This callback is for any additional actions after save
+  };
+
+  // Handle opening add note modal
+  const handleOpenAddNoteModal = () => {
+    setIsAddNoteModalOpen(true);
+  };
+
+  const handleCloseAddNoteModal = () => {
+    setIsAddNoteModalOpen(false);
   };
 
   // Handle copy content to clipboard
@@ -120,7 +131,6 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
 
   // Get the notes to display (search results or regular notes)
   const notesToDisplay = isSearching ? searchResults : displayedNotes;
-  const totalNotesCount = isSearching ? searchResults.length : allNotes.length;
 
   // Load more notes from the cached data (only for non-search mode)
   const loadMoreNotes = useCallback(() => {
@@ -293,12 +303,10 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
 
   if (allNotes.length === 0 && !loading) {
     return (
-      <div className="text-center py-12">
-        <p className="text-base-content/60 text-lg">No notes yet</p>
-        <p className="text-base-content/40 text-sm mt-2">
-          Create your first note to get started
-        </p>
-      </div>
+      <FirstTimeWelcome 
+        hasNotebooks={notebooks.length > 0}
+        onCreateFirstNote={handleOpenAddNoteModal}
+      />
     );
   }
 
@@ -385,7 +393,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
       {!isSearching && !hasMore && displayedNotes.length > 0 && (
         <div className="text-center py-8">
           <p className="text-base-content/40 text-sm">
-            You've reached the end of your notes
+            You&apos;ve reached the end of your notes
           </p>
         </div>
       )}
@@ -397,6 +405,13 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
         onClose={handleCloseEditModal}
         onSave={handleSaveEdit}
         editNote={editingNote}
+      />
+
+      {/* Add Note Modal */}
+      <AddNoteModal
+        isOpen={isAddNoteModalOpen}
+        onClose={handleCloseAddNoteModal}
+        onSave={handleCloseAddNoteModal}
       />
     </>
   );
