@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
-import { useNotebooks } from "@/contexts/NotebookContext";
 
 interface SettingsPageProps {
   onBackToNotes: () => void;
 }
 
 export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
-  const { notebooks, currentNotebook, setCurrentNotebook } = useNotebooks();
-
   const handleSaveSettings = () => {
     // TODO: Implement save settings functionality
     console.log("Save settings clicked");
@@ -16,98 +13,48 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
     onBackToNotes();
   };
 
-  const handleDefaultNotebookChange = (notebookId: string) => {
-    const notebook = notebooks.find(nb => nb.id === notebookId);
-    if (notebook) {
-      setCurrentNotebook(notebook);
-    }
-  };
-
   return (
-    <div className="container mx-auto px-4 py-6 max-w-2xl">
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
       <div className="space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-base-content mb-2">Settings</h1>
-          <p className="text-base-content/60">
+          <h1 className="text-4xl font-bold mb-2">Settings</h1>
+          <p className="">
             Customize your Duonote experience
           </p>
         </div>
 
         {/* Settings Content */}
-        <div className="card bg-base-100 shadow-md">
+        <div className="card bg-base-100 rounded-xl">
           <div className="card-body">
-            <h2 className="card-title mb-4">App Preferences</h2>
-            
             <div className="space-y-4">
-              <p className="text-base-content/80">
-                Here you can configure various settings for your vocabulary learning experience. 
-                Settings options will include language preferences, notification settings, 
-                export options, and more.
+              <p className="text-base leading-relaxed">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
               </p>
               
-              <div className="alert alert-info">
-                <div>
-                  <h3 className="font-bold">Coming Soon!</h3>
-                  <div className="text-sm">
-                    We're working on adding more customization options to help you 
-                    personalize your learning experience.
-                  </div>
-                </div>
-              </div>
+              <p className="text-base leading-relaxed">
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
 
-              {/* Placeholder for future settings */}
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Enable notifications</span>
-                  <input type="checkbox" className="toggle toggle-primary" defaultChecked />
-                </label>
-              </div>
-
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Dark mode</span>
-                  <input type="checkbox" className="toggle toggle-primary" />
-                </label>
-              </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Default notebook</span>
-                </label>
-                <select 
-                  className="select w-full max-w-xs bg-zinc-100 border-solid border-zinc-300"
-                  value={currentNotebook?.id || ''}
-                  onChange={(e) => handleDefaultNotebookChange(e.target.value)}
+            {/* Action Buttons */}
+            <div className="mt-8">
+              <div className="flex flex-col md:flex-row gap-2">
+                <button 
+                  className="btn btn-neutral flex md:flex-1"
+                  onClick={onBackToNotes}
                 >
-                  {notebooks.map((notebook) => (
-                    <option key={notebook.id} value={notebook.id}>
-                      {notebook.name} {notebook.languagePair && `(${notebook.languagePair})`}
-                    </option>
-                  ))}
-                </select>
-                <label className="label">
-                  <span className="label-text-alt">New notes will be added to this notebook</span>
-                </label>
+                  Back to Notes
+                </button>
+                <button 
+                  className="btn btn-primary flex md:flex-1"
+                  onClick={handleSaveSettings}
+                >
+                  Save Settings
+                </button>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4 justify-center">
-          <button 
-            className="btn btn-outline"
-            onClick={onBackToNotes}
-          >
-            Back to Notes
-          </button>
-          <button 
-            className="btn btn-primary"
-            onClick={handleSaveSettings}
-          >
-            Save Settings
-          </button>
         </div>
       </div>
     </div>
