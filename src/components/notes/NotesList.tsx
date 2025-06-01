@@ -188,7 +188,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
       },
       { 
         threshold: 0.1,
-        root: scrollContainer, // Use the main element as the root
+        root: null, // Use the main element as the root
         rootMargin: '100px' // Trigger earlier for better UX
       }
     );
