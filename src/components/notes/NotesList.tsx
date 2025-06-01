@@ -149,6 +149,24 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
     setLoadingMore(false);
   }, [allNotes, currentPage, hasMore, loadingMore, isSearching]);
 
+  // Refs for intersection observer to avoid recreating it
+  const hasMoreRef = useRef(hasMore);
+  const loadingMoreRef = useRef(loadingMore);
+  const loadMoreNotesRef = useRef(loadMoreNotes);
+
+  // Keep refs updated
+  useEffect(() => {
+    hasMoreRef.current = hasMore;
+  }, [hasMore]);
+
+  useEffect(() => {
+    loadingMoreRef.current = loadingMore;
+  }, [loadingMore]);
+
+  useEffect(() => {
+    loadMoreNotesRef.current = loadMoreNotes;
+  }, [loadMoreNotes]);
+
   // Set up intersection observer for infinite scroll (only for non-search mode)
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
@@ -156,13 +174,23 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
     // Don't set up infinite scroll during search
     if (isSearching) return;
 
+    // Find the scrolling container (main element)
+    const scrollContainer = document.querySelector('main');
+    
     observerRef.current = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore) {
-          loadMoreNotes();
+        if (entries[0].isIntersecting) {
+          // Use refs to get the latest values without recreating the observer
+          if (hasMoreRef.current && !loadingMoreRef.current) {
+            loadMoreNotesRef.current();
+          }
         }
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1,
+        root: scrollContainer, // Use the main element as the root
+        rootMargin: '100px' // Trigger earlier for better UX
+      }
     );
 
     if (loadMoreRef.current) {
@@ -174,7 +202,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
         observerRef.current.disconnect();
       }
     };
-  }, [hasMore, loadingMore, loadMoreNotes, isSearching]);
+  }, [isSearching]); // Only recreate when search state changes
 
   useEffect(() => {
     if (!user || !db) {
@@ -328,7 +356,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
       
       {/* Infinite scroll trigger - only show when not searching */}
       {!isSearching && hasMore && (
-        <div ref={loadMoreRef} className="flex justify-center py-8">
+        <div ref={loadMoreRef} className="flex justify-center py-8 min-h-[1px]">
           {loadingMore ? (
             <span className="loading loading-spinner loading-lg"></span>
           ) : (
