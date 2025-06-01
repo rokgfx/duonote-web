@@ -4,6 +4,7 @@ import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon, EyeIcon, PencilIcon } fr
 import { useNotebooks } from "@/contexts/NotebookContext";
 import { useModal } from "@/contexts/ModalContext";
 import { CreateNotebookData, Notebook } from "@/types/notebook";
+import { useNoteCounts } from "@/hooks/useNoteCounts";
 
 interface NotebookPageProps {
   onBackToNotes: () => void;
@@ -52,6 +53,7 @@ const MAX_NOTEBOOK_NAME_CHARS = 40;
 export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = false }: NotebookPageProps) {
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, updateNotebook, deleteNotebook, loading, error } = useNotebooks();
   const { showConfirmation, showAlert } = useModal();
+  const { getNoteCount } = useNoteCounts();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingNotebook, setEditingNotebook] = useState<Notebook | null>(null);
   const [formData, setFormData] = useState<CreateNotebookData>({
@@ -376,6 +378,9 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                                   {notebook.languagePair && (
                                     <div className="text-base">{notebook.languagePair}</div>
                                   )}
+                                  <div className="text-sm text-base-content/60 mt-1">
+                                    {getNoteCount(notebook.id)} {getNoteCount(notebook.id) === 1 ? 'note' : 'notes'}
+                                  </div>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
