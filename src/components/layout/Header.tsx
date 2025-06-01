@@ -15,7 +15,7 @@ export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
   const isOnline = useNetworkStatus();
-  const { goToSettings, goToProfile, goToNotebooks } = useNavigation();
+  const { goToSettings, goToNotebooks } = useNavigation();
   const { notebooks, currentNotebook } = useNotebooks();
   const { showConfirmation } = useModal();
 
@@ -75,14 +75,6 @@ export default function Header() {
     }
   };
 
-  const handleProfileClick = () => {
-    goToProfile();
-    // Close the dropdown by removing focus
-    const activeElement = document.activeElement as HTMLElement;
-    if (activeElement) {
-      activeElement.blur();
-    }
-  };
 
   return (
     <header className="navbar sticky top-0 bg-base-100 border-b z-50 flex-shrink-0">
@@ -139,7 +131,6 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li><button onClick={handleNotebooksClick}>Notebooks</button></li>
-              <li><button onClick={handleProfileClick}>Profile</button></li>
               <li><button onClick={handleSettingsClick}>Settings</button></li>
               <li><button onClick={handleLogout}>Logout</button></li>
             </ul>
