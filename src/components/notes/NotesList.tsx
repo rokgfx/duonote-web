@@ -401,9 +401,9 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
       {/* End of list indicator - only show when not searching */}
       {!isSearching && !hasMore && displayedNotes.length > 0 && (
         <div className="text-center py-8">
-          <p className="text-base-content/40 text-sm">
+          {/* <p className="text-base-content/40 text-sm">
             You&apos;ve reached the end of your notes
-          </p>
+          </p> */}
         </div>
         )}
         </div>
