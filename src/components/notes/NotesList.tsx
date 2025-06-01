@@ -75,7 +75,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
       // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(content);
-        console.log(`${contentType} copied to clipboard: ${content}`);
+        //console.log(`${contentType} copied to clipboard: ${content}`);
       } else {
         // Fallback for mobile/older browsers
         const textArea = document.createElement('textarea');
@@ -91,7 +91,7 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
         document.body.removeChild(textArea);
         
         if (successful) {
-          console.log(`${contentType} copied to clipboard: ${content}`);
+          //console.log(`${contentType} copied to clipboard: ${content}`);
         } else {
           throw new Error('Copy command was unsuccessful');
         }
