@@ -1,5 +1,22 @@
 {
   "General": {
     "text": "テキスト"
+  },
+  "HomePage": {
+    "title": "二言語で語彙をマスターしよう",
+    "subtitle": "Duonoteで効率的にバイリンガル語彙を構築 - 英語と日本語の単語を賢く学習・記憶",
+    "features": {
+      "bilingual": "バイリンガル学習",
+      "bilingualDesc": "英語と日本語の語彙を知的な関連付けで学習",
+      "offline": "オフライン優先",
+      "offlineDesc": "インターネット接続なしでも、いつでもどこでも学習可能",
+      "smart": "スマート復習",
+      "smartDesc": "AI駆動の間隔反復で学習内容を効果的に記憶"
+    },
+    "cta": {
+      "getStarted": "始める",
+      "login": "ログイン",
+      "register": "アカウント作成"
+    }
   }
 }

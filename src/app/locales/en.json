@@ -1,5 +1,22 @@
 {
   "General": {
     "text": "Text"
+  },
+  "HomePage": {
+    "title": "Master Vocabulary in Two Languages",
+    "subtitle": "Build your bilingual vocabulary with Duonote - the smart way to learn and remember words in English and Japanese",
+    "features": {
+      "bilingual": "Bilingual Learning",
+      "bilingualDesc": "Learn vocabulary in both English and Japanese with intelligent connections",
+      "offline": "Offline First",
+      "offlineDesc": "Study anywhere, anytime - even without internet connection",
+      "smart": "Smart Reviews",
+      "smartDesc": "AI-powered spaced repetition helps you remember what you learn"
+    },
+    "cta": {
+      "getStarted": "Get Started",
+      "login": "Login",
+      "register": "Create Account"
+    }
   }
 }
