@@ -513,7 +513,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         {isEditing && editingNotebook ? (
                           <button
                             type="button"
-                            className="btn px-8 "
+                            className="btn btn-neutral"
                             onClick={() => handleDeleteNotebook(editingNotebook)}
                             disabled={isSubmitting}
                           >
@@ -528,7 +528,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                         <div className="flex gap-2">
                           <button
                             type="button"
-                            className="btn px-8 btn-ghost"
+                            className="btn btn-ghost"
                             onClick={() => { setShowCreateForm(false); setEditingNotebook(null); }}
                             disabled={isSubmitting}
                           >

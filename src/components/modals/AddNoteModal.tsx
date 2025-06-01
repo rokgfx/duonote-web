@@ -286,10 +286,10 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           )}
           <div>
             <label className="label">
-              <span className="label-text">{language1}</span>
+              {language1}
             </label>
             <textarea
-              className="textarea bg-zinc-100 border-solid border-zinc-300 rounded-xl w-full h-24 resize-none"
+              className="textarea w-full h-24 resize-none"
               rows={3}
               value={content1}
               onChange={handleContent1Change}
@@ -301,16 +301,16 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           </div>
           <div>
             <label className="label">
-              <span className="label-text">{language2}</span>
+              {language2}
             </label>
             <textarea
-              className="textarea bg-zinc-100 border-solid border-zinc-300 rounded-xl w-full h-24 resize-none"
+              className="textarea w-full h-24 resize-none"
               rows={3}
               value={content2}
               onChange={handleContent2Change}
               disabled={loading}
             ></textarea>
-            <div className="text-xs text-base-content/60 text-right mt-1">
+            <div className="text-xs text-right mt-1 text-base-content/50">
               {content2Count}/{MAX_CHARS}
             </div>
           </div>
@@ -319,7 +319,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           {/* Delete button - only show when editing */}
           {isEditing && (
             <button 
-              className="btn btn-error mr-auto px-8 rounded-full" 
+              className="btn btn-neutral mr-auto" 
               onClick={handleDelete}
               disabled={loading}
             >
@@ -339,7 +339,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           
           {/* Cancel button */}
           <button 
-            className="btn px-8 rounded-full btn-ghost" 
+            className="btn btn-ghost" 
             onClick={onClose}
             disabled={loading}
           >
@@ -348,7 +348,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
 
           {/* Update/Save button */}
           <button 
-            className="btn btn-primary px-8 rounded-full" 
+            className="btn btn-primary px-12" 
             onClick={handleSave}
             disabled={loading || !content1.trim() || !content2.trim()}
           >

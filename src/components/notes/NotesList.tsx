@@ -275,13 +275,8 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
   return (
     <>
       <div className="space-y-4 pb-4">
-        {isSearching && (
-          <div className="text-sm text-base-content/60 mb-4">
-            Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"
-          </div>
-        )}
         {notesToDisplay.map((note) => (
-          <div key={note.id} className="card bg-base-100 shadow-md relative">
+          <div key={note.id} className="card bg-base-100 rounded-xl shadow-md relative">
             {/* Edit button */}
             <button
               onClick={() => handleEditNote(note)}
@@ -294,8 +289,8 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
             <div className="card-body p-4">
               {/* Content 1 - Top half */}
               <div 
-                className={`mb-3 pb-3 border-b border-base-300 cursor-pointer rounded-md p-2 transition-all duration-100 ${
-                  flashingNotes.has(`${note.id}-content1`) ? 'bg-amber-100 animate-pulse' : ''
+                className={`cursor-pointer rounded-md p-2 transition-all duration-100 ${
+                  flashingNotes.has(`${note.id}-content1`) ? 'bg-base-200 animate-pulse' : ''
                 }`}
                 onClick={() => handleCopyContent(note.content1, "content1", note.id)}
                 title="Click to copy content 1"
@@ -308,11 +303,13 @@ export default function NotesList({ searchQuery = "", onSearchQueryChange }: Not
                   )}
                 </div>
               </div>
+
+              <div className="my-2 border-b border-base-content/10"/>
               
               {/* Content 2 - Bottom half */}
               <div 
                 className={`cursor-pointer rounded-md p-2 transition-all duration-100 ${
-                  flashingNotes.has(`${note.id}-content2`) ? 'bg-amber-100 animate-pulse' : ''
+                  flashingNotes.has(`${note.id}-content2`) ? 'bg-base-200 animate-pulse' : ''
                 }`}
                 onClick={() => handleCopyContent(note.content2, "content2", note.id)}
                 title="Click to copy content 2"
