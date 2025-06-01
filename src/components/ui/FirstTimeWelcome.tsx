@@ -9,7 +9,7 @@ interface FirstTimeWelcomeProps {
 }
 
 export default function FirstTimeWelcome({ hasNotebooks, onCreateFirstNote }: FirstTimeWelcomeProps) {
-  const { goToNotebooks } = useNavigation();
+  const { goToNotebooksWithCreate } = useNavigation();
 
   if (!hasNotebooks) {
     // User has no notebooks - need to create notebook first
@@ -50,7 +50,7 @@ export default function FirstTimeWelcome({ hasNotebooks, onCreateFirstNote }: Fi
           
           {/* Call to Action */}
           <button
-            onClick={goToNotebooks}
+            onClick={goToNotebooksWithCreate}
             className="btn btn-primary btn-lg gap-2"
           >
             <PlusIcon className="w-5 h-5" />

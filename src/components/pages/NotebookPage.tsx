@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { PlusIcon, TrashIcon, CheckIcon, ArrowLeftIcon, EyeIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useNotebooks } from "@/contexts/NotebookContext";
 import { useModal } from "@/contexts/ModalContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { CreateNotebookData, Notebook } from "@/types/notebook";
 import { useNoteCounts } from "@/hooks/useNoteCounts";
 
@@ -54,6 +55,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
   const { notebooks, currentNotebook, setCurrentNotebook, createNotebook, updateNotebook, deleteNotebook, loading, error } = useNotebooks();
   const { showConfirmation, showAlert } = useModal();
   const { getNoteCount } = useNoteCounts();
+  const { shouldShowCreateForm, clearCreateForm } = useNavigation();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingNotebook, setEditingNotebook] = useState<Notebook | null>(null);
   const [formData, setFormData] = useState<CreateNotebookData>({
@@ -74,6 +76,14 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
   // Helper variables
   const isEditing = !!editingNotebook;
   const isFormOpen = showCreateForm || isEditing;
+
+  // Automatically show create form when coming from welcome page
+  useEffect(() => {
+    if (shouldShowCreateForm) {
+      setShowCreateForm(true);
+      clearCreateForm(); // Clear the flag to prevent reopening
+    }
+  }, [shouldShowCreateForm, clearCreateForm]);
 
   // Reset form when showCreateForm changes or editing ends
   useEffect(() => {

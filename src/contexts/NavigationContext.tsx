@@ -9,16 +9,40 @@ interface NavigationContextType {
   goToNotes: () => void;
   goToSettings: () => void;
   goToNotebooks: () => void;
+  goToNotebooksWithCreate: () => void;
+  shouldShowCreateForm: boolean;
+  clearCreateForm: () => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState<PageType>('notes');
+  const [shouldShowCreateForm, setShouldShowCreateForm] = useState(false);
 
-  const goToNotes = () => setCurrentPage('notes');
-  const goToSettings = () => setCurrentPage('settings');
-  const goToNotebooks = () => setCurrentPage('notebooks');
+  const goToNotes = () => {
+    setCurrentPage('notes');
+    setShouldShowCreateForm(false);
+  };
+  
+  const goToSettings = () => {
+    setCurrentPage('settings');
+    setShouldShowCreateForm(false);
+  };
+  
+  const goToNotebooks = () => {
+    setCurrentPage('notebooks');
+    setShouldShowCreateForm(false);
+  };
+  
+  const goToNotebooksWithCreate = () => {
+    setCurrentPage('notebooks');
+    setShouldShowCreateForm(true);
+  };
+  
+  const clearCreateForm = () => {
+    setShouldShowCreateForm(false);
+  };
 
   return (
     <NavigationContext.Provider value={{ 
@@ -26,7 +50,10 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
       setCurrentPage, 
       goToNotes, 
       goToSettings,
-      goToNotebooks 
+      goToNotebooks,
+      goToNotebooksWithCreate,
+      shouldShowCreateForm,
+      clearCreateForm
     }}>
       {children}
     </NavigationContext.Provider>
