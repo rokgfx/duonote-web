@@ -27,6 +27,27 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
   const [user] = useAuthState(auth!);
   const isOnline = useNetworkStatus();
 
+  // Key for localStorage
+  const getLastNotebookKey = () => user ? `lastNotebook_${user.uid}` : null;
+
+  // Save current notebook to localStorage
+  const saveLastNotebook = (notebook: Notebook | null) => {
+    const key = getLastNotebookKey();
+    if (key) {
+      if (notebook) {
+        localStorage.setItem(key, notebook.id);
+      } else {
+        localStorage.removeItem(key);
+      }
+    }
+  };
+
+  // Get last notebook from localStorage
+  const getLastNotebook = (): string | null => {
+    const key = getLastNotebookKey();
+    return key ? localStorage.getItem(key) : null;
+  };
+
   // Load notebooks when user is available
   useEffect(() => {
   if (!user || !db) {
@@ -53,9 +74,11 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
 
         // Only update currentNotebook if it's missing/changed
         setCurrentNotebook(prevNotebook => {
-          // If none selected, pick the first
+          // If none selected, try to restore from localStorage, then pick the first
           if (!prevNotebook && notebooksData.length > 0) {
-            return notebooksData[0];
+            const lastNotebookId = getLastNotebook();
+            const lastNotebook = lastNotebookId ? notebooksData.find(nb => nb.id === lastNotebookId) : null;
+            return lastNotebook || notebooksData[0];
           }
           // If prevNotebook was deleted, select another
           if (
@@ -84,6 +107,13 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }
 }, [user]);
+
+  // Save current notebook to localStorage whenever it changes
+  useEffect(() => {
+    if (user && currentNotebook) {
+      saveLastNotebook(currentNotebook);
+    }
+  }, [currentNotebook, user]);
   
 
   const createNotebook = async (data: CreateNotebookData) => {
