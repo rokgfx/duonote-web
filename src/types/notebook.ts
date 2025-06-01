@@ -7,7 +7,6 @@ export interface Notebook {
   createdAt: any; // Firebase Timestamp
   updatedAt: any; // Firebase Timestamp
   userId: string;
-  isDefault?: boolean;
 }
 
 export interface CreateNotebookData {

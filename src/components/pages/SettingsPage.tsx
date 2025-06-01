@@ -38,12 +38,6 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
     }, 800);
   };
 
-  const handleDefaultNotebookChange = (notebookId: string) => {
-    const notebook = notebooks.find(nb => nb.id === notebookId);
-    if (notebook) {
-      setCurrentNotebook(notebook);
-    }
-  };
 
   const fetchNotesFromNotebook = async (notebookId: string) => {
     if (!user || !db) return [];
@@ -171,48 +165,6 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
           <div className="card-body">
             <div className="space-y-8">
 
-              {/* Default Notebook Setting */}
-              <div className="form-control">
-                <label className="label">
-                  Default Notebook
-                </label>
-                {notebooks.length === 0 ? (
-                  <div className="text-base text-base-content/60">
-                    You don't have any notebooks yet. Create one to get started.
-                  </div>
-                ) : notebooks.length === 1 ? (
-                  <div className="flex items-center gap-3 p-3 bg-base-200 rounded-full">
-                    <div 
-                      className="w-4 h-4 rounded-full" 
-                      style={{ backgroundColor: notebooks[0].color }}
-                    ></div>
-                    <div className="flex-1">
-                      <div className="font-medium">{notebooks[0].name}</div>
-                      {notebooks[0].languagePair && (
-                        <div className="text-sm text-base-content/60">{notebooks[0].languagePair}</div>
-                      )}
-                    </div>
-                    <div className="text-sm text-base-content/60">Only notebook</div>
-                  </div>
-                ) : (
-                  <select 
-                    className="select w-full"
-                    value={currentNotebook?.id || ''}
-                    onChange={(e) => handleDefaultNotebookChange(e.target.value)}
-                  >
-                    {notebooks.map((notebook) => (
-                      <option key={notebook.id} value={notebook.id}>
-                        {notebook.name} {notebook.languagePair && `(${notebook.languagePair})`}
-                      </option>
-                    ))}
-                  </select>
-                )}
-                <div className="text-xs text-base-content/50 mt-1">
-                  New notes will be added to this notebook by default
-                </div>
-              </div>
-
-              
 
               {/* Export Notes Setting */}
               <div className="form-control">

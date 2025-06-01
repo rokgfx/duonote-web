@@ -53,16 +53,16 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
 
         // Only update currentNotebook if it's missing/changed
         setCurrentNotebook(prevNotebook => {
-          // If none selected, pick default or first
+          // If none selected, pick the first
           if (!prevNotebook && notebooksData.length > 0) {
-            return notebooksData.find(nb => nb.isDefault) || notebooksData[0];
+            return notebooksData[0];
           }
           // If prevNotebook was deleted, select another
           if (
             prevNotebook &&
             !notebooksData.find(nb => nb.id === prevNotebook.id)
           ) {
-            return notebooksData.find(nb => nb.isDefault) || notebooksData[0] || null;
+            return notebooksData[0] || null;
           }
           // Else, keep the current notebook
           return prevNotebook || null;
@@ -100,7 +100,6 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         userId: user.uid,
         createdAt: timestamp,
         updatedAt: timestamp,
-        isDefault: notebooks.length === 0, // First notebook becomes default
       };
 
       if (!isOnline) {
