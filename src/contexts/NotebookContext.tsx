@@ -51,6 +51,14 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
           
           setNotebooks(notebooksData);
           
+          // Update currentNotebook if it was modified
+          if (currentNotebook) {
+            const updatedCurrentNotebook = notebooksData.find(nb => nb.id === currentNotebook.id);
+            if (updatedCurrentNotebook) {
+              setCurrentNotebook(updatedCurrentNotebook);
+            }
+          }
+          
           // Set default notebook if none selected and notebooks exist
           if (!currentNotebook && notebooksData.length > 0) {
             const defaultNotebook = notebooksData.find(nb => nb.isDefault) || notebooksData[0];
