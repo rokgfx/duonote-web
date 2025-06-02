@@ -15,12 +15,14 @@
     "flexsearch": "^0.8.204",
     "next": "15.3.2",
     "next-intl": "^4.1.0",
+    "puppeteer": "^24.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-firebase-hooks": "^5.1.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@modelcontextprotocol/server-puppeteer": "^2025.5.12",
     "@tailwindcss/postcss": "^4",
     "@types/flexsearch": "^0.7.6",
     "@types/node": "^20",
