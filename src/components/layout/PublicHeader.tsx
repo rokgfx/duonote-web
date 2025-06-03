@@ -51,7 +51,7 @@ export default function PublicHeader() {
   const currentLocale = pathname.split('/')[1] || 'en';
   const pathWithoutLocale = getPathWithoutLocale(pathname, locales);
 
-  const supportedLocales = ['en', 'ja', 'es', 'fr', 'de', 'zh', 'ko', 'pt'];
+  const supportedLocales = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'ko', 'pt'];
 
   return (
     <div className="navbar fixed top-0 z-50 h-[90px] bg-base-100 border-b border-base-content">
