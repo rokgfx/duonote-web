@@ -40,7 +40,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-base-100">
       <PublicHeader />
 
       {/* Main Content Container */}
