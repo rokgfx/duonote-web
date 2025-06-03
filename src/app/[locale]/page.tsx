@@ -44,7 +44,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* Main Content Container */}
-      <div className="pt-[100px]">
+      <div className="pt-[90px]">
         <div className="container max-w-6xl mx-auto bg-red-500 min-h-96 px-4">
           
         </div>
