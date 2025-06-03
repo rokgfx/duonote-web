@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import PublicHeader from "@/components/layout/PublicHeader";
+import FoxHero from "@/components/ui/FoxHero";
 
 export default function HomePage() {
   const router = useRouter();
@@ -45,8 +46,13 @@ export default function HomePage() {
 
       {/* Main Content Container */}
       <div className="pt-[90px]">
-        <div className="container max-w-6xl mx-auto bg-red-500 min-h-96 px-4">
-          
+        <div className="container max-w-6xl mx-auto bg-red-500 min-h-96 px-4 flex items-center">
+          <div className="flex-1">
+            <FoxHero className="w-full max-w-md" />
+          </div>
+          <div className="flex-1">
+            {/* Content area for future use */}
+          </div>
         </div>
       </div>
     </div>
