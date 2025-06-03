@@ -1,0 +1,22 @@
+{
+  "General": {
+    "text": "Texte"
+  },
+  "HomePage": {
+    "title": "Maîtrisez le Vocabulaire en Deux Langues",
+    "subtitle": "Construisez votre vocabulaire bilingue avec Duonote - la façon intelligente d'apprendre et de retenir les mots en français et en anglais",
+    "features": {
+      "bilingual": "Apprentissage Bilingue",
+      "bilingualDesc": "Apprenez le vocabulaire en français et en anglais avec des connexions intelligentes",
+      "offline": "Hors Ligne d'Abord",
+      "offlineDesc": "Étudiez n'importe où, n'importe quand - même sans connexion internet",
+      "smart": "Révisions Intelligentes",
+      "smartDesc": "La répétition espacée alimentée par l'IA vous aide à retenir ce que vous apprenez"
+    },
+    "cta": {
+      "getStarted": "Commencer",
+      "login": "Se Connecter",
+      "register": "Créer un Compte"
+    }
+  }
+}

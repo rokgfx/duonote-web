@@ -1,0 +1,22 @@
+{
+  "General": {
+    "text": "텍스트"
+  },
+  "HomePage": {
+    "title": "두 언어로 어휘 마스터하기",
+    "subtitle": "Duonote로 이중언어 어휘를 구축하세요 - 한국어와 영어 단어를 학습하고 기억하는 스마트한 방법",
+    "features": {
+      "bilingual": "이중언어 학습",
+      "bilingualDesc": "지능적인 연결을 통해 한국어와 영어 어휘를 학습하세요",
+      "offline": "오프라인 우선",
+      "offlineDesc": "언제 어디서나 학습하세요 - 인터넷 연결 없이도 가능합니다",
+      "smart": "스마트 복습",
+      "smartDesc": "AI 기반 간격 반복이 학습한 내용을 기억하는 데 도움을 줍니다"
+    },
+    "cta": {
+      "getStarted": "시작하기",
+      "login": "로그인",
+      "register": "계정 만들기"
+    }
+  }
+}

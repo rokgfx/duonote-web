@@ -1,0 +1,22 @@
+{
+  "General": {
+    "text": "Texto"
+  },
+  "HomePage": {
+    "title": "Domina el Vocabulario en Dos Idiomas",
+    "subtitle": "Construye tu vocabulario bilingüe con Duonote: la forma inteligente de aprender y recordar palabras en inglés y español",
+    "features": {
+      "bilingual": "Aprendizaje Bilingüe",
+      "bilingualDesc": "Aprende vocabulario en inglés y español con conexiones inteligentes",
+      "offline": "Offline Primero",
+      "offlineDesc": "Estudia en cualquier lugar, en cualquier momento, incluso sin conexión a internet",
+      "smart": "Repasos Inteligentes",
+      "smartDesc": "La repetición espaciada impulsada por IA te ayuda a recordar lo que aprendes"
+    },
+    "cta": {
+      "getStarted": "Comenzar",
+      "login": "Iniciar Sesión",
+      "register": "Crear Cuenta"
+    }
+  }
+}

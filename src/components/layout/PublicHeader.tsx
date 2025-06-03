@@ -1,8 +1,58 @@
+'use client';
+
 import React from "react";
 import DuonoteLogo from "@/components/ui/DuonoteLogo";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { locales } from '@/app/lib/i18n';
+
+function getPathWithoutLocale(pathname: string, locales: readonly string[]) {
+  // Remove the leading locale segment from the pathname (e.g., '/ja/foo' -> '/foo')
+  const segments = pathname.split('/');
+  if (locales.includes(segments[1])) {
+    return '/' + segments.slice(2).join('/');
+  }
+  return pathname;
+}
+
+function getLocaleLabel(locale: string) {
+  switch (locale) {
+    case 'en':
+      return 'English';
+    case 'ja':
+      return '日本語';
+    case 'es':
+      return 'Español';
+    case 'fr':
+      return 'Français';
+    case 'de':
+      return 'Deutsch';
+    case 'zh':
+      return '中文';
+    case 'ko':
+      return '한국어';
+    case 'pt':
+      return 'Português';
+    default:
+      return locale;
+  }
+}
+
+function handleLocaleChange(newLocale: string) {
+  // Update localStorage with the new locale preference
+  localStorage.setItem('preferredLocale', newLocale);
+}
 
 export default function PublicHeader() {
+  const pathname = usePathname();
+
+  // Find current locale in path (e.g., '/ja/foo')
+  const currentLocale = pathname.split('/')[1] || 'en';
+  const pathWithoutLocale = getPathWithoutLocale(pathname, locales);
+
+  const supportedLocales = ['en', 'ja', 'es', 'fr', 'de', 'zh', 'ko', 'pt'];
+
   return (
     <div className="navbar fixed top-0 z-50 h-[100px] bg-base-100">
       <div className="max-w-6xl mx-auto w-full px-4">
@@ -11,18 +61,28 @@ export default function PublicHeader() {
         </div>
         <div className="navbar-end">
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-sm gap-2">
+              <span className="text-sm font-medium">{getLocaleLabel(currentLocale)}</span>
               <GlobeAltIcon className="h-5 w-5" />
             </div>
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-              <li><a>English</a></li>
-              <li><a>Español</a></li>
-              <li><a>Français</a></li>
-              <li><a>Deutsch</a></li>
-              <li><a>中文</a></li>
-              <li><a>日本語</a></li>
-              <li><a>한국어</a></li>
-              <li><a>Português</a></li>
+              {supportedLocales.map((locale) => (
+                <li key={locale}>
+                  <Link
+                    href={`/${locale}${pathWithoutLocale}`}
+                    prefetch={false}
+                    className={`flex items-center justify-between ${locale === currentLocale ? 'active' : ''}`}
+                    onClick={() => handleLocaleChange(locale)}
+                  >
+                    <span>{getLocaleLabel(locale)}</span>
+                    {locale === currentLocale && (
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

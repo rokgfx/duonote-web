@@ -1,0 +1,22 @@
+{
+  "General": {
+    "text": "文本"
+  },
+  "HomePage": {
+    "title": "掌握双语词汇",
+    "subtitle": "使用 Duonote 构建您的双语词汇 - 学习和记忆中英文单词的智能方式",
+    "features": {
+      "bilingual": "双语学习",
+      "bilingualDesc": "通过智能连接学习中英文词汇",
+      "offline": "离线优先",
+      "offlineDesc": "随时随地学习 - 即使没有互联网连接",
+      "smart": "智能复习",
+      "smartDesc": "AI 驱动的间隔重复帮助您记住所学内容"
+    },
+    "cta": {
+      "getStarted": "开始使用",
+      "login": "登录",
+      "register": "创建账户"
+    }
+  }
+}

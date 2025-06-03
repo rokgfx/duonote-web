@@ -1,0 +1,22 @@
+{
+  "General": {
+    "text": "Text"
+  },
+  "HomePage": {
+    "title": "Meistern Sie den Wortschatz in Zwei Sprachen",
+    "subtitle": "Erweitern Sie Ihren zweisprachigen Wortschatz mit Duonote - die intelligente Art, Wörter auf Deutsch und Englisch zu lernen und zu behalten",
+    "features": {
+      "bilingual": "Zweisprachiges Lernen",
+      "bilingualDesc": "Lernen Sie Wortschatz auf Deutsch und Englisch mit intelligenten Verbindungen",
+      "offline": "Offline Zuerst",
+      "offlineDesc": "Studieren Sie überall und jederzeit - auch ohne Internetverbindung",
+      "smart": "Intelligente Wiederholungen",
+      "smartDesc": "KI-gestützte verteilte Wiederholung hilft Ihnen, das Gelernte zu behalten"
+    },
+    "cta": {
+      "getStarted": "Loslegen",
+      "login": "Anmelden",
+      "register": "Konto Erstellen"
+    }
+  }
+}
