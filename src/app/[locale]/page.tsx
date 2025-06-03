@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
+import PublicHeader from "@/components/layout/PublicHeader";
 
 export default function HomePage() {
   const router = useRouter();
@@ -39,8 +40,15 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
-      
+    <div className="min-h-screen">
+      <PublicHeader />
+
+      {/* Main Content Container */}
+      <div className="pt-[100px]">
+        <div className="container max-w-6xl mx-auto bg-red-500 min-h-96 px-4">
+          
+        </div>
+      </div>
     </div>
   );
 }
