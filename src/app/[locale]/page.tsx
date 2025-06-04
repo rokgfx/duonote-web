@@ -46,15 +46,15 @@ export default function HomePage() {
 
       {/* Main Content Container */}
       <div className="pt-[90px]">
-        <div className="container max-w-6xl mx-auto bg-red-500 min-h-96 px-4 flex items-center">
-          <div className="flex-1">
-            <FoxHero className="w-full max-w-md" />
+        <div className="container max-w-7xl mx-auto px-4 flex bg-yellow-200">
+          <div className="flex-1 bg-red-200">
+            <FoxHero className="w-full" />
           </div>
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold text-white mb-4">
+          <div className="w-[60%] bg-green-200 font-host-grotesk text-base-content flex flex-col justify-end">
+            <h1 className="text-5xl/13 mb-4 font-bold">
               {t("title")}
             </h1>
-            <p className="text-lg text-white/90">
+            <p className="text-2xl/9 font-regular">
               {t("description")}
             </p>
           </div>

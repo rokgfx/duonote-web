@@ -1,5 +1,18 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --font-family-host-grotesk: var(--font-host-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-family-noto-sans-jp: var(--font-noto-sans-jp), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-host-grotesk {
+  font-family: "Host Grotesk", var(--font-host-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-noto-sans-jp {
+  font-family: var(--font-noto-sans-jp), ui-sans-serif, system-ui, sans-serif;
+}
 @plugin "daisyui/theme" {
   name: "mytheme";
   default: true; /* set as default */
@@ -93,7 +106,7 @@
 }
 
 html {
-  font-family: var(--font-noto-sans), var(--font-noto-sans-jp), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   height: 100%;
   
 }

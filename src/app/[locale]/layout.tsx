@@ -3,11 +3,19 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl'; // Removed useMessages
 import { notFound } from 'next/navigation';
 import { Noto_Sans_JP } from "next/font/google";
+import { Host_Grotesk } from "next/font/google";
 import "./globals.css"; // Assuming globals.css is in src/app/
 import { locales } from '../lib/i18n'; // Assuming i18n.ts is in src/ and exports locales
 
 const notoSansJP = Noto_Sans_JP({ 
-  subsets: ["latin"]
+  subsets: ["latin"],
+  variable: "--font-noto-sans-jp"
+});
+
+const hostGrotesk = Host_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-host-grotesk",
+  display: "swap"
 });
 
 
@@ -50,7 +58,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${notoSansJP.className} font-sans antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+      </head>
+      <body className={`${hostGrotesk.variable} ${notoSansJP.variable} antialiased`}>
         {/*
           NextIntlClientProvider is essential for making translations
           available to Client Components deeper in the tree.
