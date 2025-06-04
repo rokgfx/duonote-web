@@ -74,7 +74,9 @@ export default function HomePage() {
             <div className="h-60 flex items-center justify-center">
         
             </div>
-            <h3 className="text-3xl font-bold text-base-content">{t("features.bilingual")}</h3>
+            <div className="h-24 flex items-end">
+              <h3 className="text-3xl font-bold text-base-content">{t("features.bilingual")}</h3>
+            </div>
             <Divider />
             <p className="mt-2 text-base-content text-lg">{t("features.bilingualDesc")}</p>
           </div>
@@ -83,7 +85,9 @@ export default function HomePage() {
             <div className="h-60 flex items-center justify-center">
            
             </div>
-            <h3 className="text-3xl font-bold text-base-content">{t("features.smart")}</h3>
+            <div className="h-24 flex items-end">
+              <h3 className="text-3xl font-bold text-base-content">{t("features.smart")}</h3>
+            </div>
             <Divider />
             <p className="mt-2 text-base-content text-lg">{t("features.smartDesc")}</p>
           </div>
@@ -92,7 +96,9 @@ export default function HomePage() {
             <div className="h-60 flex items-center justify-center">
           
             </div>
-            <h3 className="text-3xl font-bold text-base-content">{t("features.offline")}</h3>
+            <div className="h-24 flex items-end">
+              <h3 className="text-3xl font-bold text-base-content">{t("features.offline")}</h3>
+            </div>
             <Divider />
             <p className="mt-2 text-base-content text-lg">{t("features.offlineDesc")}</p>
           </div>
