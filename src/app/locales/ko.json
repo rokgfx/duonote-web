@@ -15,6 +15,7 @@
     },
     "cta": {
       "getStarted": "시작하기",
+      "clickHereToGetStarted": "여기를 클릭하여 시작하기",
       "login": "로그인",
       "register": "계정 만들기"
     }

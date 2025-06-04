@@ -59,7 +59,7 @@ export default function HomePage() {
               {t("description")}
             </p>
             <button className="mt-4 btn btn-primary btn-xl text-2xl w-fit px-16 self-center md:self-start">
-              Click here to get started
+              {t("cta.clickHereToGetStarted")}
             </button>
             
           </div>

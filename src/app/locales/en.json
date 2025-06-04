@@ -15,6 +15,7 @@
     },
     "cta": {
       "getStarted": "Get Started",
+      "clickHereToGetStarted": "Click here to get started",
       "login": "Login",
       "register": "Create Account"
     }

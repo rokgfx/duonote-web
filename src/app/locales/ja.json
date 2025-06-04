@@ -15,6 +15,7 @@
     },
     "cta": {
       "getStarted": "始める",
+      "clickHereToGetStarted": "ここをクリックして始める",
       "login": "ログイン",
       "register": "アカウント作成"
     }

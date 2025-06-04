@@ -15,6 +15,7 @@
     },
     "cta": {
       "getStarted": "Loslegen",
+      "clickHereToGetStarted": "Hier klicken, um loszulegen",
       "login": "Anmelden",
       "register": "Konto Erstellen"
     }

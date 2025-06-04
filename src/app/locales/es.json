@@ -15,6 +15,7 @@
     },
     "cta": {
       "getStarted": "Comenzar",
+      "clickHereToGetStarted": "Haz clic aquí para comenzar",
       "login": "Iniciar Sesión",
       "register": "Crear Cuenta"
     }
