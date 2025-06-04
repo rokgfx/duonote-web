@@ -63,9 +63,12 @@
 }
 
 @utility btn-primary {
-  @apply bg-primary;
+  @apply bg-secondary;
   @apply hover:shadow-none hover:brightness-110 transition-all duration-200;
   @apply border-none;
+  @apply text-base-100;
+  @apply text-lg;
+  @apply font-normal;
 }
 
 @utility btn-neutral {
