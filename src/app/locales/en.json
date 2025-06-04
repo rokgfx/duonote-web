@@ -6,12 +6,12 @@
     "title": "Your bilingual vocabulary, always at your fingertips.",
     "description": "Duonote is your personal space to store and instantly retrieve phrases and words in two languages. Built by you, it's tailored to what you need to say. Duonote's intuitive two-way search means you find what you're looking for quickly and easily, making it perfect for practical lookups on the go.",
     "features": {
-      "bilingual": "Bilingual Learning",
-      "bilingualDesc": "Learn vocabulary in both English and Japanese with intelligent connections",
+      "bilingual": "Build your perfect phrasebook",
+      "bilingualDesc": "Duonote is centered around your unique vocabulary needs. Add the exact phrases, sentences, and terms that are relevant to your conversations and learning style. This isn't a generic dictionary; it's a personalized collection, built by you, for instant practical use.",
       "offline": "Offline First",
       "offlineDesc": "Study anywhere, anytime - even without internet connection",
-      "smart": "Smart Reviews",
-      "smartDesc": "AI-powered spaced repetition helps you remember what you learn"
+      "smart": "Find words and phrases in a flash",
+      "smartDesc": "Forget which language the phrase was in, or how to spell it perfectly? Duonote's powerful two-way search understands. Type what you remember—in either language—and our intuitive search will quickly find your saved notes, making lookups effortless even with typos or partial entries."
     },
     "cta": {
       "getStarted": "Get Started",

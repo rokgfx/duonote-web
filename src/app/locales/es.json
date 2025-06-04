@@ -6,12 +6,12 @@
     "title": "Tu vocabulario bilingüe, siempre al alcance de tus dedos.",
     "description": "Duonote es tu espacio personal para almacenar y recuperar instantáneamente frases y palabras en dos idiomas. Construido por ti, está adaptado a lo que necesitas decir. La búsqueda bidireccional intuitiva de Duonote significa que encuentras lo que buscas rápida y fácilmente, haciéndolo perfecto para consultas prácticas sobre la marcha.",
     "features": {
-      "bilingual": "Aprendizaje Bilingüe",
-      "bilingualDesc": "Aprende vocabulario en inglés y español con conexiones inteligentes",
+      "bilingual": "Construye tu libro de frases perfecto",
+      "bilingualDesc": "Duonote se centra en tus necesidades únicas de vocabulario. Agrega las frases, oraciones y términos exactos que son relevantes para tus conversaciones y estilo de aprendizaje. Esto no es un diccionario genérico; es una colección personalizada, construida por ti, para uso práctico instantáneo.",
       "offline": "Offline Primero",
       "offlineDesc": "Estudia en cualquier lugar, en cualquier momento, incluso sin conexión a internet",
-      "smart": "Repasos Inteligentes",
-      "smartDesc": "La repetición espaciada impulsada por IA te ayuda a recordar lo que aprendes"
+      "smart": "Encuentra palabras y frases al instante",
+      "smartDesc": "¿Olvidaste en qué idioma estaba la frase, o cómo deletrearla perfectamente? La poderosa búsqueda bidireccional de Duonote lo entiende. Escribe lo que recuerdes—en cualquier idioma—y nuestra búsqueda intuitiva encontrará rápidamente tus notas guardadas, haciendo las consultas sin esfuerzo incluso con errores tipográficos o entradas parciales."
     },
     "cta": {
       "getStarted": "Comenzar",

@@ -70,7 +70,7 @@ export default function HomePage() {
       <section className="mt-14 md:mt-28 bg-base-200 py-16 font-host-grotesk">
         <div className="container max-w-7xl mx-auto px-4 flex flex-col md:flex-row">
           
-          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pr-24">
+          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pr-18">
             <div className="h-60 flex items-center justify-center">
         
             </div>
@@ -79,7 +79,7 @@ export default function HomePage() {
             <p className="mt-2 text-base-content text-lg">{t("features.bilingualDesc")}</p>
           </div>
           
-          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pl-12 pr-12">
+          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pl-9 pr-9">
             <div className="h-60 flex items-center justify-center">
            
             </div>
@@ -88,7 +88,7 @@ export default function HomePage() {
             <p className="mt-2 text-base-content text-lg">{t("features.smartDesc")}</p>
           </div>
 
-          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pl-24">
+          <div className="w-full md:w-1/3 flex flex-col bg-red-200 pl-18">
             <div className="h-60 flex items-center justify-center">
           
             </div>
