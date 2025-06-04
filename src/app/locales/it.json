@@ -1,0 +1,23 @@
+{
+  "General": {
+    "text": "Testo"
+  },
+  "HomePage": {
+    "title": "Il tuo vocabolario bilingue, sempre a portata di mano.",
+    "description": "Duonote è il tuo spazio personale per memorizzare e recuperare istantaneamente frasi e parole in due lingue. Costruito da te, è personalizzato su quello che devi dire. La ricerca bidirezionale intuitiva di Duonote significa che trovi quello che stai cercando in modo rapido e semplice, rendendolo perfetto per consultazioni pratiche in movimento.",
+    "features": {
+      "bilingual": "Costruisci il tuo frasario perfetto",
+      "bilingualDesc": "Duonote è incentrato sulle tue esigenze di vocabolario uniche. Aggiungi le frasi, le espressioni e i termini esatti che sono rilevanti per le tue conversazioni e il tuo stile di apprendimento. Questo non è un dizionario generico; è una collezione personalizzata, costruita da te, per un uso pratico istantaneo.",
+      "offline": "Funziona offline",
+      "offlineDesc": "Che tu stia viaggiando, in una riunione o semplicemente in giro, le tue frasi personalizzate sono sempre a portata di mano. Duonote è progettato per funzionare perfettamente offline, assicurando che tu possa recuperare il tuo vocabolario in qualsiasi momento, senza bisogno di una connessione internet.",
+      "smart": "Trova parole e frasi in un lampo",
+      "smartDesc": "Hai dimenticato in quale lingua era la frase, o come scriverla perfettamente? La potente ricerca bidirezionale di Duonote capisce. Digita quello che ricordi—in entrambe le lingue—e la nostra ricerca intuitiva troverà rapidamente le tue note salvate, rendendo le consultazioni semplici anche con errori di battitura o inserimenti parziali."
+    },
+    "cta": {
+      "getStarted": "Inizia",
+      "clickHereToGetStarted": "Clicca qui per iniziare",
+      "login": "Accedi",
+      "register": "Crea Account"
+    }
+  }
+}
