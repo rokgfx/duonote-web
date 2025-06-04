@@ -46,7 +46,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* Main Content Container */}
-      <div className="pt-[90px]">
+      <div className="pt-[80px]">
         <div className="container max-w-7xl mx-auto px-4 flex gap-10 mt-14 md:mt-20 flex-col md:flex-row">
           <div className="flex-1">
             <FoxHero className="h-96 justify-self-start md:w-full" />
