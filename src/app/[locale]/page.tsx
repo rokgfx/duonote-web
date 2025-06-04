@@ -51,7 +51,12 @@ export default function HomePage() {
             <FoxHero className="w-full max-w-md" />
           </div>
           <div className="flex-1">
-            {/* Content area for future use */}
+            <h1 className="text-4xl font-bold text-white mb-4">
+              {t("title")}
+            </h1>
+            <p className="text-lg text-white/90">
+              {t("description")}
+            </p>
           </div>
         </div>
       </div>
