@@ -36,6 +36,8 @@ function getLocaleLabel(locale: string) {
       return 'Português';
     case 'it':
       return 'Italiano';
+    case 'vi':
+      return 'Tiếng Việt';
     default:
       return locale;
   }
@@ -53,7 +55,7 @@ export default function PublicHeader() {
   const currentLocale = pathname.split('/')[1] || 'en';
   const pathWithoutLocale = getPathWithoutLocale(pathname, locales);
 
-  const supportedLocales = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'ko', 'pt', 'it'];
+  const supportedLocales = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'ko', 'pt', 'it', 'vi'];
 
   return (
     <div className="navbar fixed top-0 z-50 h-[90px] bg-base-100 border-b border-base-content">

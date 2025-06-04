@@ -1,0 +1,23 @@
+{
+  "General": {
+    "text": "Văn bản"
+  },
+  "HomePage": {
+    "title": "Từ vựng song ngữ của bạn, luôn sẵn sàng trong tầm tay.",
+    "description": "Duonote là không gian cá nhân để lưu trữ và truy xuất ngay lập tức các cụm từ và từ ngữ bằng hai ngôn ngữ. Được xây dựng bởi bạn, nó được tùy chỉnh theo những gì bạn cần nói. Tính năng tìm kiếm hai chiều trực quan của Duonote giúp bạn tìm thấy những gì mình đang tìm kiếm một cách nhanh chóng và dễ dàng, hoàn hảo cho việc tra cứu thực tế khi di chuyển.",
+    "features": {
+      "bilingual": "Xây dựng cuốn cẩm nang từ vựng hoàn hảo của bạn",
+      "bilingualDesc": "Duonote tập trung vào nhu cầu từ vựng độc đáo của bạn. Thêm các cụm từ, câu và thuật ngữ chính xác có liên quan đến cuộc trò chuyện và phong cách học tập của bạn. Đây không phải là từ điển thông thường; đó là một bộ sưu tập được cá nhân hóa, được xây dựng bởi bạn, để sử dụng thực tế ngay lập tức.",
+      "offline": "Hoạt động ngoại tuyến",
+      "offlineDesc": "Cho dù bạn đang đi du lịch, trong cuộc họp hay chỉ đơn giản là đi ra ngoài, các cụm từ tùy chỉnh của bạn luôn trong tầm với. Duonote được thiết kế để hoạt động liền mạch ngoại tuyến, đảm bảo bạn có thể truy xuất từ vựng của mình bất cứ lúc nào mà không cần kết nối internet.",
+      "smart": "Tìm từ và cụm từ trong nháy mắt",
+      "smartDesc": "Quên ngôn ngữ nào đã dùng cho cụm từ đó, hoặc cách đánh vần hoàn hảo? Tính năng tìm kiếm hai chiều mạnh mẽ của Duonote hiểu được điều đó. Gõ những gì bạn nhớ—bằng bất kỳ ngôn ngữ nào—và tìm kiếm trực quan của chúng tôi sẽ nhanh chóng tìm thấy các ghi chú đã lưu của bạn, giúp việc tra cứu trở nên dễ dàng ngay cả khi có lỗi chính tả hoặc nhập thiếu."
+    },
+    "cta": {
+      "getStarted": "Bắt đầu",
+      "clickHereToGetStarted": "Nhấp vào đây để bắt đầu",
+      "login": "Đăng nhập",
+      "register": "Tạo tài khoản"
+    }
+  }
+}
