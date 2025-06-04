@@ -58,10 +58,10 @@ export default function PublicHeader() {
   const supportedLocales = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'ko', 'pt', 'it', 'vi'];
 
   return (
-    <div className="navbar fixed top-0 z-50 h-[90px] bg-base-100 border-b border-base-content">
+    <div className="navbar fixed top-0 z-50 h-[90px] bg-base-100 border-b border-neutral">
       <div className="max-w-7xl mx-auto w-full px-4">
         <div className="navbar-start">
-          <DuonoteLogo className="h-11" />
+          <DuonoteLogo className="h-110" />
         </div>
         <div className="navbar-end">
           <div className="dropdown dropdown-end">
