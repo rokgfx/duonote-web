@@ -6,6 +6,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { locales } from '@/app/lib/i18n';
+import 'flag-icons/css/flag-icons.min.css';
 
 function getPathWithoutLocale(pathname: string, locales: readonly string[]) {
   // Remove the leading locale segment from the pathname (e.g., '/ja/foo' -> '/foo')
@@ -40,6 +41,33 @@ function getLocaleLabel(locale: string) {
       return 'Tiếng Việt';
     default:
       return locale;
+  }
+}
+
+function getCountryCode(locale: string) {
+  switch (locale) {
+    case 'en':
+      return 'us';
+    case 'ja':
+      return 'jp';
+    case 'es':
+      return 'es';
+    case 'fr':
+      return 'fr';
+    case 'de':
+      return 'de';
+    case 'zh':
+      return 'cn';
+    case 'ko':
+      return 'kr';
+    case 'pt':
+      return 'pt';
+    case 'it':
+      return 'it';
+    case 'vi':
+      return 'vn';
+    default:
+      return 'us';
   }
 }
 
@@ -78,7 +106,10 @@ export default function PublicHeader() {
                     className={`flex items-center justify-between ${locale === currentLocale ? 'active' : ''}`}
                     onClick={() => handleLocaleChange(locale)}
                   >
-                    <span>{getLocaleLabel(locale)}</span>
+                    <div className="flex items-center gap-3">
+                      <span className={`fi fi-${getCountryCode(locale)} w-5 h-4 border border-neutral rounded-[4px]`}></span>
+                      <span>{getLocaleLabel(locale)}</span>
+                    </div>
                     {locale === currentLocale && (
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />

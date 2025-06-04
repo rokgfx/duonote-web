@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.2.0",
     "daisyui": "^5.0.43",
     "firebase": "^11.7.3",
+    "flag-icons": "^7.5.0",
     "flexsearch": "^0.8.204",
     "next": "15.3.2",
     "next-intl": "^4.1.0",
