@@ -50,7 +50,7 @@ export default function HomePage() {
     <>
       <PublicHeader />
       
-      <main className="flex-1 bg-base-100">
+      <main className="bg-base-100">
         {/* Main Content Container */}
         <div className="pt-[80px]">
           <div className="container max-w-7xl mx-auto px-4 flex gap-10 mt-14 md:mt-20 flex-col md:flex-row">
@@ -71,9 +71,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </main>
 
+      {/* Features and Footer with Gray Background */}
+      <div className="flex-1 bg-base-200 flex flex-col mt-16">
         {/* Features */}
-        <section className="mt-14 md:mt-28 bg-base-200 py-16 font-host-grotesk">
+        <section className="pt-12 pb-20 font-host-grotesk">
           <div className="container max-w-7xl mx-auto px-4 flex flex-col md:flex-row">
             
             <div className="w-full md:w-1/3 flex flex-col lg:pr-18 md:pr-10 mb-14 md:mb-0">
@@ -108,9 +111,12 @@ export default function HomePage() {
           
           </div>
         </section>
-      </main>
-
-      <Footer />
+        
+        {/* Flex spacer to push footer to bottom */}
+        <div className="flex-1"></div>
+        
+        <Footer />
+      </div>
     </>
   );
 }
