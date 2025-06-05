@@ -7,8 +7,12 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import PublicHeader from "@/components/layout/PublicHeader";
-import FoxHero from "@/components/ui/FoxHero";
+import Fox from "@/components/ui/Fox";
 import Divider from "@/components/ui/Divider";
+import FeatureNotes from "@/components/ui/FeatureNotes";
+import FeatureSearch from "@/components/ui/FeatureSearch";
+import FeatureOffline from "@/components/ui/FeatureOffline";
+
 
 export default function HomePage() {
   const router = useRouter();
@@ -49,7 +53,7 @@ export default function HomePage() {
       <div className="pt-[80px]">
         <div className="container max-w-7xl mx-auto px-4 flex gap-10 mt-14 md:mt-20 flex-col md:flex-row">
           <div className="flex-1">
-            <FoxHero className="h-96 justify-self-start md:w-full" />
+            <Fox className="h-96 justify-self-start md:w-full" />
           </div>
           <div className="w-full md:w-[60%] font-host-grotesk text-base-content flex flex-col justify-end">
             <h1 className="text-5xl/13 mb-4 font-bold">
@@ -70,33 +74,30 @@ export default function HomePage() {
       <section className="mt-14 md:mt-28 bg-base-200 py-16 font-host-grotesk">
         <div className="container max-w-7xl mx-auto px-4 flex flex-col md:flex-row">
           
-          <div className="w-full md:w-1/3 flex flex-col lg:pr-18 md:pr-10">
-            <div className="h-60 flex items-center justify-center">
-        
-            </div>
-            <div className="h-24 flex items-end">
-              <h3 className="text-3xl font-bold text-base-content">{t("features.bilingual")}</h3>
+          <div className="w-full md:w-1/3 flex flex-col lg:pr-18 md:pr-10 mb-14 md:mb-0">
+            
+            <FeatureNotes className="w-[70%] md:w-full md:mb-2 self-center"/>
+            <div className="h-14 md:h-24 flex items-end">
+              <h3 className="mt-[5rem] text-3xl font-bold text-base-content">{t("features.bilingual")}</h3>
             </div>
             <Divider />
             <p className="mt-2 text-base-content text-xl">{t("features.bilingualDesc")}</p>
           </div>
           
-          <div className="w-full md:w-1/3 flex flex-col lg:pl-9 lg:pr-9 md:pl-5 md:pr-5">
-            <div className="h-60 flex items-center justify-center">
-           
-            </div>
-            <div className="h-24 flex items-end">
+          <div className="w-full md:w-1/3 flex flex-col lg:pl-9 lg:pr-9 md:pl-5 md:pr-5 mb-14 md:mb-0">
+            
+            <FeatureSearch className="w-[70%] md:w-full md:mb-2 self-center"/>
+            <div className="h-14 md:h-24 flex items-end">
               <h3 className="text-3xl font-bold text-base-content">{t("features.smart")}</h3>
             </div>
             <Divider />
             <p className="mt-2 text-base-content text-xl">{t("features.smartDesc")}</p>
           </div>
 
-          <div className="w-full md:w-1/3 flex flex-col lg:pl-18 md:pl-10">
-            <div className="h-60 flex items-center justify-center">
-          
-            </div>
-            <div className="h-24 flex items-end">
+          <div className="w-full md:w-1/3 flex flex-col lg:pl-18 md:pl-10 mb-14 md:mb-0">
+            
+            <FeatureOffline className="w-[70%] md:w-full md:mb-2 self-center"/>
+            <div className="h-14 md:h-24 flex items-end">
               <h3 className="text-3xl font-bold text-base-content">{t("features.offline")}</h3>
             </div>
             <Divider />

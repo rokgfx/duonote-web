@@ -1,10 +1,10 @@
 import React from "react";
 
-interface DuonoteLogoProps {
+interface DuonoteLogoAltProps {
   className?: string;
 }
 
-export default function DuonoteLogo({ className = "h-8" }: DuonoteLogoProps) {
+export default function DuonoteLogoAlt({ className = "h-8" }: DuonoteLogoAltProps) {
   return (
     <svg 
    
