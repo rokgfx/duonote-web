@@ -63,14 +63,16 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${hostGrotesk.variable} ${notoSansJP.variable} antialiased`}>
+      <body className={`${hostGrotesk.variable} ${notoSansJP.variable} antialiased flex flex-col min-h-screen`}>
         {/*
           NextIntlClientProvider is essential for making translations
           available to Client Components deeper in the tree.
           It receives the messages loaded here in the Server Component layout.
         */}
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <div className="flex flex-col min-h-screen flex-1">
+            {children}
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>
