@@ -12,6 +12,7 @@ import Divider from "@/components/ui/Divider";
 import FeatureNotes from "@/components/ui/FeatureNotes";
 import FeatureSearch from "@/components/ui/FeatureSearch";
 import FeatureOffline from "@/components/ui/FeatureOffline";
+import Footer from "@/components/layout/Footer";
 
 
 export default function HomePage() {
@@ -108,11 +109,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-base-content py-16">
-        <div className="container max-w-7xl mx-auto px-4">
-          {/* Footer content goes here */}
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
