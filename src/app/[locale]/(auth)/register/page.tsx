@@ -6,6 +6,7 @@ import { getAuthErrorMessage } from "@/app/lib/auth-errors";
 import Link from "next/link";
 import Footer from "@/components/layout/Footer";
 import PublicHeader from "@/components/layout/PublicHeader";
+import Divider from "@/components/ui/Divider";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -66,18 +67,19 @@ export default function RegisterPage() {
   return (
     <>
       <PublicHeader />
-      <main className="flex flex-col items-center justify-center flex-1 bg-base-200 pt-[80px]">
-        <div className="w-full max-w-sm p-6 bg-white rounded shadow">
-          <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <main className="flex flex-col items-center justify-center flex-1 bg-base-200 pt-[80px] pb-16">
+        <div className="w-full max-w-md px-6">
+          <h1 className="text-4xl font-bold mb-6 text-center text-base-content font-host-grotesk">Register</h1>
+          <Divider />
+          <form onSubmit={handleSubmit} className="space-y-6 mt-8">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
+              <label htmlFor="email" className="block text-lg font-medium mb-2 text-base-content">
                 Email
               </label>
               <input
                 id="email"
                 type="email"
-                className="w-full px-3 py-2 bg-zinc-100 border-solid border-zinc-300 rounded"
+                className="input input-bordered w-full text-lg"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
@@ -85,13 +87,13 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-1">
+              <label htmlFor="password" className="block text-lg font-medium mb-2 text-base-content">
                 Password
               </label>
               <input
                 id="password"
                 type="password"
-                className="w-full px-3 py-2 bg-zinc-100 border-solid border-zinc-300 rounded"
+                className="input input-bordered w-full text-lg"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
@@ -99,13 +101,13 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-1">
+              <label htmlFor="confirmPassword" className="block text-lg font-medium mb-2 text-base-content">
                 Confirm Password
               </label>
               <input
                 id="confirmPassword"
                 type="password"
-                className="w-full px-3 py-2 bg-zinc-100 border-solid border-zinc-300 rounded"
+                className="input input-bordered w-full text-lg"
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
                 required
@@ -124,21 +126,23 @@ export default function RegisterPage() {
             )}
             <button
               type="submit"
-              className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              className="btn btn-primary btn-xl text-xl w-full mt-8"
               disabled={loading}
             >
               {loading ? "Registering..." : "Register"}
             </button>
           </form>
-          <div className="my-4 flex items-center">
-            <div className="flex-grow h-px bg-gray-300" />
-            <span className="mx-2 text-gray-400 text-xs">OR</span>
-            <div className="flex-grow h-px bg-gray-300" />
+          <div className="my-8">
+            <Divider />
+            <div className="text-center my-4">
+              <span className="text-base-content/60 text-lg font-medium">OR</span>
+            </div>
+            <Divider />
           </div>
           <button
             type="button"
             onClick={handleGoogleRegister}
-            className="w-full py-2 bg-red-500 text-white rounded hover:bg-red-600 transition flex items-center justify-center"
+            className="btn btn-outline btn-xl text-xl w-full flex items-center justify-center gap-3"
             disabled={loading}
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
@@ -152,9 +156,9 @@ export default function RegisterPage() {
             </svg>
             Continue with Google
           </button>
-          <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link href="../login" className="text-blue-600 hover:underline">
+          <div className="mt-8 text-center text-lg">
+            <span className="text-base-content/70">Already have an account?{" "}</span>
+            <Link href="../login" className="link link-primary font-medium">
               Login
             </Link>
           </div>
