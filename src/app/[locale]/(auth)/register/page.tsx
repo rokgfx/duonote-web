@@ -5,6 +5,7 @@ import { auth } from "@/app/lib/firebase";
 import { getAuthErrorMessage } from "@/app/lib/auth-errors";
 import Link from "next/link";
 import Footer from "@/components/layout/Footer";
+import PublicHeader from "@/components/layout/PublicHeader";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -64,7 +65,8 @@ export default function RegisterPage() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-center flex-1 bg-gray-50">
+      <PublicHeader />
+      <main className="flex flex-col items-center justify-center flex-1 bg-base-200 pt-[80px]">
         <div className="w-full max-w-sm p-6 bg-white rounded shadow">
           <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

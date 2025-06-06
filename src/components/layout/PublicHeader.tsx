@@ -80,7 +80,9 @@ export default function PublicHeader() {
   const pathname = usePathname();
 
   // Find current locale in path (e.g., '/ja/foo')
-  const currentLocale = pathname.split('/')[1] || 'en';
+  const segments = pathname.split('/');
+  const potentialLocale = segments[1];
+  const currentLocale = locales.includes(potentialLocale) ? potentialLocale : 'en';
   const pathWithoutLocale = getPathWithoutLocale(pathname, locales);
 
   const supportedLocales = ['en', 'es', 'fr', 'de', 'it', 'pt', 'zh', 'ja', 'ko', 'vi'];
