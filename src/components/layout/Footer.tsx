@@ -55,7 +55,7 @@ export default function Footer() {
               href="/help" 
               className="text-base-100/80 hover:text-base-100 text-base font-medium transition-colors"
             >
-              FAQ
+              Help
             </Link>
             <Link 
               href="/register" 
@@ -71,7 +71,7 @@ export default function Footer() {
 
         {/* Description centered */}
         <div className="text-center mb-6">
-          <p className="text-base-100/50 text-sm md:text-base leading-relaxed max-w-xl mx-auto">
+          <p className="text-base-100/50 text-sm leading-relaxed max-w-xl mx-auto">
             Duonote is a bilingual vocabulary and dictionary app designed to help language learners 
             build their vocabulary effectively through smart note-taking and spaced repetition.
           </p>

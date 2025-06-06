@@ -89,9 +89,16 @@ export default function PublicHeader() {
     <div className="navbar fixed top-0 z-50 h-[80px] bg-base-100 border-b border-neutral">
       <div className="max-w-7xl mx-auto w-full px-4">
         <div className="navbar-start">
-          <DuonoteLogo className="h-11 mt-2" />
+          <Link href="/">
+            <DuonoteLogo className="h-11 mt-2" />
+          </Link>
         </div>
         <div className="navbar-end">
+          <div className="hidden md:flex items-center gap-6 mr-4">
+            <Link href="/about" className="btn btn-ghost btn-sm text-base">Why Duonote?</Link>
+            <Link href="/help" className="btn btn-ghost btn-sm text-base">Help</Link>
+            <Link href={`/${currentLocale}/login`} className="btn btn-ghost btn-sm text-base">Login</Link>
+          
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-sm gap-2">
               <span className="text-base font-medium">{getLocaleLabel(currentLocale)}</span>
@@ -119,6 +126,7 @@ export default function PublicHeader() {
                 </li>
               ))}
             </ul>
+          </div>
           </div>
         </div>
       </div>
