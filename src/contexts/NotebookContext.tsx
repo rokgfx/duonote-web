@@ -28,7 +28,7 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
   const isOnline = useNetworkStatus();
 
   // Key for localStorage
-  const getLastNotebookKey = () => user ? `lastNotebook_${user.uid}` : null;
+  const getLastNotebookKey = useCallback(() => user ? `lastNotebook_${user.uid}` : null, [user]);
 
   // Save current notebook to localStorage
   const saveLastNotebook = useCallback((notebook: Notebook | null) => {
@@ -40,13 +40,13 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem(key);
       }
     }
-  }, [user]);
+  }, [getLastNotebookKey]);
 
   // Get last notebook from localStorage
   const getLastNotebook = useCallback((): string | null => {
     const key = getLastNotebookKey();
     return key ? localStorage.getItem(key) : null;
-  }, [user]);
+  }, [getLastNotebookKey]);
 
   // Load notebooks when user is available
   useEffect(() => {
@@ -106,14 +106,14 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
     setError('Failed to load notebooks');
     setLoading(false);
   }
-}, [user]);
+}, [user, getLastNotebook]);
 
   // Save current notebook to localStorage whenever it changes
   useEffect(() => {
     if (user && currentNotebook) {
       saveLastNotebook(currentNotebook);
     }
-  }, [currentNotebook, user]);
+  }, [currentNotebook, user, saveLastNotebook]);
   
 
   const createNotebook = async (data: CreateNotebookData) => {
