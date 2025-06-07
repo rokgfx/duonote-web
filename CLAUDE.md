@@ -82,3 +82,29 @@ npm run lint
 - **Network status detection** with `useNetworkStatus` hook
 - **Offline indicator** shows when app is disconnected
 - **Manual network control** via `goOffline()` and `goOnline()` functions
+
+### Domain and HTTPS Setup Steps
+
+1. Configure DNS:
+   - Point domain to Vercel/hosting provider's IP
+   - Set up A/CNAME records
+
+2. SSL/TLS Certificate:
+   - Use Let's Encrypt for free SSL
+   - Configure automatic certificate renewal
+   - Ensure HTTPS redirects are enabled
+
+3. Vercel Configuration:
+   - Add custom domain in Vercel project settings
+   - Enable automatic HTTPS
+   - Configure www and apex domain redirects
+
+4. Next.js HTTPS Configuration:
+   - Update `next.config.ts` to enforce HTTPS
+   - Set `HTTPS_REDIRECT=true` in environment
+   - Configure `httpOnly` and `secure` flags for cookies
+
+5. Firebase Configuration:
+   - Update authorized domains in Firebase Console
+   - Enable custom domain in Firebase Hosting
+   - Configure SSL certificate
