@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://100.88.94.81:3000",
+    "https://duonote.com",
+    "http://duonote.com"
   ],
   devIndicators: false
 };
