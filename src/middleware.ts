@@ -1,5 +1,4 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale } from './app/lib/i18n';
 
 // Create the next-intl middleware

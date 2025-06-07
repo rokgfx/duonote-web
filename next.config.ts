@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 import withNextIntl from 'next-intl/plugin';
-import { locales } from './src/app/lib/i18n';
 
 // Create the withNextIntl higher-order function
 const withNextIntlConfig = withNextIntl('./src/app/lib/i18n.ts');

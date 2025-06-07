@@ -6,7 +6,6 @@ import { getAuthErrorMessage } from "@/app/lib/auth-errors";
 import Link from "next/link";
 import Footer from "@/components/layout/Footer";
 import PublicHeader from "@/components/layout/PublicHeader";
-import Divider from "@/components/ui/Divider";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");

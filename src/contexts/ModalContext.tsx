@@ -141,12 +141,12 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         <Modal
           isOpen={isModalOpen}
           onClose={hideModal}
-          title={modalOptions.title}
-          buttons={modalOptions.buttons}
-          showCloseButton={modalOptions.showCloseButton}
-          closeOnBackdropClick={modalOptions.closeOnBackdropClick}
-          size={modalOptions.size}
-          className={modalOptions.className}
+          {...(modalOptions.title !== undefined && { title: modalOptions.title })}
+          {...(modalOptions.buttons !== undefined && { buttons: modalOptions.buttons })}
+          {...(modalOptions.showCloseButton !== undefined && { showCloseButton: modalOptions.showCloseButton })}
+          {...(modalOptions.closeOnBackdropClick !== undefined && { closeOnBackdropClick: modalOptions.closeOnBackdropClick })}
+          {...(modalOptions.size !== undefined && { size: modalOptions.size })}
+          {...(modalOptions.className !== undefined && { className: modalOptions.className })}
         >
           {modalOptions.content}
         </Modal>

@@ -1,5 +1,4 @@
 // src/app/[locale]/layout.tsx
-import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl'; // Removed useMessages
 import { notFound } from 'next/navigation';
 import { Noto_Sans_JP } from "next/font/google";
@@ -27,9 +26,9 @@ export async function generateStaticParams() {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     locale: string; // 'locale' is a string, directly available
-  };
+  }>;
 }
 
 // Make the RootLayout an async function
@@ -52,7 +51,7 @@ export default async function RootLayout({
     // The path is relative to this file, going up to src/ and then into locales/.
     // If your i18n.ts is in src/i18n.ts and messages in src/locales/
     messages = (await import(`../locales/${locale}.json`)).default;
-  } catch (error) {
+  } catch {
     notFound();
   }
 

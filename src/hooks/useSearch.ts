@@ -142,8 +142,7 @@ export function useSearch(notes: Note[]) {
       tokenize: 'forward',
       // Higher resolution for better accuracy
       resolution: 9,
-      // Increased depth for better fuzzy matching
-      depth: 3,
+      // Removed depth as it's not valid for IndexOptions
       // Better Unicode support for multiple languages
       encode: (str: string) => {
         // Normalize Unicode for better matching across different input methods

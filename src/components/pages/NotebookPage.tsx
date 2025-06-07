@@ -360,7 +360,7 @@ export default function NotebookPage({ onBackToNotes, showFirstTimeMessage = fal
                             Notebooks help you organize your vocabulary by language pairs or topics.
                           </div>
                           <div className="text-xs mt-2 opacity-75">
-                            For example: "English ↔ Japanese" or "Business Vocabulary"
+                            For example: &quot;English ↔ Japanese&quot; or &quot;Business Vocabulary&quot;
                           </div>
                         </div>
                       </div>

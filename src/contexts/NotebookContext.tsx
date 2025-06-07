@@ -141,7 +141,7 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         
         try {
           await Promise.race([addPromise, timeoutPromise]);
-        } catch (timeoutError) {
+        } catch {
           console.log('Create operation timed out (expected in offline mode) - data cached locally');
         }
       } else {
@@ -181,7 +181,7 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         
         try {
           await Promise.race([updatePromise, timeoutPromise]);
-        } catch (timeoutError) {
+        } catch {
           console.log('Update operation timed out (expected in offline mode) - data cached locally');
         }
       } else {
@@ -220,7 +220,7 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         
         try {
           await Promise.race([deletePromise, timeoutPromise]);
-        } catch (timeoutError) {
+        } catch {
           console.log('Delete operation timed out (expected in offline mode) - data cached locally');
         }
       } else {

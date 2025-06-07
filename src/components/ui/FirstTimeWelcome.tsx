@@ -34,7 +34,7 @@ export default function FirstTimeWelcome({ hasNotebooks, onCreateFirstNote }: Fi
           {/* Explanation */}
           <div className="bg-base-200 rounded-lg p-4 space-y-3">
             <h3 className="font-semibold text-base-content">
-              Let's get you set up
+              Let&apos;s get you set up
             </h3>
             <p className="text-sm text-base-content/70 leading-relaxed">
               To create your first note, you need to create a notebook first. 

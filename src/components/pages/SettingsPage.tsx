@@ -19,7 +19,7 @@ interface SettingsPageProps {
 }
 
 export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
-  const { notebooks, currentNotebook, setCurrentNotebook } = useNotebooks();
+  const { notebooks } = useNotebooks();
   const [user] = useAuthState(auth!);
   const [isSaving, setIsSaving] = useState(false);
   const [selectedNotebookForExport, setSelectedNotebookForExport] = useState<string>('');
@@ -173,7 +173,7 @@ export default function SettingsPage({ onBackToNotes }: SettingsPageProps) {
                 </label>
                 {notebooks.length === 0 ? (
                   <div className="text-base text-base-content/60">
-                    You don't have any notebooks to export.
+                    You don&apos;t have any notebooks to export.
                   </div>
                 ) : (
                   <div className="space-y-0">

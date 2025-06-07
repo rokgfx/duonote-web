@@ -30,7 +30,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
   const [error, setError] = useState("");
   const [user] = useAuthState(auth!);
   const isOnline = useNetworkStatus();
-  const { currentNotebook, notebooks } = useNotebooks();
+  const { currentNotebook } = useNotebooks();
 
   const MAX_CHARS = 200;
   const isEditing = !!editNote;
@@ -162,7 +162,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           
           try {
             await Promise.race([updatePromise, timeoutPromise]);
-          } catch (timeoutError) {
+          } catch {
             console.log("Update operation timed out (expected in offline mode) - data cached locally");
           }
         } else {
@@ -191,7 +191,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
           
           try {
             await Promise.race([addDocPromise, timeoutPromise]);
-          } catch (timeoutError) {
+          } catch {
             console.log("Save operation timed out (expected in offline mode) - data cached locally");
           }
         } else {
@@ -234,7 +234,7 @@ export default function AddNoteModal({ isOpen, onClose, onSave, editNote }: AddN
         
         try {
           await Promise.race([deletePromise, timeoutPromise]);
-        } catch (timeoutError) {
+        } catch {
           console.log("Delete operation timed out (expected in offline mode) - data cached locally");
         }
       } else {
