@@ -77,63 +77,65 @@ export default function Header() {
 
 
   return (
-    <header className="navbar sticky top-0 bg-base-100 border-b z-50 flex-shrink-0">
-      <div className="navbar-start w-auto">
-        {/* Logo icon - visible on all screen sizes */}
-        <button 
-          className="btn btn-ghost btn-circle"
-          onClick={handleLogoClick}
-          title="Go to Home"
-        >
-          <BookOpenIcon className="h-6 w-6" />
-        </button>
-      </div>
-      
-      <div className="navbar-center flex-1">
-        {/* Desktop: Match notes list width (max-w-2xl), Mobile: Full width between icons */}
-        <div className="container mx-auto px-2 max-w-2xl">
-          <div className="flex items-center gap-2 w-full">
-            {/* Search input */}
-            <SearchInput className="flex-1" />
-            
-            {/* Add note button - hidden on mobile, shown on desktop */}
+    <header className="fixed top-0 z-50 h-[80px] bg-base-100 border-b border-neutral flex-shrink-0 w-full">
+      <div className="max-w-7xl mx-auto w-full px-4 h-full">
+        <div className="navbar h-full">
+          <div className="navbar-start w-auto">
+            {/* Logo icon - visible on all screen sizes */}
             <button 
-              className="btn btn-ghost btn-circle hidden md:flex" 
-              onClick={openAddNoteModal}
-              title="Add Note"
+              className="btn btn-ghost btn-circle"
+              onClick={handleLogoClick}
+              title="Go to Home"
             >
-              <div className="relative">
-                <PlusIcon className="h-5 w-5" />
-                {currentNotebook && (
-                  <div 
-                    className="absolute -top-1 -right-1 w-2 h-2 rounded-full border border-white"
-                    style={{ backgroundColor: currentNotebook.color }}
-                  />
-                )}
-              </div>
+              <BookOpenIcon className="h-6 w-6" />
             </button>
           </div>
-        </div>
-      </div>
-      
-      <div className="navbar-end w-auto">
-        <div className="flex items-center gap-2">
-          {!isOnline && (
-            <div className="tooltip tooltip-bottom" data-tip="Offline">
-              <BoltIcon className="h-5 w-5 text-warning" />
+          
+          <div className="navbar-center flex-1">
+            {/* Wider search area for better usability */}
+            <div className="flex items-center gap-2 max-w-2xl px-4 flex-1 mx-auto">
+              {/* Search input */}
+              <SearchInput className="flex-1" />
+              
+              {/* Add note button - hidden on mobile, shown on desktop */}
+              <button 
+                className="btn btn-ghost btn-circle hidden md:flex" 
+                onClick={openAddNoteModal}
+                title="Add Note"
+              >
+                <div className="relative">
+                  <PlusIcon className="h-5 w-5" />
+                  {currentNotebook && (
+                    <div 
+                      className="absolute -top-1 -right-1 w-2 h-2 rounded-full border border-white"
+                      style={{ backgroundColor: currentNotebook.color }}
+                    />
+                  )}
+                </div>
+              </button>
             </div>
-          )}
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-              <UserIcon className="h-6 w-6" />
+          </div>
+          
+          <div className="navbar-end w-auto">
+            <div className="flex items-center gap-2">
+              {!isOnline && (
+                <div className="tooltip tooltip-bottom" data-tip="Offline">
+                  <BoltIcon className="h-5 w-5 text-warning" />
+                </div>
+              )}
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                  <UserIcon className="h-6 w-6" />
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                  <li><button onClick={handleNotebooksClick}>Notebooks</button></li>
+                  <li><button onClick={handleSettingsClick}>Settings</button></li>
+                  <li><button onClick={handleLogout}>Logout</button></li>
+                </ul>
+              </div>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-md dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-              <li><button onClick={handleNotebooksClick}>Notebooks</button></li>
-              <li><button onClick={handleSettingsClick}>Settings</button></li>
-              <li><button onClick={handleLogout}>Logout</button></li>
-            </ul>
           </div>
         </div>
       </div>
