@@ -68,7 +68,7 @@ export default function RegisterPage() {
     <>
       <PublicHeader />
       <main className="flex flex-col items-center justify-center flex-1 bg-base-200 pt-[80px] pb-16">
-        <div className="w-full max-w-lg px-6">
+        <div className="w-full max-w-lg px-6 mt-8">
           <h1 className="text-4xl font-bold mb-6 text-center text-base-content font-host-grotesk">Sign up for Duonote</h1>
           <button
             type="button"
