@@ -52,7 +52,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex flex-col min-h-screen">
               <Header />
               <main className="flex-1 bg-base-200 flex justify-center text-base-content">
-                <div className="w-full py-4">
+                <div className="w-full pt-30 pb-4">
                   {children}
                 </div>
               </main>

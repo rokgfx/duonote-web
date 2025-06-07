@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/lib/firebase";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import AddNoteModal from "@/components/modals/AddNoteModal";
 import { useSearch } from "@/hooks/useSearch";
 import HighlightedText from "@/components/ui/HighlightedText";
@@ -343,13 +343,13 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
             {/* Edit button */}
             <button
               onClick={() => handleEditNote(note)}
-              className="btn btn-ghost btn-sm btn-circle absolute top-2 right-2 opacity-60 hover:opacity-100"
+              className="btn btn-ghost btn-sm btn-circle absolute top-2 right-1 opacity-100 hover:opacity-100"
               title="Edit note"
             >
-              <PencilIcon className="h-4 w-4" />
+              <EllipsisVerticalIcon className="h-4 w-4" />
             </button>
             
-            <div className="card-body p-4">
+            <div className="card-body p-4 border-2 border-base-300 rounded-xl">
               {/* Content 1 - Top half */}
               <div 
                 className={`cursor-pointer rounded-md p-2 transition-all duration-100 ${
