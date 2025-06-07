@@ -9,7 +9,7 @@ interface Note {
   id: string;
   content1: string;
   content2: string;
-  createdAt: any;
+  createdAt: Date | null;
   userId: string;
   notebookId?: string;
 }

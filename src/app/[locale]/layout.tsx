@@ -57,11 +57,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
-      </head>
       <body className={`${hostGrotesk.variable} ${notoSansJP.variable} antialiased flex flex-col min-h-screen`}>
         {/*
           NextIntlClientProvider is essential for making translations

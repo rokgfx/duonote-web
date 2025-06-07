@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/lib/firebase';
@@ -31,7 +31,7 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
   const getLastNotebookKey = () => user ? `lastNotebook_${user.uid}` : null;
 
   // Save current notebook to localStorage
-  const saveLastNotebook = (notebook: Notebook | null) => {
+  const saveLastNotebook = useCallback((notebook: Notebook | null) => {
     const key = getLastNotebookKey();
     if (key) {
       if (notebook) {
@@ -40,13 +40,13 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem(key);
       }
     }
-  };
+  }, [user]);
 
   // Get last notebook from localStorage
-  const getLastNotebook = (): string | null => {
+  const getLastNotebook = useCallback((): string | null => {
     const key = getLastNotebookKey();
     return key ? localStorage.getItem(key) : null;
-  };
+  }, [user]);
 
   // Load notebooks when user is available
   useEffect(() => {

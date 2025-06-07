@@ -30,7 +30,7 @@ export default function LoginPage() {
       router.push(`/${params.locale}/app`);
       setEmail("");
       setPassword("");
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(getAuthErrorMessage(err));
     }
     setLoading(false);
@@ -48,7 +48,7 @@ export default function LoginPage() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       router.push(`/${params.locale}/app`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(getAuthErrorMessage(err));
     }
     setLoading(false);

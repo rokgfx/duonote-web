@@ -38,7 +38,7 @@ export default function RegisterPage() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(getAuthErrorMessage(err));
     }
     setLoading(false);
@@ -57,7 +57,7 @@ export default function RegisterPage() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       setSuccess(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(getAuthErrorMessage(err));
     }
     setLoading(false);

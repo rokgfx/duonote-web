@@ -2,7 +2,9 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { enableNetwork, disableNetwork, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { enableNetwork, disableNetwork, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, Firestore } from "firebase/firestore";
+import { Analytics } from "firebase/analytics";
+import { Auth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -20,9 +22,9 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Initialize services only on client side
-let analytics: any = undefined;
-let auth: any = undefined;
-let db: any = undefined;
+let analytics: Analytics | undefined = undefined;
+let auth: Auth | undefined = undefined;
+let db: Firestore | undefined = undefined;
 
 if (typeof window !== "undefined") {
   analytics = getAnalytics(app);

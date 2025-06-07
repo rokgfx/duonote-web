@@ -4,8 +4,8 @@ export interface Notebook {
   description?: string;
   color?: string;
   languagePair?: string; // e.g., "English-Japanese", "English-Spanish"
-  createdAt: any; // Firebase Timestamp
-  updatedAt: any; // Firebase Timestamp
+  createdAt: Date | null; // Firebase Timestamp
+  updatedAt: Date | null; // Firebase Timestamp
   userId: string;
 }
 
