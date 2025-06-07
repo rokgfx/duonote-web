@@ -12,7 +12,11 @@ const nextConfig: NextConfig = {
     "http://127.0.0.1:3000",
     "http://100.88.94.81:3000",
     "https://duonote.com",
-    "http://duonote.com"
+    "http://duonote.com",
+    "https://duonote.com:3000",
+    "http://duonote.com:3000",
+    "duonote.com",
+    "duonote.com:3000"
   ],
   devIndicators: false
 };
