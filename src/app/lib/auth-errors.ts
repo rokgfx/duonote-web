@@ -1,10 +1,16 @@
 /**
  * Translates Firebase Auth error codes into user-friendly messages
  */
+interface FirebaseError {
+  code?: string;
+  message?: string;
+}
+
 export function getAuthErrorMessage(error: unknown): string {
   // Extract error code from Firebase error
-  const errorCode = error?.code || '';
-  const errorMessage = error?.message || '';
+  const firebaseError = error as FirebaseError;
+  const errorCode = firebaseError?.code || '';
+  const errorMessage = firebaseError?.message || '';
 
   // Map Firebase error codes to user-friendly messages
   switch (errorCode) {

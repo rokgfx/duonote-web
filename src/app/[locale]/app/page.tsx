@@ -51,7 +51,7 @@ export default function MainPage() {
         try {
           // Get all user's notes
           const notesQuery = query(
-            collection(db, "notes"),
+            collection(db!, "notes"),
             where("userId", "==", user.uid)
           );
           
@@ -94,7 +94,7 @@ export default function MainPage() {
         try {
           // Get all user's notebooks
           const notebooksQuery = query(
-            collection(db, "notebooks"),
+            collection(db!, "notebooks"),
             where("userId", "==", user.uid)
           );
           

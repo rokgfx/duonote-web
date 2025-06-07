@@ -263,10 +263,14 @@ export default function NotesList({ searchQuery = "" }: NotesListProps = {}) {
       const unsubscribe = onSnapshot(
         notesQuery,
         (snapshot) => {
-          const notesData = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          })) as Note[];
+          const notesData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+              createdAt: data.createdAt?.toDate() || null
+            };
+          }) as Note[];
           
           // Store all notes
           setAllNotes(notesData);
