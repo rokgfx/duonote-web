@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { PlusIcon, UserIcon, BoltIcon, BookOpenIcon } from "@heroicons/react/24/outline";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { useRouter } from "next/navigation";
 import SearchInput from "@/components/ui/SearchInput";
@@ -14,10 +14,21 @@ import { useModal } from "@/contexts/ModalContext";
 export default function Header() {
   const router = useRouter();
   const [isAddNoteModalOpen, setIsAddNoteModalOpen] = React.useState(false);
+  const [user, setUser] = React.useState<User | null>(null);
   const isOnline = useNetworkStatus();
   const { goToSettings, goToNotebooks } = useNavigation();
   const { notebooks, currentNotebook } = useNotebooks();
   const { showConfirmation } = useModal();
+
+  React.useEffect(() => {
+    if (!auth) return;
+    
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = () => {
     showConfirmation({
@@ -125,7 +136,17 @@ export default function Header() {
               )}
               <div className="dropdown dropdown-end">
                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                  <UserIcon className="h-6 w-6" />
+                  {user?.photoURL ? (
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                      <img 
+                        src={user.photoURL} 
+                        alt="User avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <UserIcon className="h-6 w-6" />
+                  )}
                 </div>
                 <ul
                   tabIndex={0}
